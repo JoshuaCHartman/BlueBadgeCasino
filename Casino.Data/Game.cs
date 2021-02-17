@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Casino.Data
 {
+
+    //Setup
     public class Game
     {
     }
