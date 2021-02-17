@@ -10,5 +10,6 @@ namespace Casino.Data
     //Setup
     public class Game
     {
+        //Hello
     }
 }
