@@ -8,5 +8,6 @@ namespace Casino.Data
 {
     public class Bet
     {
+        public string FirstName { get; set; }
     }
 }
