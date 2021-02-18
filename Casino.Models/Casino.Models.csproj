@@ -54,7 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankTransactionCreate.cs" />
     <Compile Include="BetCreate.cs" />
+    <Compile Include="BetDetail.cs" />
     <Compile Include="BetListItem.cs" />
     <Compile Include="GameSimulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

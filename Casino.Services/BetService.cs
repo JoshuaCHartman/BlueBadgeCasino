@@ -22,7 +22,7 @@ namespace Casino.Services
         }
         public BetService(Guid userGuid)
         {
-            
+
             _playerGuid = userGuid;
         }
         public bool CreateBet(BetCreate model)
@@ -36,6 +36,7 @@ namespace Casino.Services
                 GameId = model.GameId,
                 BetAmount = model.BetAmount,
                 PlayerWonGame = _gameSim.PlayerWonGame(model.GameId),
+                DateTimeOfBet = DateTimeOffset.Now
 
             };
             using (var ctx = new ApplicationDbContext())
@@ -71,6 +72,29 @@ namespace Casino.Services
                         );
 
                 return query.ToArray();
+            }
+        }
+        public BetDetail GetBetById(int id) //if this looks identical to BetListItem we can call that model instead of having 2
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Bets
+                        .Single(e => e.PlayerId == _playerId && e.BetId == id);
+                return
+                    new BetDetail
+
+                    {
+                        BetId = entity.BetId,
+                        PlayerId = entity.PlayerId,
+                        DateTimeOfBet = entity.DateTimeOfBet,
+                        GameId = entity.GameId,
+                        BetAmount = entity.BetAmount,
+                        PlayerWonGame = entity.PlayerWonGame,
+                        PayoutAmount = entity.PayoutAmount
+                    };
+
             }
         }
     }
