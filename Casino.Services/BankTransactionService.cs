@@ -17,7 +17,7 @@ namespace Casino.Services
         {
             _playerGuid = userGuid;
         }
-        public bool CreateTransaction(BankTransactionCreate model)
+        public bool CreateBankTransaction(BankTransactionCreate model)
         {
             var entity = new BankTransaction()
             {

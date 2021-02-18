@@ -40,20 +40,14 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
+        public IHttpActionResult GetById(int id)
+        {
+            BetService betService = CreateBetService();
+            var bet = betService.GetBetById(id);
 
+            return Ok(bet);
 
-
-
-
-
-
-
-
-
-
-
-
-
+        }
 
     }
 
