@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Casino.Models
 {
-   public class GameSimulation
+    public class GameSimulation
     {
         public bool PlayerWonGame(int gameId)
         {
