@@ -14,7 +14,7 @@ namespace Casino.Data
         public int BankTransactionId { get; set; }
 
         [ForeignKey(nameof(Player))]
-        public int PlayerId { get; set; }
+        public Guid PlayerId { get; set; }
         public virtual Player Player { get; set; }
 
         [Required]

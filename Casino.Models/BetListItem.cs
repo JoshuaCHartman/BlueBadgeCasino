@@ -11,7 +11,7 @@ namespace Casino.Models
      
         public int BetId { get; set; }
 
-        public int PlayerId { get; set; }
+        public Guid PlayerId { get; set; }
       
         public int GameId { get; set; }
       

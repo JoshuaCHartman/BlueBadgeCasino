@@ -18,10 +18,10 @@ namespace Casino.Services
             _playerGuid = userGuid;
         }
         public bool CreateBankTransaction(BankTransactionCreate model)
-        {
+        {//maybe return the model and player balance instead of bool
             var entity = new BankTransaction()
             {
-                PlayerId = model.PlayerId,
+                PlayerId = _playerGuid,
                 BankTransactionAmount = model.BankTransactionAmount,
                 DateTimeOfTransaction = DateTimeOffset.Now
 
@@ -29,8 +29,10 @@ namespace Casino.Services
             using (var ctx = new ApplicationDbContext())
             {
                 ctx.BankTransactions.Add(entity);
-                return ctx.SaveChanges() != 0;
-            }
+                if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance(_playerGuid, model.BankTransactionAmount))
+            { return true; }
+                return false; }
+            
         }
         public IEnumerable<BankTransactionListItem> PlayerGetBankTransactions()//PlayerGetBets(int playerId)
         {
@@ -39,7 +41,7 @@ namespace Casino.Services
                 var query =
                     ctx
                         .BankTransactions
-                        .Where(e => e.PlayerId == _playerId)
+                        .Where(e => e.PlayerId == _playerGuid)
                                                 .Select(
                             e =>
                                 new BankTransactionListItem
@@ -63,7 +65,7 @@ namespace Casino.Services
                 var entity =
                     ctx
                         .BankTransactions
-                        .Single(e => e.PlayerId == _playerId && e.BankTransactionId == id);
+                        .Single(e => e.PlayerId == _playerGuid && e.BankTransactionId == id);
                 return
                     new BankTransactionListItem
 
@@ -75,6 +77,19 @@ namespace Casino.Services
 
                     };
 
+            }
+        }
+        //same method that is in BetService CreateBet
+        private bool UpdatePlayerBankBalance(Guid playerId, double amount)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                       .Players
+                       .Single(e => e.PlayerId == playerId);
+                entity.BankBalance = entity.BankBalance + amount; 
+                return entity.SaveChanges() == 1;                
             }
         }
     }

@@ -10,6 +10,7 @@ using System.Web.Http;
 
 namespace Casino.WebApi.Controllers
 {
+    [Authorize]
     public class BankTransactionController : ApiController
     {
         private BankTransactionService CreateBankTransactionService()

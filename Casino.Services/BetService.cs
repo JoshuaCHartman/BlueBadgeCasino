@@ -12,7 +12,6 @@ namespace Casino.Services
     {
         private GameSimulation _gameSim = new GameSimulation();
         private readonly Guid _playerGuid;  //Parse from currently logged in player
-        private readonly Player _currentPlayer;
         private readonly int _playerId;
 
         public BetService() { }
@@ -27,23 +26,32 @@ namespace Casino.Services
         }
         public bool CreateBet(BetCreate model)
         {
-
+            //consider returning bet results and updated player balance instead of bool
             var entity = new Bet()
             {
                 // PlayerId = _playerId; //if we go this route need to add Guid to Bet class
                 //PlayerId = Player.PlayerId;
-                PlayerId = model.PlayerId,
+                PlayerId = _playerGuid,
                 GameId = model.GameId,
                 BetAmount = model.BetAmount,
-                PlayerWonGame = _gameSim.PlayerWonGame(model.GameId),
-                DateTimeOfBet = DateTimeOffset.Now
+                PayoutAmount = _gameSim.PlayGame(model.BetAmount, model.GameId),
+                //PlayerWonGame = _gameSim.PlayerWonGame(model.GameId), //added to Bet class prop logic
+                DateTimeOfBet = DateTimeOffset.Now,
+
 
             };
             using (var ctx = new ApplicationDbContext())
+
             {
 
                 ctx.Bets.Add(entity);
-                return ctx.SaveChanges() != 0;
+                if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance(_playerGuid, entity.PayoutAmount))
+                {
+                    //calls down to helper method to update Player balance after bet has processed
+                    return true;
+                }
+                return false;
+
             }
 
         }
@@ -55,7 +63,7 @@ namespace Casino.Services
                 var query =
                     ctx
                         .Bets
-                        .Where(e => e.PlayerId == _playerId)
+                        .Where(e => e.PlayerId == _playerGuid)
                         //.Where(e => e.PlayerId == playerId)//from argument in method
                         .Select(
                             e =>
@@ -81,7 +89,7 @@ namespace Casino.Services
                 var entity =
                     ctx
                         .Bets
-                        .Single(e => e.PlayerId == _playerId && e.BetId == id);
+                        .Single(e => e.PlayerId == _playerGuid && e.BetId == id);
                 return
                     new BetDetail
 
@@ -97,6 +105,21 @@ namespace Casino.Services
 
             }
         }
-    }
 
+        //Helper Method
+        //if this works, copy or ref this for banktransactions also
+        private bool UpdatePlayerBankBalance(Guid playerId, double amount)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                       .Players
+                       .Single(e => e.PlayerId == playerId);
+                entity.BankBalance = entity.BankBalance + amount; //can we change only this one category
+                return entity.SaveChanges() == 1;                 //should we just call the Put method from here instead?
+            }
+        }
+    }
 }
+

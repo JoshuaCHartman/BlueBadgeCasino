@@ -10,7 +10,7 @@ namespace Casino.Data
     {
         public int BankTransactionId { get; set; }
 
-        public int PlayerId { get; set; }
+        public Guid PlayerId { get; set; }
       
         public DateTimeOffset DateTimeOfTransaction { get; set; }
 
