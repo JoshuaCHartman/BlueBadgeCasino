@@ -17,8 +17,10 @@ namespace Casino.Services
         {
             _playerGuid = userGuid;
         }
+        //Create
         public bool CreateBankTransaction(BankTransactionCreate model)
-        {//maybe return the model and player balance instead of bool
+        {
+            //maybe return the model and player balance instead of bool
             var entity = new BankTransaction()
             {
                 PlayerId = _playerGuid,
@@ -30,10 +32,12 @@ namespace Casino.Services
             {
                 ctx.BankTransactions.Add(entity);
                 if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance(_playerGuid, model.BankTransactionAmount))
-            { return true; }
-                return false; }
-            
+                { return true; }
+                return false;
+            }
+
         }
+        //Return
         public IEnumerable<BankTransactionListItem> PlayerGetBankTransactions()//PlayerGetBets(int playerId)
         {
             using (var ctx = new ApplicationDbContext())
@@ -76,9 +80,25 @@ namespace Casino.Services
                         BankTransactionId = entity.BankTransactionId,
 
                     };
-
             }
         }
+        //Delete
+        public bool DeleteBankTransaction(int id, double amount)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                       .BankTransactions
+                       .Single(e => e.BankTransactionId == id && e.BankTransactionAmount == amount);
+                ctx.BankTransactions.Remove(entity);
+                if (UpdatePlayerBankBalance(entity.PlayerId, (-1) * amount) && ctx.SaveChanges() == 1)
+                    return true;
+                return false;
+            }
+        }
+
+        //Helper
         //same method that is in BetService CreateBet
         private bool UpdatePlayerBankBalance(Guid playerId, double amount)
         {
@@ -88,8 +108,8 @@ namespace Casino.Services
                     ctx
                        .Players
                        .Single(e => e.PlayerId == playerId);
-                entity.BankBalance = entity.BankBalance + amount; 
-                return entity.SaveChanges() == 1;                
+                entity.BankBalance = entity.BankBalance + amount;
+                return entity.SaveChanges() == 1;
             }
         }
     }

@@ -19,14 +19,22 @@ namespace Casino.WebApi.Controllers
             var bankTransactionService = new BankTransactionService(userId);
             return bankTransactionService;
         }
-
+        //Get
         public IHttpActionResult Get()
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
             var bankTransactions = bankTransactionService.PlayerGetBankTransactions();
             return Ok(bankTransactions);
         }
+       //Get
+        public IHttpActionResult GetById(int id)
+        {
+            BankTransactionService bankTransactionService = CreateBankTransactionService();
+            var bankTransaction = bankTransactionService.GetBankTransactionById(id);
 
+            return Ok(bankTransaction);
+        }
+        //Post
         public IHttpActionResult Post(BankTransactionCreate bankTransaction)
         {
             if (!ModelState.IsValid)
@@ -36,13 +44,13 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             return Ok();
         }
-        public IHttpActionResult GetById(int id)
+        //Delete
+        public IHttpActionResult Delete([FromUri]int id, [FromBody]double amount)
         {
-            BankTransactionService bankTransactionService = CreateBankTransactionService();
-            var bankTransaction = bankTransactionService.GetBankTransactionById(id);
-
-            return Ok(bankTransaction);
-
+            var service = CreateBankTransactionService();
+            if (!service.DeleteBankTransaction(id, amount))
+                return InternalServerError();
+            return Ok();
         }
     }
 }

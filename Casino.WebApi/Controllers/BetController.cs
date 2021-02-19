@@ -21,7 +21,7 @@ namespace Casino.WebApi.Controllers
             var betService = new BetService(userId);
             return betService;
         }
-
+        //Get All
         public IHttpActionResult Get() //Get([FromBody] int playerId)
         {
             //var bets = _service.PlayerGetBets();
@@ -29,7 +29,16 @@ namespace Casino.WebApi.Controllers
             var bets = betService.PlayerGetBets();
             return Ok(bets);
         }
+        //Get By Id
+        public IHttpActionResult GetById(int id)
+        {
+            BetService betService = CreateBetService();
+            var bet = betService.GetBetById(id);
 
+            return Ok(bet);
+
+        }
+        //Post
         public IHttpActionResult Post(BetCreate bet)
         {
             if (!ModelState.IsValid)
@@ -39,16 +48,14 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             return Ok();
         }
-
-        public IHttpActionResult GetById(int id)
+        //Delete
+        public IHttpActionResult Delete([FromUri]int id, [FromBody] double amount)
         {
-            BetService betService = CreateBetService();
-            var bet = betService.GetBetById(id);
-
-            return Ok(bet);
-
+            var service = CreateBetService();
+            if (!service.DeleteBet(id, amount))
+                return InternalServerError();
+            return Ok();
         }
-
     }
 
 

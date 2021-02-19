@@ -37,8 +37,6 @@ namespace Casino.Services
                 PayoutAmount = _gameSim.PlayGame(model.BetAmount, model.GameId),
                 //PlayerWonGame = _gameSim.PlayerWonGame(model.GameId), //added to Bet class prop logic
                 DateTimeOfBet = DateTimeOffset.Now,
-
-
             };
             using (var ctx = new ApplicationDbContext())
 
@@ -51,9 +49,7 @@ namespace Casino.Services
                     return true;
                 }
                 return false;
-
             }
-
         }
 
         public IEnumerable<BetListItem> PlayerGetBets()//PlayerGetBets(int playerId)
@@ -103,6 +99,20 @@ namespace Casino.Services
                         PayoutAmount = entity.PayoutAmount
                     };
 
+            }
+        }
+        public bool DeleteBet(int id, double amount)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                       .Bets
+                       .Single(e => e.BetId == id && e.BetAmount == amount);
+                ctx.Bets.Remove(entity);
+                if (UpdatePlayerBankBalance(entity.PlayerId, (-1) * amount) && ctx.SaveChanges() == 1)
+                    return true;
+                return false;
             }
         }
 
