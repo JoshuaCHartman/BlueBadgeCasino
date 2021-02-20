@@ -20,6 +20,7 @@ namespace Casino.WebApi.Controllers
             return bankTransactionService;
         }
         //Get
+        //Get
         public IHttpActionResult Get()
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
