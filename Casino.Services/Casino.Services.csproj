@@ -54,11 +54,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Casino.Data\Casino.Data.csproj">
+      <Project>{29217a3a-c469-4bd6-ab29-78cf40e5d861}</Project>
+      <Name>Casino.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Casino.Models\Casino.Models.csproj">
+      <Project>{5866ceef-9ced-499c-8b00-29ace0ac5b4c}</Project>
+      <Name>Casino.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
