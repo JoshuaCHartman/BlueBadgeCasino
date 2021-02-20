@@ -57,11 +57,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlayerCreate.cs" />
+    <Compile Include="PlayerDetail.cs" />
+    <Compile Include="PlayerEdit.cs" />
+    <Compile Include="PlayerListItem.cs" />
+    <Compile Include="GameCreate.cs" />
+    <Compile Include="GameListItem.cs" />
+    <Compile Include="BankTransactionCreate.cs" />
+    <Compile Include="BetCreate.cs" />
+    <Compile Include="BetDetail.cs" />
+    <Compile Include="BetListItem.cs" />
+    <Compile Include="GameSimulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Casino.Data\Casino.Data.csproj">
+      <Project>{29217a3a-c469-4bd6-ab29-78cf40e5d861}</Project>
+      <Name>Casino.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
