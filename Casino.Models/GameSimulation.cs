@@ -20,7 +20,7 @@ namespace Casino.Models
             if (x <= 3)  //this is 60/40 odds
                 return betAmount; //player wins, wins bet amount
 
-            return betAmount - 2* betAmount; //player loses, payout is negative the bet amount
+            return  (-1)*betAmount; //player loses, payout is negative the bet amount
         }
     }
 

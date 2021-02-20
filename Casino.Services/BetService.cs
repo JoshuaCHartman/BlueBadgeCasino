@@ -98,7 +98,6 @@ namespace Casino.Services
                         PlayerWonGame = entity.PlayerWonGame,
                         PayoutAmount = entity.PayoutAmount
                     };
-
             }
         }
         public bool DeleteBet(int id, double amount)
