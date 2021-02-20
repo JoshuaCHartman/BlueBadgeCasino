@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Casino.Services
 {
+    //random comment
     public class GameService
     {
         private readonly Guid _userId;
