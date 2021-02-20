@@ -57,6 +57,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameCreate.cs" />
+    <Compile Include="GameListItem.cs" />
     <Compile Include="BankTransactionCreate.cs" />
     <Compile Include="BetCreate.cs" />
     <Compile Include="BetDetail.cs" />

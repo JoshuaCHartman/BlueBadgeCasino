@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameService.cs" />
     <Compile Include="BankTransactionService.cs" />
     <Compile Include="BetService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
