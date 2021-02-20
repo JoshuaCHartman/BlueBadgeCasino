@@ -29,7 +29,7 @@ namespace Casino.WebApi.Controllers
             return Ok(player);
         }
 
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Get(Guid id)
         {
             PlayerService playerService = CreatePlayerService();
             var player = playerService.GetPlayerById(id);
@@ -71,11 +71,11 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult Delete(Guid id)
         {
             var service = CreatePlayerService();
 
-            if (!service.DeleteNote(id))
+            if (!service.DeletePlayer(id))
                 return InternalServerError();
 
             return Ok();

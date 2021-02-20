@@ -30,41 +30,38 @@ namespace Casino.Models {
         [Required]
         public string PlayerLastName { get; set; }
         public string PlayerPhone { get; set; }
+        [Required]
         public string PlayerEmail { get; set; }
         public string PlayerAddress { get; set; }
 
         public PlayerState PlayerState { get; set; }
 
         [Required]
-        public DateTime PlayerDoB { get; set; }
-
+        [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
+        public string PlayerDob { get; set; }
+            
         [Required]
         public DateTime AccountCreated { get; set; }
 
-        [Required]
-        public bool IsActive { get; set; }
+        //public bool IsActive { get; set; }
 
-        public TierStatus TierStatus { get; set; }
+        //public bool HasAccessToHighLevelGame { get; set; }
 
-        [Required]
-        public bool HasAccessToHighLevelGame { get; set; }
-
-        [Required]
-        public double CurrentBankBalance { get; set; }
+        //public double CurrentBankBalance { get; set; }
 
        // public virtual List<BankTransaction> BankTransactions { get; set; }
 
-      //  public virtual List<Bet> Bets { get; set; }
+        //public virtual List<Bet> Bets { get; set; }
 
         
-        public bool EligibleForReward { get; set; }
+        //public bool EligibleForReward { get; set; }
 
         
-        public bool AgeVerification { get; set; }
+        //public bool AgeVerification { get; set; }
 
         
         public DateTimeOffset CreatedUtc { get; set; }
 
-        public DateTimeOffset? ModifiedUtc { get; set; }
+        //public DateTimeOffset? ModifiedUtc { get; set; }
     }
 }

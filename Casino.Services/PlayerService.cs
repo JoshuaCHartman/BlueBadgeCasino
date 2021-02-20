@@ -26,16 +26,16 @@ namespace Casino.Services
                 PlayerLastName = model.PlayerLastName,
                 PlayerPhone = model.PlayerPhone,
                 PlayerEmail = model.PlayerEmail,
-                PlayerAddress = model.PlayerAddress,
+                PlayerAddress = model.PlayerAddress, //Evaluate in testing whether its null or doesn't work
                 PlayerState = model.PlayerState,
-                PlayerDoB = model.PlayerDoB,
+                PlayerDob = model.PlayerDob,
                 AccountCreated = model.AccountCreated,
-                IsActive = model.IsActive,
-                TierStatus = model.TierStatus,
-                HasAccessToHighLevelGame = model.HasAccessToHighLevelGame,
-                CurrentBankBalance = model.CurrentBankBalance,
-                EligibleForReward = model.EligibleForReward,
-                AgeVerification = model.AgeVerification,
+                //IsActive = model.IsActive,
+                //TierStatus = model.TierStatus,
+                //HasAccessToHighLevelGame = model.HasAccessToHighLevelGame,
+                //CurrentBankBalance = model.CurrentBankBalance,
+                //EligibleForReward = model.EligibleForReward,
+                //AgeVerification = model.AgeVerification,
                 CreatedUtc = DateTimeOffset.Now
             };
 
@@ -64,7 +64,7 @@ namespace Casino.Services
                                     PlayerEmail = e.PlayerEmail,
                                     PlayerAddress = e.PlayerAddress,
                                     PlayerState = e.PlayerState,
-                                    PlayerDoB = e.PlayerDoB,
+                                    PlayerDob = e.PlayerDob,
                                     AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
@@ -93,12 +93,12 @@ namespace Casino.Services
                         PlayerEmail = entity.PlayerEmail,
                         PlayerAddress = entity.PlayerAddress,
                         PlayerState = entity.PlayerState,
-                        PlayerDoB = entity.PlayerDoB,
+                        PlayerDob = entity.PlayerDob,
                         AccountCreated = entity.AccountCreated,
                         IsActive = entity.IsActive,
                         CurrentBankBalance = entity.CurrentBankBalance,
                         CreatedUtc = entity.CreatedUtc,
-                        ModifiedUtc = entity.ModifiedUtc
+                        //ModifiedUtc = entity.ModifiedUtc
                     };
             }
 
@@ -122,7 +122,7 @@ namespace Casino.Services
                                     PlayerEmail = e.PlayerEmail,
                                     PlayerAddress = e.PlayerAddress,
                                     PlayerState = e.PlayerState,
-                                    PlayerDoB = e.PlayerDoB,
+                                    PlayerDob = e.PlayerDob,
                                     AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
@@ -152,7 +152,7 @@ namespace Casino.Services
                                     PlayerEmail = e.PlayerEmail,
                                     PlayerAddress = e.PlayerAddress,
                                     PlayerState = e.PlayerState,
-                                    PlayerDoB = e.PlayerDoB,
+                                    PlayerDob = e.PlayerDob,
                                     AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
@@ -182,7 +182,7 @@ namespace Casino.Services
                                     PlayerEmail = e.PlayerEmail,
                                     PlayerAddress = e.PlayerAddress,
                                     PlayerState = e.PlayerState,
-                                    PlayerDoB = e.PlayerDoB,
+                                    PlayerDob = e.PlayerDob,
                                     AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
@@ -203,19 +203,16 @@ namespace Casino.Services
                         .Players
                         .Single(e => e.PlayerId == _userId);
 
-                entity.PlayerFirstName = model.PlayerFirstName;
-                entity.PlayerLastName = model.PlayerLastName;
                 entity.PlayerPhone = model.PlayerPhone;
-                entity.PlayerEmail = model.PlayerEmail;
                 entity.PlayerAddress = model.PlayerAddress;
                 entity.PlayerState = model.PlayerState;
-                entity.PlayerDoB = model.PlayerDoB;
-                entity.TierStatus = model.TierStatus;
-                entity.IsActive = model.IsActive;
-                entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
-                entity.CurrentBankBalance = model.CurrentBankBalance;
-                entity.EligibleForReward = model.EligibleForReward;
-                entity.ModifiedUtc = DateTimeOffset.UtcNow;
+                //entity.PlayerDob = model.PlayerDob;
+                //entity.TierStatus = model.TierStatus;
+                //entity.IsActive = model.IsActive;
+                //entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
+                //entity.CurrentBankBalance = model.CurrentBankBalance;
+                //entity.EligibleForReward = model.EligibleForReward;
+                //entity.ModifiedUtc = DateTimeOffset.UtcNow;
 
                 return ctx.SaveChanges() == 1;
             }
