@@ -59,6 +59,11 @@
   <ItemGroup>
     <Compile Include="GameCreate.cs" />
     <Compile Include="GameListItem.cs" />
+    <Compile Include="BankTransactionCreate.cs" />
+    <Compile Include="BetCreate.cs" />
+    <Compile Include="BetDetail.cs" />
+    <Compile Include="BetListItem.cs" />
+    <Compile Include="GameSimulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Casino.Data\Casino.Data.csproj">
-      <Project>{29217A3A-C469-4BD6-AB29-78CF40E5D861}</Project>
+      <Project>{29217a3a-c469-4bd6-ab29-78cf40e5d861}</Project>
       <Name>Casino.Data</Name>
     </ProjectReference>
   </ItemGroup>

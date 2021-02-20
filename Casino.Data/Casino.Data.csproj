@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BankTransaction.cs" />
+    <Compile Include="BankTransactionListItem.cs" />
     <Compile Include="Bet.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IdentityModels.cs" />
