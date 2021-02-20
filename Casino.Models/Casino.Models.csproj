@@ -61,6 +61,13 @@
     <Compile Include="PlayerDetail.cs" />
     <Compile Include="PlayerEdit.cs" />
     <Compile Include="PlayerListItem.cs" />
+    <Compile Include="GameCreate.cs" />
+    <Compile Include="GameListItem.cs" />
+    <Compile Include="BankTransactionCreate.cs" />
+    <Compile Include="BetCreate.cs" />
+    <Compile Include="BetDetail.cs" />
+    <Compile Include="BetListItem.cs" />
+    <Compile Include="GameSimulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
