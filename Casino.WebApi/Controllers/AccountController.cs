@@ -17,9 +17,13 @@ using Casino.WebApi.Models;
 using Casino.WebApi.Providers;
 using Casino.WebApi.Results;
 using Casino.Data;
+using System.Linq;
+using System.Web.Security;
 
 namespace Casino.WebApi.Controllers
 {
+   // Add endpoints belovw (inside accountcontroller)
+
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
@@ -51,6 +55,159 @@ namespace Casino.WebApi.Controllers
         }
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
+
+        // POST api/Account/Register
+        [AllowAnonymous]
+        [Route("Register")]
+        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        {
+            var _db = new ApplicationDbContext();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Create new role instance
+            IdentityRole role = new IdentityRole();
+
+            // Create new 
+            IdentityResult result;
+            using (_db)
+            {
+                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
+
+                role.Name = "User";
+
+                await roleManager.CreateAsync(role);
+
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
+
+                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+                var Check = await UserManager.CreateAsync(user, model.Password);
+
+                if (Check.Succeeded)
+                {
+                    result = await userManager.AddToRoleAsync(user.Id, "User");
+                }
+                else
+                {
+                    var exception = new Exception("Could not add user");
+
+                    var enumerator = Check.Errors.GetEnumerator();
+                    foreach (var error in Check.Errors)
+                    {
+                        exception.Data.Add(enumerator.Current, error);
+                    }
+                    throw exception;
+
+                }
+
+                return Ok("User Created");
+
+            }
+
+
+            // Unworking process
+            //IdentityResult result;
+            //using (var context = new ApplicationDbContext())
+            //{
+            //    var roleStore = new RoleStore<IdentityRole>(context);
+            //    var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+            //    await roleManager.CreateAsync(new IdentityRole() { Name = "User" });
+
+            //    var userStore = new UserStore<ApplicationUser>(context);
+            //    var userManager = new UserManager<ApplicationUser>(userStore);
+
+            //    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+            //    result = await UserManager.CreateAsync(user, model.Password);
+            //    await userManager.AddToRoleAsync(user.Id, "User");
+
+
+            //}
+
+
+        }
+       
+
+
+
+
+
+        // ADDED FOR SUPERADMIN TO GET ALL USERS
+        // GET api/account/user
+        ////[OverrideAuthentication]
+        ////[AllowAnonymous]
+        [Authorize(Roles = "SuperAdmin")] // limits to superadmin
+                                          //[HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)] // needs bearer token
+        [Route("GetAllUsers(SUPERADMIN)")] // display route
+
+        public List<ApplicationUser> GetAllUsers()
+        {
+
+            var ctx = new ApplicationDbContext();
+            List<ApplicationUser> users = ctx.Users.ToList();
+
+            return users;
+        }
+
+        // POST api/Account/Register
+        [Route("CreateAdmin")]
+        public async Task<IHttpActionResult> CreateAdmin(RegisterBindingModel model)
+        {
+            var _db = new ApplicationDbContext();
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Create new role instance
+            IdentityRole role = new IdentityRole();
+
+            // Create new 
+            IdentityResult result;
+            using (_db)
+            {
+                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
+
+                role.Name = "Admin";
+
+                await roleManager.CreateAsync(role);
+
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
+
+                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+                var Check = await UserManager.CreateAsync(user, model.Password);
+
+                if (Check.Succeeded)
+                {
+                    result = await userManager.AddToRoleAsync(user.Id, "Admin");
+                }
+                else
+                {
+                    var exception = new Exception("Could not add admin");
+
+                    var enumerator = Check.Errors.GetEnumerator();
+                    foreach (var error in Check.Errors)
+                    {
+                        exception.Data.Add(enumerator.Current, error);
+                    }
+                    throw exception;
+
+                }
+
+                return Ok("Admin Created");
+
+
+            }
+        }
+
+
 
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
@@ -320,26 +477,28 @@ namespace Casino.WebApi.Controllers
         }
 
         // POST api/Account/Register
-        [AllowAnonymous]
-        [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        // DEFAULT REGISTER (Moved to above)
+        //[AllowAnonymous]
+        //[Route("Register")]
+        //public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+        //    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+        //    IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
+        //    if (!result.Succeeded)
+        //    {
+        //        return GetErrorResult(result);
+        //    }
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
+
 
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]

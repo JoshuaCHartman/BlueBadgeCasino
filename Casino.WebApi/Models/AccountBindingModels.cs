@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 
 namespace Casino.WebApi.Models
 {
+
+    // Make ACCOUNT models here
     // Models used as parameters to AccountController actions.
 
     public class AddExternalLoginBindingModel
