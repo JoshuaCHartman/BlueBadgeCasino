@@ -125,8 +125,8 @@ namespace Casino.Services
                     ctx
                        .Players
                        .Single(e => e.PlayerId == playerId);
-                entity.BankBalance = entity.BankBalance + amount; //can we change only this one category
-                return entity.SaveChanges() == 1;                 //should we just call the Put method from here instead?
+                entity.CurrentBankBalance = entity.CurrentBankBalance + amount; //can we change only this one category
+                return ctx.SaveChanges() == 1;                 //should we just call the Put method from here instead?
             }
         }
     }
