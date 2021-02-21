@@ -83,7 +83,7 @@ namespace Casino.Services
                 var entity =
                     ctx
                         .Players
-                        .Single(e => e.PlayerId == _userId);
+                        .Single(e => e.PlayerId == id);
                 return
                     new PlayerDetail
                     {

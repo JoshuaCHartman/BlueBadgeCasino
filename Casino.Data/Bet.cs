@@ -24,13 +24,16 @@ namespace Casino.Data
 
         [Required]
         public double BetAmount { get; set; }
+        public double PayoutAmount { get; set; } //Positive for win, Negative for loss
 
         public bool PlayerWonGame //putting simple logic here not working
-        {
-            get; set;
+        { get;set;
+            //get
+            //{
+            //    return PayoutAmount > 0.0;
+            //}
         }
 
-        public double PayoutAmount { get; set; } //Positive for win, Negative for loss
 
         public DateTimeOffset DateTimeOfBet { get; set; }
 

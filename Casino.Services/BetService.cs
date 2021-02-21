@@ -35,7 +35,7 @@ namespace Casino.Services
                 GameId = model.GameId,
                 BetAmount = model.BetAmount,
                 PayoutAmount = _gameSim.PlayGame(model.BetAmount, model.GameId),
-                /*PlayerWonGame = (PayoutAmount > 0), *///added to Bet class prop logic
+                /*PlayerWonGame = (PayoutAmount > 0.0), *///added to Bet class prop logic
                 DateTimeOfBet = DateTimeOffset.Now,
             };
             using (var ctx = new ApplicationDbContext())
