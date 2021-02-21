@@ -24,7 +24,14 @@ namespace Casino.WebApi
 
         public void CreateDefaultRolesAndUsers()
         {
+            CreateSuperAdmin();
+            CreateAdmin();
+            CreateUser();
 
+        }
+
+        public void CreateSuperAdmin()
+        {
             // bring in roleManager and userManager from entity framework 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
@@ -75,8 +82,16 @@ namespace Casino.WebApi
                 }
 
             }
+        }
+        // ADMIN
+        public void CreateAdmin()
+        {
+            // bring in roleManager and userManager from entity framework 
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
 
-            // ADMIN
+            IdentityRole role = new IdentityRole();
+
 
             if (!roleManager.RoleExists("Admin"))
             {
@@ -111,9 +126,17 @@ namespace Casino.WebApi
 
 
             }
+        }
+        // USER
+        public void CreateUser()
+        {
 
-            // USER
 
+            // bring in roleManager and userManager from entity framework 
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
+
+            IdentityRole role = new IdentityRole();
             if (!roleManager.RoleExists("User"))
             {
                 role.Name = "User";
@@ -146,6 +169,6 @@ namespace Casino.WebApi
                 }
             }
 
-        }
+        } }
     }
-}
+

@@ -40,8 +40,7 @@ namespace Casino.Models {
         [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
         public string PlayerDob { get; set; }
             
-        [Required]
-        public DateTime AccountCreated { get; set; }
+        public DateTimeOffset AccountCreated { get; set; }
 
         //public bool IsActive { get; set; }
 
@@ -60,7 +59,7 @@ namespace Casino.Models {
         //public bool AgeVerification { get; set; }
 
         
-        public DateTimeOffset CreatedUtc { get; set; }
+        //public DateTimeOffset CreatedUtc { get; set; }
 
         //public DateTimeOffset? ModifiedUtc { get; set; }
     }

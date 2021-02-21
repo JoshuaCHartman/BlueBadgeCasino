@@ -21,7 +21,7 @@ namespace Casino.Models
         [Required]
         [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
         public string PlayerDob { get; set; }
-        public DateTime AccountCreated { get; set; }
+        public DateTimeOffset AccountCreated { get; set; }
         public TierStatus TierStatus { get; set; }
         public bool IsActive { get; set; }
         public bool HasAccessToHighLevelGame { get; set; }
@@ -29,8 +29,8 @@ namespace Casino.Models
         //public bool EligibleForReward { get; set; }
         public bool AgeVerification { get; set; }
 
-        [Display(Name="Created")]
-        public DateTimeOffset CreatedUtc { get; set; }
+        //[Display(Name="Created")]
+        //public DateTimeOffset CreatedUtc { get; set; }
 
         //[Display(Name="Modified")]
         //public DateTimeOffset? ModifiedUtc { get; set; }

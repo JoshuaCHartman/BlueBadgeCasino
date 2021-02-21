@@ -25,14 +25,9 @@ namespace Casino.Data
         [Required]
         public double BetAmount { get; set; }
 
-        public bool PlayerWonGame
+        public bool PlayerWonGame //putting simple logic here not working
         {
-            get
-            {
-                if (PayoutAmount >= 0)
-                    return true;
-                return false;
-            }
+            get; set;
         }
 
         public double PayoutAmount { get; set; } //Positive for win, Negative for loss

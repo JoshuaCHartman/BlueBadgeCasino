@@ -31,11 +31,11 @@ namespace Casino.Services
             {
                 // PlayerId = _playerId; //if we go this route need to add Guid to Bet class
                 //PlayerId = Player.PlayerId;
-                PlayerId = _playerGuid,
+                PlayerId = _playerGuid,                          //System.Guid.Parse("4544850e9f694fdba953116a21ae5c43"),
                 GameId = model.GameId,
                 BetAmount = model.BetAmount,
                 PayoutAmount = _gameSim.PlayGame(model.BetAmount, model.GameId),
-                //PlayerWonGame = _gameSim.PlayerWonGame(model.GameId), //added to Bet class prop logic
+                /*PlayerWonGame = (PayoutAmount > 0), *///added to Bet class prop logic
                 DateTimeOfBet = DateTimeOffset.Now,
             };
             using (var ctx = new ApplicationDbContext())
@@ -125,8 +125,8 @@ namespace Casino.Services
                     ctx
                        .Players
                        .Single(e => e.PlayerId == playerId);
-                entity.BankBalance = entity.BankBalance + amount; //can we change only this one category
-                return entity.SaveChanges() == 1;                 //should we just call the Put method from here instead?
+                entity.CurrentBankBalance = entity.CurrentBankBalance + amount; //can we change only this one category
+                return ctx.SaveChanges() == 1;                 //should we just call the Put method from here instead?
             }
         }
     }

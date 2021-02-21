@@ -29,14 +29,14 @@ namespace Casino.Services
                 PlayerAddress = model.PlayerAddress, //Evaluate in testing whether its null or doesn't work
                 PlayerState = model.PlayerState,
                 PlayerDob = model.PlayerDob,
-                AccountCreated = model.AccountCreated,
+                AccountCreated = DateTimeOffset.Now,
                 //IsActive = model.IsActive,
                 //TierStatus = model.TierStatus,
                 //HasAccessToHighLevelGame = model.HasAccessToHighLevelGame,
                 //CurrentBankBalance = model.CurrentBankBalance,
                 //EligibleForReward = model.EligibleForReward,
                 //AgeVerification = model.AgeVerification,
-                CreatedUtc = DateTimeOffset.Now
+                //CreatedUtc = DateTimeOffset.Now
             };
 
             using (var ctx = new ApplicationDbContext())
@@ -53,7 +53,7 @@ namespace Casino.Services
                 var query =
                     ctx
                         .Players
-                        .Where(e => e.PlayerId == _userId)
+                        .Where(e => e.PlayerFirstName.Length > 0)
                         .Select(
                             e =>
                                 new PlayerListItem
@@ -68,7 +68,7 @@ namespace Casino.Services
                                     AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
-                                    CreatedUtc = e.CreatedUtc
+                                    //CreatedUtc = e.CreatedUtc
                                 }
                         );
 
@@ -97,7 +97,7 @@ namespace Casino.Services
                         AccountCreated = entity.AccountCreated,
                         IsActive = entity.IsActive,
                         CurrentBankBalance = entity.CurrentBankBalance,
-                        CreatedUtc = entity.CreatedUtc,
+                        //CreatedUtc = entity.CreatedUtc,
                         //ModifiedUtc = entity.ModifiedUtc
                     };
             }
@@ -126,7 +126,7 @@ namespace Casino.Services
                                     AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
-                                    CreatedUtc = e.CreatedUtc
+                                    //CreatedUtc = e.CreatedUtc
                                 }
                         );
 
@@ -156,7 +156,7 @@ namespace Casino.Services
                                     AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
-                                    CreatedUtc = e.CreatedUtc
+                                    //CreatedUtc = e.CreatedUtc
                                 }
                         );
 
@@ -186,7 +186,7 @@ namespace Casino.Services
                                     AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
-                                    CreatedUtc = e.CreatedUtc
+                                    //CreatedUtc = e.CreatedUtc
                                 }
                         );
 

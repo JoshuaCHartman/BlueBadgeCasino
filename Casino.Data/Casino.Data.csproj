@@ -92,6 +92,7 @@
     <Compile Include="Bet.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IdentityModels.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
