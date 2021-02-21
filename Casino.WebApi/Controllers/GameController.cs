@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Casino.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,11 +14,36 @@ namespace Casino.WebApi.Controllers
 
 
         //Get
+        [HttpGet]
+        public IHttpActionResult Get()
+        {
+            GameService gameService = CreateGameService();
+            var games = gameService.GetGames();
+            return Ok(games);
+        }
+        public IHttpActionResult Post(GameCreate game)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            var service = CreateGameService();
 
-        //Put
+            if (!service.CreateGame(game))
+                return InternalServerError();
 
-
-        //Delete
+            return Ok();
+        }
+        private GameService CreateGameService()
+        {
+            //var userId = Guid.Parse(User.Identity.GetUserId());
+            var gameService = new GameService(userId);
+            return gameService;
+        }
     }
+
+    //Put
+
+
+    //Delete
+}
 }
