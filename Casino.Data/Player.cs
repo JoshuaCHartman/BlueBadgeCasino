@@ -47,7 +47,7 @@ namespace Casino.Data
         public string PlayerDob { get; set; }
 
         [Required]
-        public DateTime AccountCreated { get; set; }
+        public DateTimeOffset AccountCreated { get; set; }
 
         public TierStatus TierStatus { get; set; } = TierStatus.bronze;
 
@@ -66,7 +66,7 @@ namespace Casino.Data
 
         public bool AgeVerification { get; set; }
 
-        public DateTimeOffset CreatedUtc { get; set; }
+        //public DateTimeOffset CreatedUtc { get; set; }
 
         //public DateTimeOffset? ModifiedUtc { get; set; }
     }

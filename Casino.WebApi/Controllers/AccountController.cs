@@ -218,6 +218,7 @@ namespace Casino.WebApi.Controllers
 
             return new UserInfoViewModel
             {
+                Id = Guid.Parse(User.Identity.GetUserId()), //added category so we could grab this info
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null

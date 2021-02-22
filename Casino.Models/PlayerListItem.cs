@@ -19,9 +19,9 @@ namespace Casino.Models
         [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
         [Required]
         public string PlayerDob { get; set; }
-        public DateTime AccountCreated { get; set; }
+        public DateTimeOffset AccountCreated { get; set; }
         public bool IsActive { get; set; }
         public double CurrentBankBalance { get; set; }
-        public DateTimeOffset CreatedUtc { get; set; }
+        //public DateTimeOffset CreatedUtc { get; set; }
     }
 }

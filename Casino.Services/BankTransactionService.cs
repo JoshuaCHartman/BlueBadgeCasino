@@ -108,8 +108,8 @@ namespace Casino.Services
                     ctx
                        .Players
                        .Single(e => e.PlayerId == playerId);
-                entity.BankBalance = entity.BankBalance + amount;
-                return entity.SaveChanges() == 1;
+                entity.CurrentBankBalance = entity.CurrentBankBalance + amount;
+                return (ctx.SaveChanges() == 1);
             }
         }
     }

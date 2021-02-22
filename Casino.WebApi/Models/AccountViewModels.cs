@@ -27,6 +27,7 @@ namespace Casino.WebApi.Models
 
     public class UserInfoViewModel
     {
+        public Guid Id { get; set; }
         public string Email { get; set; }
 
         public bool HasRegistered { get; set; }

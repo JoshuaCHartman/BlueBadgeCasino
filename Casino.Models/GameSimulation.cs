@@ -22,13 +22,27 @@ namespace Casino.Models
 
             return  (-1)*betAmount; //player loses, payout is negative the bet amount
         }
+
+        // helper method to convert gamesim's payout to a bool if payout is +
+        public bool GameWinOutcome(double payout)
+        {
+            bool wonGame;
+            if (payout > 0) { wonGame = true; } else { wonGame = false; }
+            return wonGame;
+        }
     }
+
+
+
 
 
     //Helper Method
     //public Game GetGameById(int gameId)
     //{
     //    //just like gold badge repo
+          //Either go get a game object or a gameModel
     //    //logic here or change get it straight from GameService GetGame method
     //}
+
+
 }

@@ -1,33 +1,111 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Casino.Data;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin;
-using Owin;
-
-[assembly: OwinStartup(typeof(Casino.WebApi.Startup))]
-
-namespace Casino.WebApi
+﻿namespace Casino.Data.Migrations
 {
-    public partial class Startup
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
+    internal sealed class Configuration : DbMigrationsConfiguration<Casino.Data.ApplicationDbContext>
     {
         ApplicationDbContext _db = new ApplicationDbContext();
-        public void Configuration(IAppBuilder app)
-        {
-            ConfigureAuth(app);
 
-            // run startup SEED method below (will not populate if roles already created)
-            //CreateDefaultRolesAndUsers();
+        public Configuration()
+        {
+            AutomaticMigrationsEnabled = true;
         }
+
+        protected override void Seed(Casino.Data.ApplicationDbContext context)
+        {
+            //  This method will be called after migrating to the latest version.
+
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
+            //  to avoid creating duplicate seed data.
+
+            CreateDefaultRolesAndUsers();
+
+
+            string guidAsStringOfHouse = GetGuidOfSeededUser("house@casino.com");
+            string guidAsStringOfUser = GetGuidOfSeededUser("abcdef");
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 1, GameName = "BlackJack" });
+
+            context.Players.AddOrUpdate(x => x.PlayerId,
+            //new Player()
+            //{
+            //    PlayerId = Guid.Parse("6c17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Jon", PlayerLastName = "Dikteruk",
+            //    PlayerEmail = "jd@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
+            //},
+            //new Player()
+            //{
+            //    PlayerId = Guid.Parse("1b17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Fake", PlayerLastName = "One",
+            //    PlayerEmail = "f1@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
+            //},
+            //new Player()
+            //{
+            //    PlayerId = Guid.Parse("2b17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Fake", PlayerLastName = "Two",
+            //    PlayerEmail = "f2@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
+            //}, new Player()
+            //{
+            //    PlayerId = Guid.Parse("3b17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Fake", PlayerLastName = "Three",
+            //    PlayerEmail = "f3@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
+            //},
+            new Player()
+            {
+                PlayerId = Guid.Parse(guidAsStringOfUser), PlayerFirstName = "First", PlayerLastName = "Player", PlayerEmail = "abcdef",
+                PlayerDob = "01012000", AccountCreated = DateTimeOffset.Now
+            },
+            new Player()
+            {
+                PlayerId = Guid.Parse(guidAsStringOfHouse), PlayerFirstName = "House", PlayerLastName = "Account", PlayerEmail = "house@casino.com",
+                PlayerDob = "01011999", AccountCreated = DateTimeOffset.Now
+            }
+
+            );
+
+            context.Bets.AddOrUpdate(x => x.BetId,
+               //new Bet()
+               //{
+               //    BetId = 101, PlayerId = Guid.Parse("1b17382b787440438cf7f9da8f5a8873"), GameId = 1, BetAmount = 5, PayoutAmount = 5, DateTimeOfBet = DateTimeOffset.Now,
+               //},
+               //new Bet()
+               //{
+               //    BetId = 102, PlayerId = Guid.Parse("1b17382b787440438cf7f9da8f5a8873"), GameId = 1, BetAmount = 5, PayoutAmount = -5, DateTimeOfBet = DateTimeOffset.Now,
+               //},
+               //new Bet()
+               //{
+               //    BetId = 103, PlayerId = Guid.Parse("4544850e9f694fdba953116a21ae5c43"), GameId = 1, BetAmount = 15, PayoutAmount = 15, DateTimeOfBet = DateTimeOffset.Now,
+               //},
+               new Bet()
+               {
+                   BetId = 104, PlayerId = Guid.Parse(guidAsStringOfUser), GameId = 1, BetAmount = 777, PayoutAmount = 777, DateTimeOfBet = DateTimeOffset.Now,
+               }
+
+
+
+                );
+        }
+
+        private string GetGuidOfSeededUser(string email)
+        {
+            var ctx = new ApplicationDbContext();
+            var entity = 
+            ctx.Users
+               
+
+                .Single(e => e.Email == email);
+            return entity.Id;
+        }
+
+
 
         public void CreateDefaultRolesAndUsers()
         {
             CreateSuperAdmin();
             CreateAdmin();
             CreateUser();
-            CreatePlayer();
+            //CreatePlayer();
         }
 
         public void CreateSuperAdmin()
@@ -135,13 +213,14 @@ namespace Casino.WebApi
             // bring in roleManager and userManager from entity framework 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
-            
+
 
             IdentityRole role = new IdentityRole();
             if (!roleManager.RoleExists("User"))
             {
                 role.Name = "User";
                 roleManager.Create(role);
+            
 
                 // seed User 
                 ApplicationUser user = new ApplicationUser();
@@ -173,15 +252,7 @@ namespace Casino.WebApi
             }
         }
 
-        public void CreatePlayer()
-        {
-            using (_db)
-            {
-                _db.Games.Add(
-                   new Game() { GameId = 2, GameName = "Craps" });
-            }
-        }
+
+
     }
 }
-
-
