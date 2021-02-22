@@ -13,6 +13,7 @@ namespace Casino.WebApi.Controllers
     [Authorize]
     public class BankTransactionController : ApiController
     {
+        private BankTransactionService _bankService = new BankTransactionService();
         private BankTransactionService CreateBankTransactionService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
@@ -20,20 +21,39 @@ namespace Casino.WebApi.Controllers
             return bankTransactionService;
         }
         //Get
-        //Get
+        //Get all by logged in Player
         public IHttpActionResult Get()
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
             var bankTransactions = bankTransactionService.PlayerGetBankTransactions();
             return Ok(bankTransactions);
         }
-       //Get
+       //Get by id for logged in player
         public IHttpActionResult GetById(int id)
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
             var bankTransaction = bankTransactionService.GetBankTransactionById(id);
 
             return Ok(bankTransaction);
+        }
+        //Get all by Admin for Specific player
+        [HttpGet]
+        [Route("api/BankTransaction/admin/guid")]
+        public IHttpActionResult Get(string guidAsString)
+        {
+            Guid guid = Guid.Parse(guidAsString);
+          
+            var bankTransactions = _bankService.AdminGetBankTransactions(guid);
+            return Ok(bankTransactions);
+        }
+        //Get all by Admin
+        [HttpGet]
+        [Route("api/BankTransaction/admin")]
+        public IHttpActionResult GetAll()
+        {
+          
+            var bankTransactions = _bankService.AdminGetBankTransactions();
+            return Ok(bankTransactions);
         }
         //Post
         public IHttpActionResult Post(BankTransactionCreate bankTransaction)
@@ -46,7 +66,7 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
         //Delete
-        public IHttpActionResult Delete([FromUri]int id, [FromBody]double amount)
+        public IHttpActionResult Delete([FromUri]int id, [FromUri]double amount)
         {
             var service = CreateBankTransactionService();
             if (!service.DeleteBankTransaction(id, amount))
