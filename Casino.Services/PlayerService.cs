@@ -203,6 +203,8 @@ namespace Casino.Services
                         .Players
                         .Single(e => e.PlayerId == _userId);
 
+                //PlayerFirstName = model.PlayerFirstName,
+                //PlayerLastName = model.PlayerLastName,
                 entity.PlayerPhone = model.PlayerPhone;
                 entity.PlayerAddress = model.PlayerAddress;
                 entity.PlayerState = model.PlayerState;
