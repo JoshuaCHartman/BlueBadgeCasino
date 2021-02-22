@@ -73,6 +73,8 @@ namespace Casino.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var service = CreateBetService();
+            if (!service.CheckPlayerBalance(bet.BetAmount))//confirm player has enough funds
+                return BadRequest("Bet Amount Exceeds Player Balance");
             if (!service.CreateBet(bet))
                 return InternalServerError();
             return Ok();

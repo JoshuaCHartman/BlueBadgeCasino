@@ -26,6 +26,7 @@ namespace Casino.Services
         }
         public bool CreateBet(BetCreate model)
         {
+           
             // Brought _gameSim play game mechanics outside, and captured result as variable.
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
@@ -233,7 +234,7 @@ namespace Casino.Services
 
         }
 
-        public static Guid GetHouseAccountGuid()
+        private static Guid GetHouseAccountGuid()
         {
             var ctx = new ApplicationDbContext();
             var entity =
@@ -242,6 +243,19 @@ namespace Casino.Services
 
                 .Single(e => e.Email == "house@casino.com");
             return Guid.Parse(entity.Id);
+        }
+
+        public bool CheckPlayerBalance(double bet)
+        {
+            var ctx = new ApplicationDbContext();
+            var entity =
+            ctx.Players
+
+
+                .Single(e => e.PlayerId == _playerGuid);
+            if (entity.CurrentBankBalance > bet)
+                return true;
+            return false;
         }
     }
 }
