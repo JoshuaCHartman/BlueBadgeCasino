@@ -47,9 +47,9 @@ namespace Casino.WebApi.Controllers
             return Ok(bet);
         }
         //Get By Id by Admin
-        [HttpPost]
+        [HttpGet]
         [Route("api/Bet/admin/guid")]
-        public IHttpActionResult PostbyAdminByGuid([FromUri] string guidAsString)
+        public IHttpActionResult GetbyAdminByGuid([FromUri] string guidAsString)
         {
             Guid guid = Guid.Parse(guidAsString);
             var bets = _service.AdminGetBets(guid);
@@ -58,9 +58,9 @@ namespace Casino.WebApi.Controllers
         }
 
         //Get By Id by Admin
-        [HttpPost]
+        [HttpGet]
         [Route("api/Bet/admin/gameId")]
-        public IHttpActionResult PostbyAdminByGame([FromUri] int gameId)
+        public IHttpActionResult GetbyAdminByGame([FromUri] int gameId)
         {
             var bets = _service.AdminGetBets(gameId);
             return Ok(bets);
