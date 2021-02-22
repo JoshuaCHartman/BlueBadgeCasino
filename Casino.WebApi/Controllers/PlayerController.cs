@@ -71,7 +71,7 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
-        public IHttpActionResult Delete(Guid id)
+        public IHttpActionResult Delete(Guid id) 
         {
             var service = CreatePlayerService();
 

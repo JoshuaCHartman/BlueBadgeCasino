@@ -19,7 +19,7 @@ namespace Casino.WebApi
             ConfigureAuth(app);
 
             // run startup SEED method below (will not populate if roles already created)
-            CreateDefaultRolesAndUsers();
+            //CreateDefaultRolesAndUsers();
         }
 
         public void CreateDefaultRolesAndUsers()
@@ -27,7 +27,7 @@ namespace Casino.WebApi
             CreateSuperAdmin();
             CreateAdmin();
             CreateUser();
-
+            CreatePlayer();
         }
 
         public void CreateSuperAdmin()
@@ -127,7 +127,7 @@ namespace Casino.WebApi
 
             }
         }
-        // USER
+        //USER
         public void CreateUser()
         {
 
@@ -135,6 +135,7 @@ namespace Casino.WebApi
             // bring in roleManager and userManager from entity framework 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
+            
 
             IdentityRole role = new IdentityRole();
             if (!roleManager.RoleExists("User"))
@@ -144,8 +145,9 @@ namespace Casino.WebApi
 
                 // seed User 
                 ApplicationUser user = new ApplicationUser();
-                user.UserName = "SeedUserAccount";
-                user.Email = "user@casino.com";
+
+                user.UserName = "ThirdSeedUserAccount";
+                user.Email = "abcdef";
                 user.EmailConfirmed = true;
 
                 // pass in new user and pwd
@@ -167,8 +169,19 @@ namespace Casino.WebApi
                     throw exception;
 
                 }
-            }
 
-        } }
+            }
+        }
+
+        public void CreatePlayer()
+        {
+            using (_db)
+            {
+                _db.Games.Add(
+                   new Game() { GameId = 2, GameName = "Craps" });
+            }
+        }
     }
+}
+
 

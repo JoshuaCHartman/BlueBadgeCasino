@@ -155,7 +155,6 @@ namespace Casino.WebApi.Controllers
         }
 
         // POST api/Account/Register
-        [Authorize(Roles = "SuperAdmin")]
         [Route("CreateAdmin")]
         public async Task<IHttpActionResult> CreateAdmin(RegisterBindingModel model)
         {
@@ -208,69 +207,10 @@ namespace Casino.WebApi.Controllers
             }
         }
 
-        // POST api/Account/LongRegister
-        [AllowAnonymous]
-        [Route("LongNewUserRegistration")]
-        public async Task<IHttpActionResult> LongRegister(LongRegisterBindingModel model)
-        {
-            var _db = new ApplicationDbContext();
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            // Create new role instance
-            IdentityRole role = new IdentityRole();
-
-            // Create new 
-            IdentityResult result;
-            using (_db)
-            {
-                var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
-
-                role.Name = "User";
-
-                await roleManager.CreateAsync(role);
-
-                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
-
-                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
-                var Check = await UserManager.CreateAsync(user, model.Password);
-
-                if (Check.Succeeded)
-                {
-                    result = await userManager.AddToRoleAsync(user.Id, "User");
-                }
-                else
-                {
-                    var exception = new Exception("Could not add user");
-
-                    var enumerator = Check.Errors.GetEnumerator();
-                    foreach (var error in Check.Errors)
-                    {
-                        exception.Data.Add(enumerator.Current, error);
-                    }
-                    throw exception;
-
-                }
-
-                //result = await UserManager.CreateAsync(user, model.Password);
-
-                //if (!result.Succeeded)
-                //{
-                //    return GetErrorResult(result);
-                //}
-
-                return Ok("User Created");
 
 
-            }
-        }
-
-            // GET api/Account/UserInfo
-            [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        // GET api/Account/UserInfo
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
         {
@@ -278,6 +218,7 @@ namespace Casino.WebApi.Controllers
 
             return new UserInfoViewModel
             {
+                Id = Guid.Parse(User.Identity.GetUserId()), //added category so we could grab this info
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null

@@ -218,7 +218,7 @@ namespace Casino.Services
             }
         }
 
-        public bool DeletePlayer(Guid id)
+        public bool DeletePlayer(Guid id) //Does not actually delete
         {
             using (var ctx = new ApplicationDbContext())
             {
