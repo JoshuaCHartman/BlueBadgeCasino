@@ -46,7 +46,14 @@ namespace Casino.WebApi.Controllers
             var service = CreateBetService();
             if (!service.CreateBet(bet))
                 return InternalServerError();
-            return Ok();
+            return Ok("Bet complete");
+
+            //NOT WORKING : (returns all You LOST 0)
+            //if (bet.PlayerWonGame == true)
+            //    return Ok($"You WON { bet.PayoutAmount}");
+            //else
+            //    return Ok($"You LOST { bet.BetAmount}");
+
         }
         //Delete
         public IHttpActionResult Delete([FromUri]int id, [FromBody] double amount)

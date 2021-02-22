@@ -10,6 +10,9 @@ namespace Casino.Services
 {
     public class BetService
     {
+        private ApplicationDbContext _db = new ApplicationDbContext();
+
+
         private GameSimulation _gameSim = new GameSimulation();
         private readonly Guid _playerGuid;  //Parse from currently logged in player
         private readonly int _playerId;
@@ -17,6 +20,12 @@ namespace Casino.Services
         public BetService() { }
         public BetService(Player player)//try this way or see other version just below
         {
+            ////using (_db)
+            ////{
+            ////    var query = _db.Players
+            ////                .Where(e => e.)
+            ////}
+
             //_playerId = player.PlayerId;
         }
         public BetService(Guid userGuid)
@@ -26,6 +35,13 @@ namespace Casino.Services
         }
         public bool CreateBet(BetCreate model)
         {
+            // Brought _gameSim play game mechanics outside, and captured result as variable.
+            //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
+            //      Now both PayoutAmount and PlayerWonGame derived
+            //      from _gameSim.
+
+            double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
+
             //consider returning bet results and updated player balance instead of bool
             var entity = new Bet()
             {
@@ -34,8 +50,10 @@ namespace Casino.Services
                 PlayerId = _playerGuid,                          //System.Guid.Parse("4544850e9f694fdba953116a21ae5c43"),
                 GameId = model.GameId,
                 BetAmount = model.BetAmount,
-                PayoutAmount = _gameSim.PlayGame(model.BetAmount, model.GameId),
-                /*PlayerWonGame = (PayoutAmount > 0), *///added to Bet class prop logic
+                //PayoutAmount = _gameSim.PlayGame(model.BetAmount, model.GameId),
+                PayoutAmount = payout,
+                //PlayerWonGame = ( > 0), ///added to Bet class prop logic
+                PlayerWonGame = _gameSim.GameWinOutcome(payout),
                 DateTimeOfBet = DateTimeOffset.Now,
             };
             using (var ctx = new ApplicationDbContext())
@@ -129,6 +147,14 @@ namespace Casino.Services
                 return ctx.SaveChanges() == 1;                 //should we just call the Put method from here instead?
             }
         }
+
+        // helper method to convert gamesim's payout to a bool if payout is + , moved to GameSimulation.cs
+        //    private bool GameWinOutcome(double payout)
+        //    {
+        //        bool wonGame;
+        //        if (payout >0) { wonGame = true; } else { wonGame = false; }
+        //        return wonGame;
+        //    }
+        //}
     }
 }
-

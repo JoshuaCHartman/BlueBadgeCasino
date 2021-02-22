@@ -26,9 +26,11 @@ namespace Casino.Data
         public ApplicationDbContext()
             // Using test db PrivateConn.config connection string
 
-            : base("BrianExp2", throwIfV1Schema: false)
-        {
+            : base("JoshTest1", throwIfV1Schema: false)
+        { 
+        
         }
+        
         
         public static ApplicationDbContext Create()
         {

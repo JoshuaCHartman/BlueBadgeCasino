@@ -10,6 +10,8 @@ namespace Casino.Data
 {
     public class Bet
     {
+        private bool value;
+
         [Key]
         public int BetId { get; set; }
 
@@ -27,7 +29,11 @@ namespace Casino.Data
 
         public bool PlayerWonGame //putting simple logic here not working
         {
-            get; set;
+            get; 
+            
+            
+            set;
+                 
         }
 
         public double PayoutAmount { get; set; } //Positive for win, Negative for loss
