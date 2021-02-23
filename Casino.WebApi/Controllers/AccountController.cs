@@ -56,6 +56,7 @@ namespace Casino.WebApi.Controllers
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
+        // KEEP
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
@@ -269,6 +270,8 @@ namespace Casino.WebApi.Controllers
             }
         }
 
+
+        // Remove unless using External Login
             // GET api/Account/UserInfo
             [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]
@@ -284,6 +287,7 @@ namespace Casino.WebApi.Controllers
             };
         }
 
+        //Keep
         // POST api/Account/Logout
         [Route("Logout")]
         public IHttpActionResult Logout()
@@ -292,6 +296,7 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
+        // Research?
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
@@ -371,6 +376,8 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
+
+        // delete
         // POST api/Account/AddExternalLogin
         [Route("AddExternalLogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
@@ -409,6 +416,8 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
+        // delete
+
         // POST api/Account/RemoveLogin
         [Route("RemoveLogin")]
         public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
@@ -437,6 +446,8 @@ namespace Casino.WebApi.Controllers
 
             return Ok();
         }
+
+        // delete
 
         // GET api/Account/ExternalLogin
         [OverrideAuthentication]
@@ -495,6 +506,7 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
+        // delete
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
         [AllowAnonymous]
         [Route("ExternalLogins")]
