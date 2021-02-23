@@ -30,7 +30,7 @@ namespace Casino.WebApi
             CreatePlayer();
 
             // test save changes on seed methods to eliminate need to udpate-database after first run
-            _db.SaveChanges();
+             // _db.SaveChanges();
         }
 
         public void CreateSuperAdmin()

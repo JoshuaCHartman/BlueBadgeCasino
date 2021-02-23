@@ -157,8 +157,8 @@ namespace Casino.WebApi.Controllers
         }
 
         // POST api/Account/Register
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        
         [Route("Create_Admin(SUPERADMIN)")]
         public async Task<IHttpActionResult> CreateAdmin(RegisterBindingModel model)
         {
@@ -405,8 +405,8 @@ namespace Casino.WebApi.Controllers
         // Admin functions below : 
 
         // POST api/Account/RemoveLogin
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        
         [Route("RemoveLogin")]
         public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
         {
