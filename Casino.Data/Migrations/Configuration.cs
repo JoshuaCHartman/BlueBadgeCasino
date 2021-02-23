@@ -79,7 +79,7 @@
                //},
                new Bet()
                {
-                   BetId = 104, PlayerId = Guid.Parse(guidAsStringOfUser), GameId = 1, BetAmount = 777, PayoutAmount = 777, DateTimeOfBet = DateTimeOffset.Now,
+                   BetId = 1, PlayerId = Guid.Parse(guidAsStringOfUser), GameId = 1, BetAmount = 777, PayoutAmount = 777, DateTimeOfBet = DateTimeOffset.Now,
                }
 
 
