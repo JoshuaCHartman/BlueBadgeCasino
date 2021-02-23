@@ -61,6 +61,7 @@ namespace Casino.Services
                             e =>
                                 new PlayerListItem
                                 {
+                                    PlayerId = e.PlayerId,
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
                                     //PlayerPhone = e.PlayerPhone,
@@ -69,7 +70,7 @@ namespace Casino.Services
                                     //PlayerState = e.PlayerState,
                                     //PlayerDob = e.PlayerDob,
                                     //AccountCreated = e.AccountCreated,
-                                    //IsActive = e.IsActive,
+                                    IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
                                     //CreatedUtc = e.CreatedUtc
                                 }
@@ -89,7 +90,7 @@ namespace Casino.Services
                 return
                     new PlayerDetail
                     {
-                        PlayerId = entity.PlayerId,
+                        //PlayerId = entity.PlayerId, leave blank so player can't see Guid
                         PlayerFirstName = entity.PlayerFirstName,
                         PlayerLastName = entity.PlayerLastName,
                         PlayerPhone = entity.PlayerPhone,
@@ -100,7 +101,6 @@ namespace Casino.Services
                         AccountCreated = entity.AccountCreated,
                         IsActive = entity.IsActive,
                         CurrentBankBalance = entity.CurrentBankBalance,
-                        //CreatedUtc = entity.CreatedUtc,
                         //ModifiedUtc = entity.ModifiedUtc
                     };
             }
@@ -116,7 +116,7 @@ namespace Casino.Services
                 return
                     new PlayerDetail
                     {
-                        PlayerId = entity.PlayerId,
+                        PlayerId = entity.PlayerId, //Admin SHOULD see player Guid
                         PlayerFirstName = entity.PlayerFirstName,
                         PlayerLastName = entity.PlayerLastName,
                         PlayerPhone = entity.PlayerPhone,
