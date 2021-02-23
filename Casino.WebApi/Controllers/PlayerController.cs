@@ -22,35 +22,43 @@ namespace Casino.WebApi.Controllers
         }
 
 
-        public IHttpActionResult Get()
+        public IHttpActionResult GetAllPlayers()
         {
             PlayerService playerService = CreatePlayerService();
             var player = playerService.GetPlayers();
             return Ok(player);
         }
 
-        public IHttpActionResult Get(Guid id)
+        public IHttpActionResult GetById(Guid id)
         {
             PlayerService playerService = CreatePlayerService();
             var player = playerService.GetPlayerById(id);
             return Ok(player);
         }
 
-        public IHttpActionResult Get(TierStatus TierStatus)
+        public IHttpActionResult GetSelf()
+        {
+            PlayerService playerService = CreatePlayerService();
+            var player = playerService.GetSelf();
+            return Ok(player);
+        }
+
+
+        public IHttpActionResult GetByTierStatus(TierStatus TierStatus)
         {
             PlayerService playerService = CreatePlayerService();
             var player = playerService.GetPlayerByTierStatus(TierStatus);
             return Ok(player);
         }
 
-        public IHttpActionResult Get(double CurrentBankBalance)
+        public IHttpActionResult GetPlayerByCurrentBalance()
         {
             PlayerService playerService = CreatePlayerService();
-            var player = playerService.GetPlayerByBalance(CurrentBankBalance);
+            var player = playerService.GetPlayerByCurrentBalance();
             return Ok(player);
         }
 
-        public IHttpActionResult Get(bool IsActive)
+        public IHttpActionResult GetActivePlayers(bool IsActive)
         {
             PlayerService playerService = CreatePlayerService();
             var player = playerService.GetActivePlayers(IsActive);
@@ -71,11 +79,38 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
-        public IHttpActionResult Delete(Guid id) 
+        public IHttpActionResult Put(PlayerEdit player)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreatePlayerService();
+
+            if (!service.UpdatePlayer(player))
+                return InternalServerError();
+
+            return Ok();
+        }
+
+        // UpdatePlayerByAdmin
+        public IHttpActionResult Put(PlayerEdit model, Guid playerId)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreatePlayerService();
+
+            if (!service.UpdatePlayerByAdmin(model, playerId))
+                return InternalServerError();
+
+            return Ok();
+        }
+
+        public IHttpActionResult Delete() 
         {
             var service = CreatePlayerService();
 
-            if (!service.DeletePlayer(id))
+            if (!service.DeletePlayer())
                 return InternalServerError();
 
             return Ok();

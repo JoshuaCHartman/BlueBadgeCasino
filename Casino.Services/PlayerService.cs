@@ -21,7 +21,7 @@ namespace Casino.Services
         {
             var entity = new Player()
             {
-                PlayerId = _userId,
+                //PlayerId = _userId,
                 PlayerFirstName = model.PlayerFirstName,
                 PlayerLastName = model.PlayerLastName,
                 PlayerPhone = model.PlayerPhone,
@@ -60,13 +60,13 @@ namespace Casino.Services
                                 {
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
-                                    PlayerPhone = e.PlayerPhone,
+                                    //PlayerPhone = e.PlayerPhone,
                                     PlayerEmail = e.PlayerEmail,
-                                    PlayerAddress = e.PlayerAddress,
-                                    PlayerState = e.PlayerState,
-                                    PlayerDob = e.PlayerDob,
-                                    AccountCreated = e.AccountCreated,
-                                    IsActive = e.IsActive,
+                                    //PlayerAddress = e.PlayerAddress,
+                                    //PlayerState = e.PlayerState,
+                                    //PlayerDob = e.PlayerDob,
+                                    //AccountCreated = e.AccountCreated,
+                                    //IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
                                     //CreatedUtc = e.CreatedUtc
                                 }
@@ -104,97 +104,7 @@ namespace Casino.Services
 
         }
 
-        public IEnumerable<PlayerListItem> GetPlayerByTierStatus(TierStatus TierStatus)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var query =
-                    ctx
-                        .Players
-                        .Where(e => e.TierStatus == TierStatus)
-                        .Select(
-                            e =>
-                                new PlayerListItem
-                                {
-                                    PlayerFirstName = e.PlayerFirstName,
-                                    PlayerLastName = e.PlayerLastName,
-                                    PlayerPhone = e.PlayerPhone,
-                                    PlayerEmail = e.PlayerEmail,
-                                    PlayerAddress = e.PlayerAddress,
-                                    PlayerState = e.PlayerState,
-                                    PlayerDob = e.PlayerDob,
-                                    AccountCreated = e.AccountCreated,
-                                    IsActive = e.IsActive,
-                                    CurrentBankBalance = e.CurrentBankBalance,
-                                    //CreatedUtc = e.CreatedUtc
-                                }
-                        );
-
-                return query.ToArray();
-            }
-        }
-
-        public IEnumerable<PlayerListItem> GetPlayerByBalance(double CurrentBankBalance)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var query =
-                    ctx
-                        .Players
-                        .Where(e => e.CurrentBankBalance > 0)
-                        .Select(
-                            e =>
-                                new PlayerListItem
-                                {
-                                    PlayerFirstName = e.PlayerFirstName,
-                                    PlayerLastName = e.PlayerLastName,
-                                    PlayerPhone = e.PlayerPhone,
-                                    PlayerEmail = e.PlayerEmail,
-                                    PlayerAddress = e.PlayerAddress,
-                                    PlayerState = e.PlayerState,
-                                    PlayerDob = e.PlayerDob,
-                                    AccountCreated = e.AccountCreated,
-                                    IsActive = e.IsActive,
-                                    CurrentBankBalance = e.CurrentBankBalance,
-                                    //CreatedUtc = e.CreatedUtc
-                                }
-                        );
-
-                return query.ToArray();
-            }
-        }
-
-        public IEnumerable<PlayerListItem> GetActivePlayers(bool IsActive)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var query =
-                    ctx
-                        .Players
-                        .Where(e => e.IsActive == true)
-                        .Select(
-                            e =>
-                                new PlayerListItem
-                                {
-                                    PlayerFirstName = e.PlayerFirstName,
-                                    PlayerLastName = e.PlayerLastName,
-                                    PlayerPhone = e.PlayerPhone,
-                                    PlayerEmail = e.PlayerEmail,
-                                    PlayerAddress = e.PlayerAddress,
-                                    PlayerState = e.PlayerState,
-                                    PlayerDob = e.PlayerDob,
-                                    AccountCreated = e.AccountCreated,
-                                    IsActive = e.IsActive,
-                                    CurrentBankBalance = e.CurrentBankBalance,
-                                    //CreatedUtc = e.CreatedUtc
-                                }
-                        );
-
-                return query.ToArray();
-            }
-        }
-
-        public bool UpdatePlayer(PlayerEdit model)
+        public PlayerDetail GetSelf()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -202,6 +112,149 @@ namespace Casino.Services
                     ctx
                         .Players
                         .Single(e => e.PlayerId == _userId);
+                return
+                    new PlayerDetail
+                    {
+                        PlayerFirstName = entity.PlayerFirstName,
+                        PlayerLastName = entity.PlayerLastName,
+                        PlayerPhone = entity.PlayerPhone,
+                        PlayerEmail = entity.PlayerEmail,
+                        PlayerAddress = entity.PlayerAddress,
+                        PlayerState = entity.PlayerState,
+                        PlayerDob = entity.PlayerDob,
+                        AccountCreated = entity.AccountCreated,
+                        IsActive = entity.IsActive,
+                        CurrentBankBalance = entity.CurrentBankBalance,
+                        //CreatedUtc = entity.CreatedUtc,
+                        //ModifiedUtc = entity.ModifiedUtc
+                    };
+            }
+        }
+
+            public IEnumerable<PlayerListItem> GetPlayerByTierStatus(TierStatus TierStatus)
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var query =
+                        ctx
+                            .Players
+                            .Where(e => e.TierStatus == TierStatus)
+                            .Select(
+                                e =>
+                                    new PlayerListItem
+                                    {
+                                        PlayerFirstName = e.PlayerFirstName,
+                                        PlayerLastName = e.PlayerLastName,
+                                        //PlayerPhone = e.PlayerPhone,
+                                        PlayerEmail = e.PlayerEmail,
+                                        //PlayerAddress = e.PlayerAddress,
+                                        //PlayerState = e.PlayerState,
+                                        //PlayerDob = e.PlayerDob,
+                                        //AccountCreated = e.AccountCreated,
+                                        //IsActive = e.IsActive,
+                                        //CurrentBankBalance = e.CurrentBankBalance,
+                                    //CreatedUtc = e.CreatedUtc
+                                }
+                            );
+
+                    return query.ToArray();
+                }
+            }
+
+            public IEnumerable<PlayerListItem> GetPlayerByCurrentBalance()
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var query =
+                        ctx
+                            .Players
+                            .Where(e => e.CurrentBankBalance > 0)
+                            .Select(
+                                e =>
+                                    new PlayerListItem
+                                    {
+                                        PlayerFirstName = e.PlayerFirstName,
+                                        PlayerLastName = e.PlayerLastName,
+                                        //PlayerPhone = e.PlayerPhone,
+                                        PlayerEmail = e.PlayerEmail,
+                                        // PlayerAddress = e.PlayerAddress,
+                                        //PlayerState = e.PlayerState,
+                                        //PlayerDob = e.PlayerDob,
+                                        //AccountCreated = e.AccountCreated,
+                                        //IsActive = e.IsActive,
+                                        //CurrentBankBalance = e.CurrentBankBalance,
+                                        //CreatedUtc = e.CreatedUtc
+                                }
+                            );
+
+                    return query.ToArray();
+                }
+            }
+
+            public IEnumerable<PlayerListItem> GetActivePlayers(bool IsActive)
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var query =
+                        ctx
+                            .Players
+                            .Where(e => e.IsActive == true)
+                            .Select(
+                                e =>
+                                    new PlayerListItem
+                                    {
+                                        PlayerFirstName = e.PlayerFirstName,
+                                        PlayerLastName = e.PlayerLastName,
+                                        //PlayerPhone = e.PlayerPhone,
+                                        PlayerEmail = e.PlayerEmail,
+                                        //PlayerAddress = e.PlayerAddress,
+                                        //PlayerState = e.PlayerState,
+                                        //PlayerDob = e.PlayerDob,
+                                        //AccountCreated = e.AccountCreated,
+                                        //IsActive = e.IsActive,
+                                        //CurrentBankBalance = e.CurrentBankBalance,
+                                        //CreatedUtc = e.CreatedUtc
+                                }
+                            );
+
+                    return query.ToArray();
+                }
+            }
+
+            public bool UpdatePlayer(PlayerEdit model)
+            {
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var entity =
+                        ctx
+                            .Players
+                            .Single(e => e.PlayerId == _userId);
+
+                    //PlayerFirstName = model.PlayerFirstName,
+                    //PlayerLastName = model.PlayerLastName,
+                    entity.PlayerPhone = model.PlayerPhone;
+                    entity.PlayerAddress = model.PlayerAddress;
+                    entity.PlayerState = model.PlayerState;
+                    //entity.PlayerDob = model.PlayerDob;
+                    //entity.TierStatus = model.TierStatus;
+                    //entity.IsActive = model.IsActive;
+                    //entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
+                    //entity.CurrentBankBalance = model.CurrentBankBalance;
+                    //entity.EligibleForReward = model.EligibleForReward;
+                    //entity.ModifiedUtc = DateTimeOffset.UtcNow;
+
+                    return ctx.SaveChanges() == 1;
+                }
+            }
+
+        public bool UpdatePlayerByAdmin(PlayerEdit model, Guid playerId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Players
+                        .Single(e => e.PlayerId == playerId);
 
                 //PlayerFirstName = model.PlayerFirstName,
                 //PlayerLastName = model.PlayerLastName,
@@ -220,19 +273,19 @@ namespace Casino.Services
             }
         }
 
-        public bool DeletePlayer(Guid id) //Does not actually delete
-        {
-            using (var ctx = new ApplicationDbContext())
+        public bool DeletePlayer() //Does not actually delete
             {
-                var entity =
-                    ctx
-                        .Players
-                        .Single(e => e.PlayerId == _userId);
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var entity =
+                        ctx
+                            .Players
+                            .Single(e => e.PlayerId == _userId);
 
-                entity.IsActive = false;
+                    entity.IsActive = false;
 
-                return ctx.SaveChanges() == 1;
+                    return ctx.SaveChanges() == 1;
+                }
             }
         }
     }
-}
