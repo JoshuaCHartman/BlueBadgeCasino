@@ -28,6 +28,7 @@ namespace Casino.WebApi
             CreateAdmin();
             CreateUser();
             CreatePlayer();
+            _db.SaveChanges();
         }
 
         public void CreateSuperAdmin()
