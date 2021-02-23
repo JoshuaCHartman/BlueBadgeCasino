@@ -83,6 +83,35 @@ namespace Casino.Services
                 return query.ToArray();
             }
         }
+        //admin get ALL bets
+        public IEnumerable<BetListItem> AdminGetBets()
+        {
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Bets
+                        .Where(e => e.BetId > -1) //&& model.Time < (DateTimeOffset.Now - e.DateTimeOfBet).Days)
+                                                                                                                                        //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
+                        .Select(
+                            e =>
+                                new BetListItem
+                                {
+                                    BetId = e.BetId,
+                                    PlayerId = e.PlayerId,
+                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    GameId = e.GameId,
+                                    BetAmount = e.BetAmount,
+                                    PlayerWonGame = e.PlayerWonGame,
+                                    PayoutAmount = e.PayoutAmount
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
         //admin get bets by search paramaters model
         public IEnumerable<BetListItem> AdminGetBets(GetBetByParameters model)
         {
@@ -168,6 +197,7 @@ namespace Casino.Services
             }
         }
         //Player get bet by id
+        
         public BetDetail GetBetById(int id) //if this looks identical to BetListItem we can call that model instead of having 2
         {
             using (var ctx = new ApplicationDbContext())

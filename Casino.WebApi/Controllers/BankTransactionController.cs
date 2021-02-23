@@ -22,13 +22,15 @@ namespace Casino.WebApi.Controllers
         }
         //Get
         //Get all by logged in Player
+        [Authorize(Roles = "user")]
         public IHttpActionResult Get()
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
             var bankTransactions = bankTransactionService.PlayerGetBankTransactions();
             return Ok(bankTransactions);
         }
-       //Get by id for logged in player
+        //Get by id for logged in player
+        [Authorize(Roles = "user")]
         public IHttpActionResult GetById(int id)
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
@@ -38,7 +40,8 @@ namespace Casino.WebApi.Controllers
         }
         //Get all by Admin for Specific player
         [HttpGet]
-        [Route("api/BankTransaction/admin/guid")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Bank/admin/{guidAsString}")]
         public IHttpActionResult Get(string guidAsString)
         {
             Guid guid = Guid.Parse(guidAsString);
@@ -48,7 +51,8 @@ namespace Casino.WebApi.Controllers
         }
         //Get all by Admin
         [HttpGet]
-        [Route("api/BankTransaction/admin")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Bank/admin")]
         public IHttpActionResult GetAll()
         {
           
@@ -56,6 +60,7 @@ namespace Casino.WebApi.Controllers
             return Ok(bankTransactions);
         }
         //Post
+        [Authorize(Roles = "user")]
         public IHttpActionResult Post(BankTransactionCreate bankTransaction)
         {
             if (!ModelState.IsValid)
@@ -66,6 +71,8 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
         //Delete
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Bank/admin/{id}/{amount}")]
         public IHttpActionResult Delete([FromUri]int id, [FromUri]double amount)
         {
             var service = CreateBankTransactionService();

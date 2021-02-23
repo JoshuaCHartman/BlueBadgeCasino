@@ -11,7 +11,10 @@ namespace Casino.Services
     public class PlayerService
     {
         private readonly Guid _userId;
+        public PlayerService()
+        {
 
+        }
         public PlayerService(Guid userId)
         {
             _userId = userId;
@@ -45,7 +48,7 @@ namespace Casino.Services
                 return ctx.SaveChanges() == 1;
             }
         }
-
+        //Admin get All players
         public IEnumerable<PlayerListItem> GetPlayers()
         {
             using (var ctx = new ApplicationDbContext())
@@ -60,22 +63,48 @@ namespace Casino.Services
                                 {
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
-                                    PlayerPhone = e.PlayerPhone,
+                                    //PlayerPhone = e.PlayerPhone,
                                     PlayerEmail = e.PlayerEmail,
-                                    PlayerAddress = e.PlayerAddress,
-                                    PlayerState = e.PlayerState,
-                                    PlayerDob = e.PlayerDob,
-                                    AccountCreated = e.AccountCreated,
-                                    IsActive = e.IsActive,
+                                    //PlayerAddress = e.PlayerAddress,
+                                    //PlayerState = e.PlayerState,
+                                    //PlayerDob = e.PlayerDob,
+                                    //AccountCreated = e.AccountCreated,
+                                    //IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
                                     //CreatedUtc = e.CreatedUtc
                                 }
                         );
-
                 return query.ToArray();
             }
         }
-
+        //Player gets own info
+        public PlayerDetail GetSelf()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Players
+                        .Single(e => e.PlayerId == _userId);
+                return
+                    new PlayerDetail
+                    {
+                        PlayerId = entity.PlayerId,
+                        PlayerFirstName = entity.PlayerFirstName,
+                        PlayerLastName = entity.PlayerLastName,
+                        PlayerPhone = entity.PlayerPhone,
+                        PlayerEmail = entity.PlayerEmail,
+                        PlayerAddress = entity.PlayerAddress,
+                        PlayerState = entity.PlayerState,
+                        PlayerDob = entity.PlayerDob,
+                        AccountCreated = entity.AccountCreated,
+                        IsActive = entity.IsActive,
+                        CurrentBankBalance = entity.CurrentBankBalance,
+                        //CreatedUtc = entity.CreatedUtc,
+                        //ModifiedUtc = entity.ModifiedUtc
+                    };
+            }
+        }
         public PlayerDetail GetPlayerById(Guid id)
         {
             using (var ctx = new ApplicationDbContext())
@@ -87,6 +116,7 @@ namespace Casino.Services
                 return
                     new PlayerDetail
                     {
+                        PlayerId = entity.PlayerId,
                         PlayerFirstName = entity.PlayerFirstName,
                         PlayerLastName = entity.PlayerLastName,
                         PlayerPhone = entity.PlayerPhone,
@@ -103,7 +133,7 @@ namespace Casino.Services
             }
 
         }
-
+        //Admin Get by TierStatus
         public IEnumerable<PlayerListItem> GetPlayerByTierStatus(TierStatus TierStatus)
         {
             using (var ctx = new ApplicationDbContext())
@@ -118,23 +148,22 @@ namespace Casino.Services
                                 {
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
-                                    PlayerPhone = e.PlayerPhone,
+                                    //PlayerPhone = e.PlayerPhone,
                                     PlayerEmail = e.PlayerEmail,
-                                    PlayerAddress = e.PlayerAddress,
-                                    PlayerState = e.PlayerState,
-                                    PlayerDob = e.PlayerDob,
-                                    AccountCreated = e.AccountCreated,
-                                    IsActive = e.IsActive,
+                                    //PlayerAddress = e.PlayerAddress,
+                                    //PlayerState = e.PlayerState,
+                                    //PlayerDob = e.PlayerDob,
+                                    //AccountCreated = e.AccountCreated,
+                                    //IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
                                     //CreatedUtc = e.CreatedUtc
                                 }
                         );
-
                 return query.ToArray();
             }
         }
-
-        public IEnumerable<PlayerListItem> GetPlayerByBalance(double CurrentBankBalance)
+        //Admin return all players with a positve balance
+        public IEnumerable<PlayerListItem> GetPlayerByHasBalance()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -148,12 +177,12 @@ namespace Casino.Services
                                 {
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
-                                    PlayerPhone = e.PlayerPhone,
+                                    //PlayerPhone = e.PlayerPhone,
                                     PlayerEmail = e.PlayerEmail,
-                                    PlayerAddress = e.PlayerAddress,
-                                    PlayerState = e.PlayerState,
-                                    PlayerDob = e.PlayerDob,
-                                    AccountCreated = e.AccountCreated,
+                                    //PlayerAddress = e.PlayerAddress,
+                                    //PlayerState = e.PlayerState,
+                                    //PlayerDob = e.PlayerDob,
+                                    //AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
                                     //CreatedUtc = e.CreatedUtc
@@ -163,8 +192,8 @@ namespace Casino.Services
                 return query.ToArray();
             }
         }
-
-        public IEnumerable<PlayerListItem> GetActivePlayers(bool IsActive)
+        //admin get active players
+        public IEnumerable<PlayerListItem> GetActivePlayers()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -178,12 +207,12 @@ namespace Casino.Services
                                 {
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
-                                    PlayerPhone = e.PlayerPhone,
+                                    //PlayerPhone = e.PlayerPhone,
                                     PlayerEmail = e.PlayerEmail,
-                                    PlayerAddress = e.PlayerAddress,
-                                    PlayerState = e.PlayerState,
-                                    PlayerDob = e.PlayerDob,
-                                    AccountCreated = e.AccountCreated,
+                                    // PlayerAddress = e.PlayerAddress,
+                                    //PlayerState = e.PlayerState,
+                                    // PlayerDob = e.PlayerDob,
+                                    // AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
                                     //CreatedUtc = e.CreatedUtc
@@ -193,7 +222,7 @@ namespace Casino.Services
                 return query.ToArray();
             }
         }
-
+        //Player update basic info
         public bool UpdatePlayer(PlayerEdit model)
         {
             using (var ctx = new ApplicationDbContext())
@@ -217,8 +246,32 @@ namespace Casino.Services
                 return ctx.SaveChanges() == 1;
             }
         }
-
-        public bool DeletePlayer(Guid id) //Does not actually delete
+        //Admin update player
+        public bool UpdatePlayerByAdmin(PlayerEdit model, Guid playerId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Players
+                        .Single(e => e.PlayerId == playerId);
+                //PlayerFirstName = model.PlayerFirstName,
+                //PlayerLastName = model.PlayerLastName,
+                entity.PlayerPhone = model.PlayerPhone;
+                entity.PlayerAddress = model.PlayerAddress;
+                entity.PlayerState = model.PlayerState;
+                //entity.PlayerDob = model.PlayerDob;
+                //entity.TierStatus = model.TierStatus;
+                //entity.IsActive = model.IsActive;
+                //entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
+                //entity.CurrentBankBalance = model.CurrentBankBalance;
+                //entity.EligibleForReward = model.EligibleForReward;
+                //entity.ModifiedUtc = DateTimeOffset.UtcNow;
+                return ctx.SaveChanges() == 1;
+            }
+        }
+        //Player deletes account(only makes it inactive)
+        public bool DeletePlayer() //Does not actually delete
         {
             using (var ctx = new ApplicationDbContext())
             {
