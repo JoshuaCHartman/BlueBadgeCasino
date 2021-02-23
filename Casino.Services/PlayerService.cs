@@ -275,8 +275,30 @@ namespace Casino.Services
                 return ctx.SaveChanges() == 1;
             }
         }
-        
-        
+        //Admin update player
+        public bool UpdatePlayerByAdmin(PlayerEdit model, Guid playerId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Players
+                        .Single(e => e.PlayerId == playerId);
+                //PlayerFirstName = model.PlayerFirstName,
+                //PlayerLastName = model.PlayerLastName,
+                entity.PlayerPhone = model.PlayerPhone;
+                entity.PlayerAddress = model.PlayerAddress;
+                entity.PlayerState = model.PlayerState;
+                //entity.PlayerDob = model.PlayerDob;
+                //entity.TierStatus = model.TierStatus;
+                //entity.IsActive = model.IsActive;
+                //entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
+                //entity.CurrentBankBalance = model.CurrentBankBalance;
+                //entity.EligibleForReward = model.EligibleForReward;
+                //entity.ModifiedUtc = DateTimeOffset.UtcNow;
+                return ctx.SaveChanges() == 1;
+            }
+        }
         //Player deletes account(only makes it inactive)
         public bool DeletePlayer() //Does not actually delete
         {

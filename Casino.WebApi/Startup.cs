@@ -28,6 +28,9 @@ namespace Casino.WebApi
             CreateAdmin();
             CreateUser();
             CreatePlayer();
+
+            // test save changes on seed methods to eliminate need to udpate-database after first run
+             // _db.SaveChanges();
         }
 
         public void CreateSuperAdmin()
