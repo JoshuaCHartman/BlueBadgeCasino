@@ -22,6 +22,7 @@ namespace Casino.WebApi.Controllers
             return betService;
         }
         //Get All by Player
+        [Authorize(Roles = "User")]
         public IHttpActionResult Get() //Get([FromBody] int playerId)
         {
             //var bets = _service.PlayerGetBets();
@@ -30,7 +31,17 @@ namespace Casino.WebApi.Controllers
             return Ok(bets);
         }
         //Get All by Admin
+        [Authorize(Roles ="Admin, SuperAdmin")]
+        [HttpGet]
+        [Route("api/Bet/admin")]
+        public IHttpActionResult GetAllByAdmin()
+        {
+            var bets = _service.AdminGetBets();
+                return Ok(bets);
+        }
+
         [HttpPost]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Bet/admin")]
         public IHttpActionResult PostbyAdminSearch([FromBody] GetBetByParameters model)
         {
@@ -38,7 +49,8 @@ namespace Casino.WebApi.Controllers
             return Ok(bets);
 
         }
-        //Get By Id
+        //Player Get By BetId
+        [Authorize(Roles = "user")]
         public IHttpActionResult GetById(int id)
         {
             BetService betService = CreateBetService();
@@ -46,9 +58,10 @@ namespace Casino.WebApi.Controllers
 
             return Ok(bet);
         }
-        //Get By Id by Admin
+        //Get By Guid by Admin
         [HttpGet]
-        [Route("api/Bet/admin/guid")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Bet/admin/guid/{guidAsString}")]
         public IHttpActionResult GetbyAdminByGuid([FromUri] string guidAsString)
         {
             Guid guid = Guid.Parse(guidAsString);
@@ -59,7 +72,8 @@ namespace Casino.WebApi.Controllers
 
         //Get By Id by Admin
         [HttpGet]
-        [Route("api/Bet/admin/gameId")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Bet/admin/game/{gameId}")]
         public IHttpActionResult GetbyAdminByGame([FromUri] int gameId)
         {
             var bets = _service.AdminGetBets(gameId);
@@ -68,16 +82,21 @@ namespace Casino.WebApi.Controllers
         }
 
         //Post
+        [Authorize(Roles = "user")]
         public IHttpActionResult Post(BetCreate bet)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var service = CreateBetService();
+            if (!service.CheckPlayerBalance(bet.BetAmount))//confirm player has enough funds
+                return BadRequest("Bet Amount Exceeds Player Balance");
             if (!service.CreateBet(bet))
                 return InternalServerError();
             return Ok();
         }
         //Delete
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Bet/admin/{id}/{amount}")]
         public IHttpActionResult Delete([FromUri] int id, [FromUri] double amount)
         {
             var service = CreateBetService();

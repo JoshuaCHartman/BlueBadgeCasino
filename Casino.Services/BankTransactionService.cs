@@ -13,6 +13,10 @@ namespace Casino.Services
         private readonly Guid _playerGuid;
         private readonly int _playerId;
 
+        public BankTransactionService()
+        {
+
+        }
         public BankTransactionService(Guid userGuid)
         {
             _playerGuid = userGuid;
@@ -46,6 +50,54 @@ namespace Casino.Services
                     ctx
                         .BankTransactions
                         .Where(e => e.PlayerId == _playerGuid)
+                                                .Select(
+                            e =>
+                                new BankTransactionListItem
+                                {
+
+                                    PlayerId = e.PlayerId,
+                                    DateTimeOfTransaction = e.DateTimeOfTransaction,
+                                    BankTransactionAmount = e.BankTransactionAmount,
+                                    BankTransactionId = e.BankTransactionId,
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+        //Admin Get All by Player Guid
+        public IEnumerable<BankTransactionListItem> AdminGetBankTransactions(Guid guid)//PlayerGetBets(int playerId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .BankTransactions
+                        .Where(e => e.PlayerId == guid)
+                                                .Select(
+                            e =>
+                                new BankTransactionListItem
+                                {
+
+                                    PlayerId = e.PlayerId,
+                                    DateTimeOfTransaction = e.DateTimeOfTransaction,
+                                    BankTransactionAmount = e.BankTransactionAmount,
+                                    BankTransactionId = e.BankTransactionId,
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+        //Admin GetAll
+        public IEnumerable<BankTransactionListItem> AdminGetBankTransactions()//PlayerGetBets(int playerId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .BankTransactions
+                        .Where(e => e.BankTransactionId > -1)
                                                 .Select(
                             e =>
                                 new BankTransactionListItem

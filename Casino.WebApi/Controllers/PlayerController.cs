@@ -20,52 +20,61 @@ namespace Casino.WebApi.Controllers
             var playerService = new PlayerService(userId);
             return playerService;
         }
+        private PlayerService _service = new PlayerService();
 
-
-        public IHttpActionResult GetAllPlayers()
-        {
-            PlayerService playerService = CreatePlayerService();
-            var player = playerService.GetPlayers();
-            return Ok(player);
-        }
-
-        public IHttpActionResult GetById(Guid id)
-        {
-            PlayerService playerService = CreatePlayerService();
-            var player = playerService.GetPlayerById(id);
-            return Ok(player);
-        }
-
+        //Player gets own player info
+        [Authorize(Roles = "User")]
+        [Route("api/Player/")]
         public IHttpActionResult GetSelf()
         {
             PlayerService playerService = CreatePlayerService();
             var player = playerService.GetSelf();
             return Ok(player);
         }
-
-
-        public IHttpActionResult GetByTierStatus(TierStatus TierStatus)
+        //Admin get all players
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Player/admin")]
+        public IHttpActionResult GetAll()
         {
-            PlayerService playerService = CreatePlayerService();
-            var player = playerService.GetPlayerByTierStatus(TierStatus);
+            var players = _service.GetPlayers();
+            return Ok(players);
+        }
+
+        //Admin gets player by Guid
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Player/admin/guid/{id}")]
+        public IHttpActionResult GetById(Guid id)
+        {
+            var player = _service.GetPlayerById(id);
+            return Ok(player);
+        }
+        //Admin gets players by Tier
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Player/admin/tier/{tierStatus}")]
+        public IHttpActionResult Get(TierStatus tierStatus)
+        {
+            var players = _service.GetPlayerByTierStatus(tierStatus);
+            return Ok(players);
+        }
+        //Admin get players with balance
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Player/admin/balance")]
+        public IHttpActionResult GetPlayerHasBalance()
+        {
+            var player = _service.GetPlayerByHasBalance();
+            return Ok(player);
+        }
+        //Admin Get active players
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Player/admin/active")]
+        public IHttpActionResult GetActivePlayers()
+        {
+            var player = _service.GetActivePlayers();
             return Ok(player);
         }
 
-        public IHttpActionResult GetPlayerByCurrentBalance()
-        {
-            PlayerService playerService = CreatePlayerService();
-            var player = playerService.GetPlayerByCurrentBalance();
-            return Ok(player);
-        }
-
-        public IHttpActionResult GetActivePlayers(bool IsActive)
-        {
-            PlayerService playerService = CreatePlayerService();
-            var player = playerService.GetActivePlayers(IsActive);
-            return Ok(player);
-        }
-
-
+        //User creates player account
+        [Authorize(Roles = "User")]
         public IHttpActionResult Post(PlayerCreate player)
         {
             if (!ModelState.IsValid)
@@ -78,35 +87,9 @@ namespace Casino.WebApi.Controllers
 
             return Ok();
         }
-
-        public IHttpActionResult Put(PlayerEdit player)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var service = CreatePlayerService();
-
-            if (!service.UpdatePlayer(player))
-                return InternalServerError();
-
-            return Ok();
-        }
-
-        // UpdatePlayerByAdmin
-        public IHttpActionResult Put(PlayerEdit model, Guid playerId)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var service = CreatePlayerService();
-
-            if (!service.UpdatePlayerByAdmin(model, playerId))
-                return InternalServerError();
-
-            return Ok();
-        }
-
-        public IHttpActionResult Delete() 
+        //Player Deletes account(just makes it inactive)
+        [Authorize(Roles = "User")]
+        public IHttpActionResult Delete()
         {
             var service = CreatePlayerService();
 

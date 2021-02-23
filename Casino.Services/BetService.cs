@@ -26,6 +26,7 @@ namespace Casino.Services
         }
         public bool CreateBet(BetCreate model)
         {
+           
             // Brought _gameSim play game mechanics outside, and captured result as variable.
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
@@ -82,6 +83,35 @@ namespace Casino.Services
                 return query.ToArray();
             }
         }
+        //admin get ALL bets
+        public IEnumerable<BetListItem> AdminGetBets()
+        {
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Bets
+                        .Where(e => e.BetId > -1) //&& model.Time < (DateTimeOffset.Now - e.DateTimeOfBet).Days)
+                                                                                                                                        //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
+                        .Select(
+                            e =>
+                                new BetListItem
+                                {
+                                    BetId = e.BetId,
+                                    PlayerId = e.PlayerId,
+                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    GameId = e.GameId,
+                                    BetAmount = e.BetAmount,
+                                    PlayerWonGame = e.PlayerWonGame,
+                                    PayoutAmount = e.PayoutAmount
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
         //admin get bets by search paramaters model
         public IEnumerable<BetListItem> AdminGetBets(GetBetByParameters model)
         {
@@ -167,6 +197,7 @@ namespace Casino.Services
             }
         }
         //Player get bet by id
+        
         public BetDetail GetBetById(int id) //if this looks identical to BetListItem we can call that model instead of having 2
         {
             using (var ctx = new ApplicationDbContext())
@@ -233,7 +264,7 @@ namespace Casino.Services
 
         }
 
-        public static Guid GetHouseAccountGuid()
+        private static Guid GetHouseAccountGuid()
         {
             var ctx = new ApplicationDbContext();
             var entity =
@@ -242,6 +273,19 @@ namespace Casino.Services
 
                 .Single(e => e.Email == "house@casino.com");
             return Guid.Parse(entity.Id);
+        }
+
+        public bool CheckPlayerBalance(double bet)
+        {
+            var ctx = new ApplicationDbContext();
+            var entity =
+            ctx.Players
+
+
+                .Single(e => e.PlayerId == _playerGuid);
+            if (entity.CurrentBankBalance > bet)
+                return true;
+            return false;
         }
     }
 }

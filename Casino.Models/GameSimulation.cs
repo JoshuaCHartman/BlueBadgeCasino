@@ -24,6 +24,7 @@ namespace Casino.Models
         }
 
         // helper method to convert gamesim's payout to a bool if payout is +
+        //This is being called from BetService
         public bool GameWinOutcome(double payout)
         {
             bool wonGame;
