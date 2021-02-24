@@ -26,9 +26,14 @@ namespace Casino.Data
         public ApplicationDbContext()
             // Using test db PrivateConn.config connection string
 
+<<<<<<< Updated upstream
             : base("JoshTest1", throwIfV1Schema: false)
         { 
         
+=======
+            : base("Joshtest1", throwIfV1Schema: false)
+        {
+>>>>>>> Stashed changes
         }
         
         
