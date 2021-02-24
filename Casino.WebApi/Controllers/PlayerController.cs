@@ -72,9 +72,10 @@ namespace Casino.WebApi.Controllers
             var player = _service.GetActivePlayers();
             return Ok(player);
         }
-
         //User creates player account
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
+        [HttpPost]
+        [Route("api/makePlayer")]
         public IHttpActionResult Post(PlayerCreate player)
         {
             if (!ModelState.IsValid)
