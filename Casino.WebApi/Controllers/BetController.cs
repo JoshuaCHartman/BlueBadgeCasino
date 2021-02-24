@@ -32,13 +32,13 @@ namespace Casino.WebApi.Controllers
             return Ok(bets);
         }
         //Get All by Admin
-        [Authorize(Roles ="Admin, SuperAdmin")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         [HttpGet]
         [Route("api/bet/admin/all")]
         public IHttpActionResult GetAllByAdmin()
         {
             var bets = _service.AdminGetBets();
-                return Ok(bets);
+            return Ok(bets);
         }
 
         //Get by model by admin
@@ -104,9 +104,10 @@ namespace Casino.WebApi.Controllers
             var service = CreateBetService();
             if (!service.CheckPlayerBalance(bet.BetAmount))//confirm player has enough funds
                 return BadRequest("Bet Amount Exceeds Player Balance");
-            if (!service.CreateBet(bet))
-                return InternalServerError();
-            return Ok();
+            var betResult = service.CreateBet(bet);
+            if (betResult is null)
+                return BadRequest("Sorry, we are not sure what went wrong");
+            return Ok(betResult);
         }
         //Delete
         [Authorize(Roles = "Admin, SuperAdmin")]

@@ -24,7 +24,7 @@ namespace Casino.Services
 
             _playerGuid = userGuid;
         }
-        public bool CreateBet(BetCreate model)
+        public BetResult CreateBet(BetCreate model)
         {
 
             // Brought _gameSim play game mechanics outside, and captured result as variable.
@@ -35,9 +35,8 @@ namespace Casino.Services
             //consider returning bet results and updated player balance instead of bool
             var entity = new Bet()
             {
-                // PlayerId = _playerId; //if we go this route need to add Guid to Bet class
-                //PlayerId = Player.PlayerId;
-                PlayerId = _playerGuid,                          //System.Guid.Parse("4544850e9f694fdba953116a21ae5c43"),
+               
+                PlayerId = _playerGuid,  
                 GameId = model.GameId,
                 BetAmount = model.BetAmount,
                 //PayoutAmount = _gameSim.PlayGame(model.BetAmount, model.GameId),
@@ -51,10 +50,35 @@ namespace Casino.Services
                 ctx.Bets.Add(entity);
                 if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance(_playerGuid, entity.PayoutAmount) && UpdateHouseBankBalance(entity.PayoutAmount * (-1)))
                 {
-                    //calls down to helper method to update Player balance after bet has processed
-                    return true;
+                    // calls down to helper method to update Player balance after bet has processed
+
+                    //return new BetDetail
+
+                    //{
+                    //    TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
+                    //    BetId = entity.BetId,
+                    //    GameId = entity.GameId,
+                    //    BetAmount = entity.BetAmount,
+                    //    PlayerWonGame = entity.PlayerWonGame,
+                    //    PayoutAmount = entity.PayoutAmount
+                    //};
+
+
+                    return new BetResult
+
+                    {
+                        BetId = entity.BetId,
+                        GameId = entity.GameId,
+                        //GameName = entity.Game.GameName,  //this is null
+                        TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
+                        BetAmount = entity.BetAmount,
+                        PlayerWonGame = entity.PlayerWonGame,
+                        PayoutAmount = entity.PayoutAmount,
+                        //PlayerBankBalance = entity.Player.CurrentBankBalance  // this is null
+
+                    };
                 }
-                return false;
+                return null;
             }
         }
         //player get all bets
@@ -246,7 +270,8 @@ namespace Casino.Services
                         GameId = entity.GameId,
                         BetAmount = entity.BetAmount,
                         PlayerWonGame = entity.PlayerWonGame,
-                        PayoutAmount = entity.PayoutAmount
+                        PayoutAmount = entity.PayoutAmount,
+                                                
                     };
             }
         }
@@ -317,6 +342,7 @@ namespace Casino.Services
                 return true;
             return false;
         }
+
     }
 }
 
