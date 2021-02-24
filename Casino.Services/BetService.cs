@@ -64,20 +64,9 @@ namespace Casino.Services
                     //};
 
 
-                    return new BetResult
+                    return GetBetResult(entity.BetId);
 
-                    {
-                        BetId = entity.BetId,
-                        GameId = entity.GameId,
-                        //GameName = entity.Game.GameName,  //this is null
-                        TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
-                        BetAmount = entity.BetAmount,
-                        PlayerWonGame = entity.PlayerWonGame,
-                        PayoutAmount = entity.PayoutAmount,
-                        //PlayerBankBalance = entity.Player.CurrentBankBalance  // this is null
-
-                    };
-                }
+                                   }
                 return null;
             }
         }
@@ -342,7 +331,30 @@ namespace Casino.Services
                 return true;
             return false;
         }
+        // returns BetResult Model afet BetCreate
+        public BetResult GetBetResult(int id) //if this looks identical to BetListItem we can call that model instead of having 2
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Bets
+                        .Single(e => e.BetId == id);
+                return
+                    new BetResult
 
+                    {
+                        TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
+                        BetId = entity.BetId,
+                        GameId = entity.GameId,
+                        BetAmount = entity.BetAmount,
+                        PlayerWonGame = entity.PlayerWonGame,
+                        PayoutAmount = entity.PayoutAmount,
+                        PlayerBankBalance = entity.Player.CurrentBankBalance
+
+                    };
+            }
+        }
     }
 }
 
