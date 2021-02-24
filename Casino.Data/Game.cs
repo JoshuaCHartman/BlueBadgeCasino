@@ -14,7 +14,12 @@ namespace Casino.Data
     {
         Cards, Dice, Random_Num, Wheel
     }
+    public enum CardSuit
+    {
+        Clubs, Diamonds, Hearts, Spades
+    }
     
+
     public class Game
     {
         [Key]
@@ -24,9 +29,20 @@ namespace Casino.Data
         public bool IsHighStakes { get; set; }
         public double MinBet { get; set; }
         public double MaxBet { get; set; }
-        
+
     }
 
+    public class Card
+    {
+        public CardSuit Suit { get; set; }
+        [Range (1,13)]
+        public int Value { get; set; }
+    }
 
+    public class Dice
+    {
+        [Range(1,6)]
+        public int DiceValue { get; set; }
+    }
 
 }
