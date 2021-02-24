@@ -26,7 +26,7 @@ namespace Casino.Services
         }
         public bool CreateBet(BetCreate model)
         {
-           
+
             // Brought _gameSim play game mechanics outside, and captured result as variable.
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
@@ -70,9 +70,9 @@ namespace Casino.Services
                             e =>
                                 new BetListItem
                                 {
-                                    BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    BetId = e.BetId,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -80,7 +80,7 @@ namespace Casino.Services
                                 }
                         );
 
-                return query.ToArray();
+                return query.ToList();
             }
         }
         //admin get ALL bets
@@ -93,14 +93,15 @@ namespace Casino.Services
                     ctx
                         .Bets
                         .Where(e => e.BetId > -1) //&& model.Time < (DateTimeOffset.Now - e.DateTimeOfBet).Days)
-                                                                                                                                        //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
+                                                  //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
                         .Select(
                             e =>
                                 new BetListItem
                                 {
+
                                     BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -122,14 +123,14 @@ namespace Casino.Services
                     ctx
                         .Bets
                         .Where(e => e.PlayerId == model.PlayerId && e.GameId == model.GameId && e.PlayerWonGame == model.PlayerWonGame) //&& model.Time < (DateTimeOffset.Now - e.DateTimeOfBet).Days)
-                          //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
+                                                                                                                                        //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
                         .Select(
                             e =>
                                 new BetListItem
                                 {
                                     BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -157,7 +158,7 @@ namespace Casino.Services
                                 {
                                     BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -185,7 +186,37 @@ namespace Casino.Services
                                 {
                                     BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
+                                    GameId = e.GameId,
+                                    BetAmount = e.BetAmount,
+                                    PlayerWonGame = e.PlayerWonGame,
+                                    PayoutAmount = e.PayoutAmount
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
+        //Admind get by betId
+        //admin get bets by gameid
+        public IEnumerable<BetListItem> AdminGetBetsByBetId(int betId)
+        {
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Bets
+                        .Where(e => e.BetId == betId)
+                        .Select(
+
+                            e =>
+                                new BetListItem
+                                {
+                                    BetId = e.BetId,
+                                    PlayerId = e.PlayerId,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -197,7 +228,7 @@ namespace Casino.Services
             }
         }
         //Player get bet by id
-        
+
         public BetDetail GetBetById(int id) //if this looks identical to BetListItem we can call that model instead of having 2
         {
             using (var ctx = new ApplicationDbContext())
@@ -210,9 +241,8 @@ namespace Casino.Services
                     new BetDetail
 
                     {
+                        TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
                         BetId = entity.BetId,
-                        PlayerId = entity.PlayerId,
-                        DateTimeOfBet = entity.DateTimeOfBet,
                         GameId = entity.GameId,
                         BetAmount = entity.BetAmount,
                         PlayerWonGame = entity.PlayerWonGame,

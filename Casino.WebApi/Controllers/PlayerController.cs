@@ -74,7 +74,9 @@ namespace Casino.WebApi.Controllers
         }
         [HttpPost]
         //User creates player account
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
+        [Route("api/Player/CreatePlayer")]
+
         public IHttpActionResult Post(PlayerCreate player)
         {
             if (!ModelState.IsValid)
@@ -89,6 +91,8 @@ namespace Casino.WebApi.Controllers
         }
         //Player Deletes account(just makes it inactive)
         [Authorize(Roles = "User")]
+        [Route("api/Player/delete")]
+
         public IHttpActionResult Delete()
         {
             var service = CreatePlayerService();
