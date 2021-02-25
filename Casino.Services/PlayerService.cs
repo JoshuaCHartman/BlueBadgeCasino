@@ -279,7 +279,8 @@ namespace Casino.Services
                     ctx
                         .Players
                         .Single(e => e.PlayerId == _userId);
-
+                if (entity.IsActive == false)
+                    return true;
                 entity.IsActive = false;
 
                 return ctx.SaveChanges() == 1;
