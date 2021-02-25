@@ -282,7 +282,7 @@ namespace Casino.Services
             return sum;
         }
 
-        public double Blackjack()
+      public double Blackjack()
         {
             List<int> houseHand = Deal(2);
             List<int> playerHand = Deal(2);

@@ -6,9 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Owin;
-
 [assembly: OwinStartup(typeof(Casino.WebApi.Startup))]
-
 namespace Casino.WebApi
 {
     public partial class Startup
@@ -17,11 +15,9 @@ namespace Casino.WebApi
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-
             // run startup SEED method below (will not populate if roles already created)
             //CreateDefaultRolesAndUsers();
         }
-
         public void CreateDefaultRolesAndUsers()
         {
             CreateSuperAdmin();
@@ -38,52 +34,38 @@ namespace Casino.WebApi
             // bring in roleManager and userManager from entity framework 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
-
             IdentityRole role = new IdentityRole();
-
             // CREATE 3 Roles 
             // & SEED First SuperAdmin, Admin, and User (will not create and seed if already exists)
             // PLACE DB SEED data in Configuration.cs in Seed()
-
             // SUPERADMIN
-
             if (!roleManager.RoleExists("SuperAdmin"))
             {
-
                 // create Role name, add to rolemanager
                 role.Name = "SuperAdmin";
                 roleManager.Create(role);
-
-
                 // seed SuperAdmin 
-
                 // create new user set properties
                 ApplicationUser user = new ApplicationUser();
                 user.UserName = "HouseAccount";
                 user.Email = "house@casino.com";
                 user.EmailConfirmed = true;
-
-
                 // pass in new user and pwd
                 var Check = userManager.Create(user, "Test1!");
                 if (Check.Succeeded)
                 {
                     userManager.AddToRole(user.Id, "SuperAdmin");
-
                 }
                 else
                 {
                     var exception = new Exception("Could not add default SuperAdmin");
-
                     var enumerator = Check.Errors.GetEnumerator();
                     foreach (var error in Check.Errors)
                     {
                         exception.Data.Add(enumerator.Current, error);
                     }
                     throw exception;
-
                 }
-
             }
         }
         // ADMIN
@@ -95,41 +77,34 @@ namespace Casino.WebApi
 
             IdentityRole role = new IdentityRole();
 
-
             if (!roleManager.RoleExists("Admin"))
             {
                 role.Name = "Admin";
                 roleManager.Create(role);
-
                 // seed Admin 
                 ApplicationUser user = new ApplicationUser();
                 user.UserName = "FirstAdmin";
                 user.Email = "firstAdmin@casino.com";
                 user.EmailConfirmed = true;
-
                 // pass in new user and pwd
                 var Check = userManager.Create(user, "Test1!");
                 if (Check.Succeeded)
                 {
                     userManager.AddToRole(user.Id, "Admin");
-
                 }
                 else
                 {
                     var exception = new Exception("Could not add default Admin");
-
                     var enumerator = Check.Errors.GetEnumerator();
                     foreach (var error in Check.Errors)
                     {
                         exception.Data.Add(enumerator.Current, error);
                     }
                     throw exception;
-
                 }
-
-
             }
         }
+
         //USER
         public void CreateUser()
         {
@@ -139,38 +114,33 @@ namespace Casino.WebApi
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
             
-
+          
             IdentityRole role = new IdentityRole();
             if (!roleManager.RoleExists("User"))
             {
                 role.Name = "User";
                 roleManager.Create(role);
-
                 // seed User 
                 ApplicationUser user = new ApplicationUser();
 
                 user.UserName = "ThirdSeedUserAccount";
                 user.Email = "abcdef";
                 user.EmailConfirmed = true;
-
                 // pass in new user and pwd
                 var Check = userManager.Create(user, "Test1!");
                 if (Check.Succeeded)
                 {
                     userManager.AddToRole(user.Id, "User");
-
                 }
                 else
                 {
                     var exception = new Exception("Could not add default seed User");
-
                     var enumerator = Check.Errors.GetEnumerator();
                     foreach (var error in Check.Errors)
                     {
                         exception.Data.Add(enumerator.Current, error);
                     }
                     throw exception;
-
                 }
 
             }

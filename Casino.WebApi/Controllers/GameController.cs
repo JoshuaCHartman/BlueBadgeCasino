@@ -56,6 +56,7 @@ namespace Casino.WebApi.Controllers
 
         //GamePlay
         public double PlayGame(int id, double betAmt, Guid playerId)
+
         {
             double amount = 0;
             var game = new GameService(playerId);
