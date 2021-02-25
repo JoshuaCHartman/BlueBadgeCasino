@@ -1,4 +1,4 @@
-﻿using Casino.Data;
+using Casino.Data;
 using Casino.Models;
 using System;
 using System.Collections.Generic;
@@ -417,28 +417,31 @@ namespace Casino.Services
 
         public double Roulette(string betType, List<int> betValue) //betValue = player's choice (ie Red, 7, 3rd Street, etc...)
         {
-            List<int> targetRange = new List<int>();
+            List<int> targetRange= new List<int>();
             Dictionary<int, string> rouletteWheel = RouletteWheel();
 
-            int winNum = Spin(rouletteWheel.Count());
+            int winNum = Spin(rouletteWheel.Count();
             string winColor = rouletteWheel[winNum];
+
+            if (betType != "Color") { betVal = int.Parse(betValue); }
+
 
             switch (betType)
             {
                 case "Straight":
-                    if (betValue[0] == winNum) { payout = 35; } else { payout = 0; }
+                    if (betVal == winNum) { payout = 35; } else { payout = 0; }
                     break;
                 case "Split":
-                    if (targetRange == betValue) { payout = 17; } else { payout = 0; }
+                    if (targetRange.Contains(betValue)) { payout = 17; } else { payout = 0; }
                     break;
                 case "Street":
-                    if (targetRange == betValue) { payout = 11; } else { payout = 0; }
+                    if (targetRange.Contains(winNum)) { payout = 11; } else { payout = 0; }
                     break;
                 case "Corner":
-                    if (targetRange == betValue) { payout = 8; } else { payout = 0; }
+                    if (targetRange.Contains(winNum)) { payout = 8; } else { payout = 0; }
                     break;
                 case "Double Street":
-                    if (targetRange == betValue) { payout = 5; } else { payout = 0; }
+                    if (targetRange.Contains(winNum)) { payout = 5; } else { payout = 0; }
                     break;
                 case "Trio":
                     targetRange.Add(0);
@@ -449,7 +452,7 @@ namespace Casino.Services
                     targetRange.Add(2);
                     targetRange.Add(3);
 
-                    if (targetRange == betValue) { payout = 8; } else { payout = 0; }
+                    if (targetRange.Contains(winNum)) { payout = 8; } else { payout = 0; }
                     break;
                 case "Basket":
                     targetRange.Add(0);
@@ -457,25 +460,25 @@ namespace Casino.Services
                     targetRange.Add(2);
                     targetRange.Add(3);
 
-                    if (targetRange == betValue) { payout = 6; } else { payout = 0; }
+                    if (targetRange.Contains(winNum)) { payout = 6; } else { payout = 0; }
                     break;
                 case "High Low":
-                    if (betType.ToLower() == "high" && betValue[0] == 0) { payout = 1; }
-                    else if (betType.ToLower() == "low" && betValue[0] == 1) { payout = 1; }
+                    if (betValue.ToLower() == "high" && betVal > 18) { payout = 1; }
+                    else if (betValue.ToLower() == "low" && betVal < 19) { payout = 1; }
                     else { payout = 0; }
                     break;
                 case "Color":
-                    if (betType.ToLower() == "red" && winColor.ToLower() == "red") { payout = 1; }
-                    else if (betType.ToLower() == "black" && winColor.ToLower() == "black") { payout = 1; }
+                    if (betValue.ToLower() == "red" && winColor.ToLower() == "red") { payout = 1; }
+                    else if (betValue.ToLower() == "black" && winColor.ToLower() == "black") { payout = 1; }
                     else { payout = 0; }
                     break;
                 case "Even Odd":
-                    if (betType.ToLower() == "even" && winNum % 2 == 0) { payout = 1; }
-                    else if (betType.ToLower() == "odd" && winNum % 2 != 0) { payout = 1; }
+                    if (betValue.ToLower() == "even" && betVal % 2 == 0) { payout = 1; }
+                    else if (betValue.ToLower() == "odd" && betVal % 2 != 0) { payout = 1; }
                     else { payout = 0; }
                     break;
                 case "Dozen":
-                    if (betValue[0] == 1)
+                    if (betVal == 1)
                     {
                         targetRange.Add(1);
                         targetRange.Add(2);
@@ -490,7 +493,7 @@ namespace Casino.Services
                         targetRange.Add(11);
                         targetRange.Add(12);
                     }
-                    else if (betValue[0] == 2)
+                    else if (betVal == 2)
                     {
                         targetRange.Add(13);
                         targetRange.Add(14);
@@ -505,7 +508,7 @@ namespace Casino.Services
                         targetRange.Add(23);
                         targetRange.Add(24);
                     }
-                    else if (betValue[0] == 3)
+                    else if (betVal == 3)
                     {
                         targetRange.Add(25);
                         targetRange.Add(26);
@@ -524,7 +527,7 @@ namespace Casino.Services
                     if (targetRange.Contains(winNum)) { payout = 2; } else { payout = 0; }
                     break;
                 case "Column":
-                    if (betValue[0] == 1)
+                    if (betVal == 1)
                     {
                         targetRange.Add(1);
                         targetRange.Add(4);
@@ -539,7 +542,7 @@ namespace Casino.Services
                         targetRange.Add(31);
                         targetRange.Add(34);
                     }
-                    else if (betValue[0] == 2)
+                    else if (betVal == 2)
                     {
                         targetRange.Add(2);
                         targetRange.Add(5);
@@ -554,7 +557,7 @@ namespace Casino.Services
                         targetRange.Add(32);
                         targetRange.Add(35);
                     }
-                    else if (betValue[0] == 3)
+                    else if (betVal == 3)
                     {
                         targetRange.Add(3);
                         targetRange.Add(6);

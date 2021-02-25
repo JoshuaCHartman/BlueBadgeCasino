@@ -1,4 +1,6 @@
-﻿using Casino.Models;
+**GameControllers File**
+
+using Casino.Models;
 using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
@@ -89,8 +91,8 @@ namespace Casino.WebApi.Controllers
 
                     //Low < 19
                     //High > 18
-                    //Red //binary 0
-                    //Black //binary 1
+                    //Red
+                    //Black
                     //Even 
                     //Odd
                     //Dozen 1-12; 13-24; 25-36
@@ -121,3 +123,4 @@ namespace Casino.WebApi.Controllers
         }
     }
 }
+//Model for roll and hit, etc
