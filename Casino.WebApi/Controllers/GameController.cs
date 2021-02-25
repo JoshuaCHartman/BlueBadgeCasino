@@ -55,12 +55,13 @@ namespace Casino.WebApi.Controllers
         }
 
         //GamePlay
-        public float playGame(int id, Guid PlayerId)
+        public double playGame(int id, double betAmt, Guid playerId)
         {
-            var game = new GameService(PlayerId);
+            double amount = 0;
+            var game = new GameService(playerId);
 
             string gameName = game.GetGameById(id).GameName;
-            float payout = 0;
+            double payout = 0;
 
             switch (gameName.ToLower())
             {
@@ -71,18 +72,25 @@ namespace Casino.WebApi.Controllers
                     game.Blackjack();
                     break;
                 case "craps":
-                  
+                    //bool Pass or Don't Pass bet type
+                    //Not quite there yet
+                    bool pass = true;
+                    game.Craps(pass);
                     break;
                 case "roulette":
-                  
+                    game.baseGame();
                     break;
                 case "keno":
-                    
+                    game.baseGame();
                     break;
                 default:
                     break;
             }
-            return payout;
+
+            if(payout > 0) { amount = payout * betAmt + betAmt; }
+            else { amount = -1 * betAmt; }
+
+            return amount;            
         }
     }
 }

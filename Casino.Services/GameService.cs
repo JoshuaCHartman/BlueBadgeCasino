@@ -12,8 +12,10 @@ namespace Casino.Services
     {
         Random r = new Random();
         private int sum = 0;
-        public float payout = 0;
+        public double payout = 0;
         private readonly Guid _userId;
+        private int houseSum = 0;
+        private int playerSum = 0;
 
         public GameService(Guid userId)
         {
@@ -111,7 +113,7 @@ namespace Casino.Services
 
         //Game Logic
         //Returns Payout multiplier
-        
+
         private List<int> Deal(int cardsPerHand)
         {
             List<int> deal = new List<int>();
@@ -135,16 +137,22 @@ namespace Casino.Services
             return hand;
         }
 
-        private List<int> Roll()
+        private List<int> Roll(int numberOfDice)
         {
+            int i;
+            int dice = numberOfDice;
             List<int> roll = new List<int>();
-
+            for (i = 1; i < dice + 1; i++)
+            {
+                int diceRoll = r.Next(1, 6);
+                roll.Add(diceRoll);
+            }
             return roll;
         }
 
         private int Spin(int chances)
         {
-            int spin = r.Next(1,chances);
+            int spin = r.Next(1, chances);
 
             return spin;
         }
@@ -172,7 +180,8 @@ namespace Casino.Services
             return sum;
         }
 
-        public float Baccarat()
+        public double Baccarat()
+
         {
             List<int> houseHand = Deal(2);
             List<int> playerHand = Deal(2);
@@ -180,17 +189,17 @@ namespace Casino.Services
             //private method to eval hand(s)
 
             //Value houseHand
-            int houseSum = EvaluateBaccarat(houseHand) % 10;
+            houseSum = EvaluateBaccarat(houseHand) % 10;
 
             //Value playerHand
-            int playerSum = EvaluateBaccarat(playerHand) % 10;
+            playerSum = EvaluateBaccarat(playerHand) % 10;
 
             //Game Logic
 
             //Drawing rule
             if (playerSum >= 8 || houseSum >= 8)
             {
-                
+
             }
 
             //Player rule
@@ -201,7 +210,7 @@ namespace Casino.Services
             }
 
             //Banker rule
-            else if (playerHand.Count()==2)
+            else if (playerHand.Count() == 2)
             {
                 houseHand = Hit(houseHand);
                 houseSum = EvaluateBaccarat(houseHand) % 10;
@@ -210,13 +219,13 @@ namespace Casino.Services
             else if (playerHand.Count() > 2)
             {
                 int rule = playerHand[3];
-                
+
                 if (houseSum <= 2)
                 {
                     houseHand = Hit(houseHand);
-                    
+
                 }
-                else if(houseSum == 3 && rule !=8)
+                else if (houseSum == 3 && rule != 8)
                 {
                     houseHand = Hit(houseHand);
                 }
@@ -228,7 +237,7 @@ namespace Casino.Services
                 {
                     houseHand = Hit(houseHand);
                 }
-                else if (houseSum ==6 && Enumerable.Range(6, 7).Contains(rule))
+                else if (houseSum == 6 && Enumerable.Range(6, 7).Contains(rule))
                 {
                     houseHand = Hit(houseHand);
                 }
@@ -249,89 +258,161 @@ namespace Casino.Services
 
         private int EvaluateBlackjack(List<int> hand)
         {
+            sum = 0;
+            foreach (int c in hand)
+            {
+                int card = hand[c];
+                hand.Remove(card);
+                if (card > 10) { card = 10; }
+                hand.Add(card);
+            }
+
+            sum = hand.Sum();
 
             return sum;
         }
 
-        public float Blackjack()
+        private int EvaluateAces(List<int> hand)
         {
+            sum = 0;
+
+
+            sum = hand.Sum();
+
+            return sum;
+        }
+
+        public double Blackjack()
+        {
+            List<int> houseHand = Deal(2);
+            List<int> playerHand = Deal(2);
+
+            playerSum = EvaluateBlackjack(playerHand);
+            houseSum = EvaluateBlackjack(houseHand);
+
+            //player = dealer == push (draw) no winner
+            if (playerSum == houseSum) { payout = 0; }
+            //player > 21 = bust
+            else if (playerSum > 21) { payout = 0; }
+            //dealer bust = player win
+            else if (playerSum < 21 && houseSum > 21) { payout = 1; }
+            //player > house = player win
+            else if (playerSum <= 21 && playerSum > houseSum) { payout = 1; }
+            //player gets 10 + ace = win
+            else if (playerHand.Contains(1) && playerHand.Contains(10)) { payout = 1.5; }
+
+            return payout;
+        }
+
+        public double Craps(bool Pass) //Pass or Don't Pass bet
+        {
+            bool pass = Pass;
+            int point = 0;
+            sum = Roll(2).Sum();
+            int round = 1;
+            //!st Roll
+            if (Pass)
+            {
+                if (round == 1)
+                {
+                    switch (sum)
+                    {
+                        case 2:
+                            payout = 0;
+                            break;
+                        case 3:
+                            payout = 0;
+                            break;
+                        case 7:
+                            payout = 1;
+                            break;
+                        case 11:
+                            payout = 1;
+                            break;
+                        case 12:
+                            payout = 0;
+                            break;
+                        default:
+                             point = sum;
+                            break;
+                    }
+                    round += 1;
+                }
+            }
+            
+            while (sum != point || sum != 7)
+            {
+                sum = Roll(2).Sum();
+
+                if (sum == point) { payout = 1; break; }
+                else if (sum == 7) { payout = 0; break; }
+            }
+
+            return payout;
+        }
+
+        private Dictionary<string, int> RouletteWheel()
+        {
+            Dictionary<string, int> wheel = new Dictionary<string, int>();
+            wheel.Add("Green", 0);
+            wheel.Add("Black", 28);
+            wheel.Add("Red", 9);
+            wheel.Add("Black", 26);
+            wheel.Add("Black", 30);
+            wheel.Add("Black", 11);
+            wheel.Add("Red", 7);
+            wheel.Add("Black", 20);
+            wheel.Add("Black", 32);
+            wheel.Add("Black", 17);
+            wheel.Add("Red", 5);
+            wheel.Add("Black", 22);
+            wheel.Add("Black", 34);
+            wheel.Add("Black", 15);
+            wheel.Add("Red", 3);
+            wheel.Add("Black", 24);
+            wheel.Add("Black", 36);
+            wheel.Add("Black", 13);
+            wheel.Add("Red", 1);
+            wheel.Add("Green", 0);
+            wheel.Add("Red", 27);
+            wheel.Add("Black", 10);
+            wheel.Add("Red", 25);
+            wheel.Add("Black", 29);
+            wheel.Add("Black", 12);
+            wheel.Add("Black", 8);
+            wheel.Add("Red", 19);
+            wheel.Add("Black", 31);
+            wheel.Add("Black", 18);
+            wheel.Add("Black", 6);
+            wheel.Add("Red", 21);
+            wheel.Add("Black", 33);
+            wheel.Add("Black", 16);
+            wheel.Add("Black", 4);
+            wheel.Add("Red", 23);
+            wheel.Add("Black", 35);
+            wheel.Add("Black", 14);
+            wheel.Add("Black", 2);
+
+            return wheel;
+        }
+
+        public double Roulette()
+        {
+            Dictionary<string, int> rouletteWheel = RouletteWheel();
+
+
+
             payout = 0;
             return payout;
         }
-      
-        public float Craps()
+
+        public double Keno(List<int> playerNumbers)
         {
+            List<int> drawingNumbers = new List<int>();
+
+
             payout = 0;
             return payout;
         }
-
-        public float Roulette()
-        {
-            payout = 0;
-            return payout;
-        }
-
-        public float Keno()
-        {
-            payout = 0;
-            return payout;
-        }
-        //        case "craps":
-        //            //Need logic passed from player/bet to bool
-        //            bool Pass = true;
-        //            int roll = 1;
-        //            //Pass or Don't Pass
-        //            List<int> dice = new List<int>();
-        //            Random r = new Random();
-        //            int dice1 = r.Next(1, 6);
-        //            int dice2 = r.Next(1, 6);
-
-        //            dice.Add(dice1);
-        //            dice.Add(dice2);
-
-        //            string diceroll = dice.Sum().ToString();
-        //            //!st Roll
-        //            if (Pass)
-        //            {
-        //                if (roll == 1)
-        //                {
-        //                    switch (int.Parse(diceroll))
-        //                    {
-        //                        case 2:
-        //                            HouseWins = true;
-        //                            break;
-        //                        case 3:
-        //                            HouseWins = true;
-        //                            break;
-        //                        case 7:
-        //                            HouseWins = false;
-        //                            break;
-        //                        case 11:
-        //                            HouseWins = false;
-        //                            break;
-        //                        case 12:
-        //                            HouseWins = true;
-        //                            break;
-        //                        default:
-        //                            int point = int.Parse(diceroll);
-        //                            HouseWins = false;
-        //                            break;
-        //                    }
-        //                    roll += 1;
-        //                }
-        //            }
-        //            //Pass 7 or 11 = win
-
-        //            //Pass 2, 3, 12 = Lose
-
-        //            //Point = roll outcome
-        //            //Roll until Point or 7
-        //            //If point then win
-        //            //if 7 then lose
-
-
-
-
-        //            break;
     }
 }
