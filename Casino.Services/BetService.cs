@@ -10,6 +10,7 @@ namespace Casino.Services
 {
     public class BetService
     {
+        ApplicationDbContext _db = new ApplicationDbContext();
         private GameSimulation _gameSim = new GameSimulation();
         private readonly Guid _playerGuid;  //Parse from currently logged in player
         private Guid _houseGuid = GetHouseAccountGuid();
@@ -26,17 +27,24 @@ namespace Casino.Services
         }
         public BetResult CreateBet(BetCreate model)
         {
-
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx.Games.Find(model.GameId);
+                if (query is null)
+                    return null;
+            }
             // Brought _gameSim play game mechanics outside, and captured result as variable.
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
             double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
+
             //consider returning bet results and updated player balance instead of bool
             var entity = new Bet()
             {
-               
-                PlayerId = _playerGuid,  
+
+                PlayerId = _playerGuid,
                 GameId = model.GameId,
                 BetAmount = model.BetAmount,
                 //PayoutAmount = _gameSim.PlayGame(model.BetAmount, model.GameId),
@@ -66,7 +74,7 @@ namespace Casino.Services
 
                     return GetBetResult(entity.BetId);
 
-                                   }
+                }
                 return null;
             }
         }
@@ -260,7 +268,7 @@ namespace Casino.Services
                         BetAmount = entity.BetAmount,
                         PlayerWonGame = entity.PlayerWonGame,
                         PayoutAmount = entity.PayoutAmount,
-                                                
+
                     };
             }
         }
