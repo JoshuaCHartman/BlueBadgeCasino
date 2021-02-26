@@ -1,56 +1,48 @@
-﻿using Casino.Models;
+﻿using Casino.Data;
 using Casino.Services;
-using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-namespace Casino.WebApi.Controllers
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Casino.Models
 {
-    public class GameController : ApiController
+    public class GameSimulation
     {
-        //Post
-        [HttpPost]
-        public IHttpActionResult Post(GameCreate game)
+     
+        
+        private readonly Random _random = new Random();
+        private Game _game = new Game();
+        public double PlayGame(double betAmount, int gameId)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            var service = CreateGameService();
-            if (!service.CreateGame(game))
-                return InternalServerError();
-            return Ok();
+           
+            //Game game = GetGameById(gameId);
+            //if (betAmount < game.MinBet || betAmount > game.MaxBet)
+            //    return 0;
+            int x = _random.Next(10);
+            if (x <= 3)  //this is 60/40 odds
+                return betAmount; //player wins, wins bet amount
+
+            return  (-1)*betAmount; //player loses, payout is negative the bet amount
         }
-        //Get
-        [HttpGet]
-        public IHttpActionResult Get()
+
+        // helper method to convert gamesim's payout to a bool if payout is +
+        //This is being called from BetService
+        public bool GameWinOutcome(double payout)
         {
-            GameService gameService = CreateGameService();
-            var games = gameService.GetGames();
-            return Ok(games);
+            bool wonGame;
+            if (payout > 0) { wonGame = true; } else { wonGame = false; }
+            return wonGame;
         }
-        //Get by ID
-        [HttpGet]
-        public IHttpActionResult GetById(int id)
-        {
-            GameService gameService = CreateGameService();
-            var game = gameService.GetGameById(id);
-            return Ok(game);
-        }
-        //Put
-        [HttpPut]
-        private GameService CreateGameService()
-        {
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            var gameService = new GameService(userId);
-            return gameService;
-        }
-        //GamePlay
-        public double PlayGame(int id, double betAmt, Guid playerId)
+
+
+
+        //Jon's method below
+        public double PlayGame(int id, double betAmt)
         {
             double amount = 0;
-            var game = new GameService(playerId);
+            var game = new GameService();
             string gameName = game.GetGameById(id).GameName;
             double payout = 0;
             switch (gameName.ToLower())
@@ -102,6 +94,23 @@ namespace Casino.WebApi.Controllers
             else { amount = -1 * betAmt; }
             return amount;
         }
+
+
+
+
     }
+
+
+
+
+
+    //Helper Method
+    //public Game GetGameById(int gameId)
+    //{
+    //    //just like gold badge repo
+          //Either go get a game object or a gameModel
+    //    //logic here or change get it straight from GameService GetGame method
+    //}
+
+
 }
-//Model for roll and hit, etc

@@ -69,7 +69,6 @@
     <Compile Include="BetCreate.cs" />
     <Compile Include="BetDetail.cs" />
     <Compile Include="BetListItem.cs" />
-    <Compile Include="GameSimulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
