@@ -24,7 +24,7 @@ namespace Casino.Services
         {
             var entity = new Player()
             {
-                //PlayerId = _userId,
+                PlayerId = _userId,
                 PlayerFirstName = model.PlayerFirstName,
                 PlayerLastName = model.PlayerLastName,
                 PlayerPhone = model.PlayerPhone,
