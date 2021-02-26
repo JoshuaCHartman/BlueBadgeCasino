@@ -31,7 +31,13 @@ namespace Casino.Services
                 PlayerEmail = model.PlayerEmail,
                 PlayerAddress = model.PlayerAddress, //Evaluate in testing whether its null or doesn't work
                 PlayerState = model.PlayerState,
-                PlayerDob = model.PlayerDob,
+                PlayerDob = model.PlayerDob
+                //DateTime convertedDate = DateTime.Parse(PlayerDob);
+
+
+                 
+                
+            ,
                 AccountCreated = DateTimeOffset.Now,
                 //IsActive = model.IsActive,
                 //TierStatus = model.TierStatus,
@@ -285,8 +291,9 @@ namespace Casino.Services
                     ctx
                         .Players
                         .Single(e => e.PlayerId == _userId);
-
-                    entity.IsActive = false;
+                if (entity.IsActive == false)
+                    return true;
+                entity.IsActive = false;
 
                     return ctx.SaveChanges() == 1;
                 }

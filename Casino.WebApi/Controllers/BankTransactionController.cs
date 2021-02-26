@@ -22,7 +22,8 @@ namespace Casino.WebApi.Controllers
         }
         //Get
         //Get all by logged in Player
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "User")]
+        [Route("api/bank/player")]
         public IHttpActionResult Get()
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
@@ -30,7 +31,9 @@ namespace Casino.WebApi.Controllers
             return Ok(bankTransactions);
         }
         //Get by id for logged in player
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "User")]
+        [Route("api/bank/player/{id}")]
+
         public IHttpActionResult GetById(int id)
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
@@ -60,7 +63,8 @@ namespace Casino.WebApi.Controllers
             return Ok(bankTransactions);
         }
         //Post
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "User")]
+        [Route("api/bank/player")]
         public IHttpActionResult Post(BankTransactionCreate bankTransaction)
         {
             if (!ModelState.IsValid)
