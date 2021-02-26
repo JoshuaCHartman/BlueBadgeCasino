@@ -9,13 +9,12 @@ namespace Casino.Models
 {
     public class GameSimulation
     {
+        
         private readonly Random _random = new Random();
         private Game _game = new Game();
         public double PlayGame(double betAmount, int gameId)
         {
-
-            // SWITCH CASE take in gameId, return betAmout (positive or negative)
-
+           
             //Game game = GetGameById(gameId);
             //if (betAmount < game.MinBet || betAmount > game.MaxBet)
             //    return 0;
