@@ -9,8 +9,8 @@ namespace Casino.Models
 {
     public class BankTransactionCreate
     {
-        [Required]
-        public int PlayerId { get; set; }
+       
+        public Guid PlayerId { get; set; }
 
         [Required]
         public double BankTransactionAmount { get; set; }

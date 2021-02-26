@@ -9,10 +9,12 @@ namespace Casino.Models
 {
     public class GameSimulation
     {
+        
         private readonly Random _random = new Random();
         private Game _game = new Game();
         public double PlayGame(double betAmount, int gameId)
         {
+           
             //Game game = GetGameById(gameId);
             //if (betAmount < game.MinBet || betAmount > game.MaxBet)
             //    return 0;
@@ -24,6 +26,7 @@ namespace Casino.Models
         }
 
         // helper method to convert gamesim's payout to a bool if payout is +
+        //This is being called from BetService
         public bool GameWinOutcome(double payout)
         {
             bool wonGame;
@@ -34,10 +37,15 @@ namespace Casino.Models
 
 
 
+
+
     //Helper Method
     //public Game GetGameById(int gameId)
     //{
     //    //just like gold badge repo
+          //Either go get a game object or a gameModel
     //    //logic here or change get it straight from GameService GetGame method
     //}
+
+
 }

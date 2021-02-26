@@ -13,6 +13,7 @@ namespace Casino.WebApi.Controllers
     [Authorize]
     public class BankTransactionController : ApiController
     {
+        private BankTransactionService _bankService = new BankTransactionService();
         private BankTransactionService CreateBankTransactionService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
@@ -20,14 +21,19 @@ namespace Casino.WebApi.Controllers
             return bankTransactionService;
         }
         //Get
-        //Get
+        //Get all by logged in Player
+        [Authorize(Roles = "User")]
+        [Route("api/bank/player")]
         public IHttpActionResult Get()
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
             var bankTransactions = bankTransactionService.PlayerGetBankTransactions();
             return Ok(bankTransactions);
         }
-       //Get
+        //Get by id for logged in player
+        [Authorize(Roles = "User")]
+        [Route("api/bank/player/{id}")]
+
         public IHttpActionResult GetById(int id)
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
@@ -35,7 +41,30 @@ namespace Casino.WebApi.Controllers
 
             return Ok(bankTransaction);
         }
+        //Get all by Admin for Specific player
+        [HttpGet]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Bank/admin/{guidAsString}")]
+        public IHttpActionResult Get(string guidAsString)
+        {
+            Guid guid = Guid.Parse(guidAsString);
+          
+            var bankTransactions = _bankService.AdminGetBankTransactions(guid);
+            return Ok(bankTransactions);
+        }
+        //Get all by Admin
+        [HttpGet]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Bank/admin")]
+        public IHttpActionResult GetAll()
+        {
+          
+            var bankTransactions = _bankService.AdminGetBankTransactions();
+            return Ok(bankTransactions);
+        }
         //Post
+        [Authorize(Roles = "User")]
+        [Route("api/bank/player")]
         public IHttpActionResult Post(BankTransactionCreate bankTransaction)
         {
             if (!ModelState.IsValid)
@@ -46,7 +75,9 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
         //Delete
-        public IHttpActionResult Delete([FromUri]int id, [FromBody]double amount)
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Bank/admin/{id}/{amount}")]
+        public IHttpActionResult Delete([FromUri]int id, [FromUri]double amount)
         {
             var service = CreateBankTransactionService();
             if (!service.DeleteBankTransaction(id, amount))
