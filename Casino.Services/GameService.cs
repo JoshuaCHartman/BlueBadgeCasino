@@ -19,6 +19,10 @@ namespace Casino.Services
         {
             _userId = userId;
         }
+        public GameService()
+        {
+
+        }
         public bool CreateGame(GameCreate model)
         {
             var entity =
