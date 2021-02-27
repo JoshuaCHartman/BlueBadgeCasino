@@ -10,6 +10,76 @@ namespace Casino.Services
 {
     public class GameService
     {
+        public GameService(Guid userId)
+        {
+            _userId = userId;
+        }
+
+        public GameService()
+        {
+
+        }
+
+        public bool CreateGame(GameCreate model)
+        {
+            var entity =
+                new Game()
+                {
+                    GameName = model.GameName,
+                    TypeOfGame = model.TypeOfGame,
+                    MinBet = model.MinBet,
+                    MaxBet = model.MaxBet
+                };
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.Games.Add(entity);
+                return ctx.SaveChanges() == 1;
+            }
+        }
+
+        public IEnumerable<GameListItem> GetGames()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Games
+                        .Where(e => e.GameId > -1)
+                        .Select(
+                            e =>
+                                new GameListItem
+                                {
+                                    GameId = e.GameId,
+                                    GameName = e.GameName,
+                                    TypeOfGame = e.TypeOfGame
+
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
+        public GameListItem GetGameById(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Games
+                        .Single(e => e.GameId == id);
+                return
+                    new GameListItem
+                    {
+                        GameId = entity.GameId,
+                        GameName = entity.GameName,
+                        MinBet = entity.MinBet,
+                        MaxBet = entity.MaxBet
+                    };
+            }
+        }
+
 
         //GamePlay
         public double PlayGame(int id, double betAmt)
@@ -84,77 +154,6 @@ namespace Casino.Services
         private readonly Guid _userId;
         private int houseSum = 0;
         private int playerSum = 0;
-
-        public GameService(Guid userId)
-        {
-            _userId = userId;
-        }
-
-        public GameService()
-        {
-
-        }
-
-        public bool CreateGame(GameCreate model)
-        {
-            var entity =
-                new Game()
-                {
-                    GameName = model.GameName,
-                    TypeOfGame = model.TypeOfGame,
-                    MinBet = model.MinBet,
-                    MaxBet = model.MaxBet
-                };
-
-            using (var ctx = new ApplicationDbContext())
-            {
-                ctx.Games.Add(entity);
-                return ctx.SaveChanges() == 1;
-            }
-        }
-
-        public IEnumerable<GameListItem> GetGames()
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var query =
-                    ctx
-                        .Games
-                        .Where(e => e.GameId > -1)
-                        .Select(
-                            e =>
-                                new GameListItem
-                                {
-                                    GameId = e.GameId,
-                                    GameName = e.GameName,
-                                    TypeOfGame = e.TypeOfGame
-
-                                }
-                        );
-
-                return query.ToArray();
-            }
-        }
-
-        public GameListItem GetGameById(int id)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var entity =
-                    ctx
-                        .Games
-                        .Single(e => e.GameId == id);
-                return
-                    new GameListItem
-                    {
-                        GameId = entity.GameId,
-                        GameName = entity.GameName,
-                        MinBet = entity.MinBet,
-                        MaxBet = entity.MaxBet
-                    };
-            }
-        }
-
         public int baseGame()
         {
             int payoutMult = 0;
