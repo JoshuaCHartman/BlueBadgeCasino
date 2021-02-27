@@ -20,7 +20,7 @@ namespace Casino.Services
 
         }
 
-        public bool CreateGame(GameCreate model)
+        public bool CreateGame(GameCreate model) //UserId verify user status >=Admin
         {
             var entity =
                 new Game()
@@ -38,22 +38,26 @@ namespace Casino.Services
             }
         }
 
-        public IEnumerable<GameListItem> GetGames()
+        public IEnumerable<GameListItem> GetGames() //Limit for players with access to HS games
         {
+            bool highStakes = false;
+            //if(Player.HasAccessToHighLevelGame == true) { highStakes = true; }
+
             using (var ctx = new ApplicationDbContext())
             {
                 var query =
                     ctx
                         .Games
-                        .Where(e => e.GameId > -1)
+                        .Where(e => e.IsHighStakes == highStakes)
                         .Select(
                             e =>
                                 new GameListItem
                                 {
                                     GameId = e.GameId,
                                     GameName = e.GameName,
-                                    TypeOfGame = e.TypeOfGame
-
+                                    TypeOfGame = e.TypeOfGame,
+                                    MinBet = e.MinBet,
+                                    MaxBet = e.MaxBet
                                 }
                         );
 
@@ -79,7 +83,6 @@ namespace Casino.Services
                     };
             }
         }
-
 
         //GamePlay
         public double PlayGame(int id, double betAmt)
@@ -239,7 +242,7 @@ namespace Casino.Services
         private int EvaluateBaccarat(List<int> hand)
         {
             sum = 0;
-            foreach (int c in hand)
+            for (int c = 0; c < hand.Count; c++)
             {
                 int card = hand[c];
                 hand.Remove(card);
@@ -331,7 +334,7 @@ namespace Casino.Services
         private int EvaluateBlackjack(List<int> hand)
         {
             sum = 0;
-            foreach (int c in hand)
+            for (int c = 0; c < hand.Count; c++)
             {
                 int card = hand[c];
                 hand.Remove(card);
