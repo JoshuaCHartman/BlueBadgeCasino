@@ -22,8 +22,10 @@ namespace Casino.Services
 
         public bool CreatePlayer(PlayerCreate model)
         {
+     
             var entity = new Player()
             {
+                PlayerDob = model.PlayerDob,
                 PlayerId = _userId,
                 PlayerFirstName = model.PlayerFirstName,
                 PlayerLastName = model.PlayerLastName,
@@ -31,7 +33,6 @@ namespace Casino.Services
                 PlayerEmail = model.PlayerEmail,
                 PlayerAddress = model.PlayerAddress, //Evaluate in testing whether its null or doesn't work
                 PlayerState = model.PlayerState,
-                PlayerDob = model.PlayerDob,
                 AccountCreated = DateTimeOffset.Now,
                 //IsActive = model.IsActive,
                 //TierStatus = model.TierStatus,
