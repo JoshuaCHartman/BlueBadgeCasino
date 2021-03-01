@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace Casino.Services
 {
     public class GameService
     {
+
+
         public GameService(Guid userId)
         {
             _userId = userId;
@@ -20,7 +23,7 @@ namespace Casino.Services
 
         }
 
-        public bool CreateGame(GameCreate model) //UserId verify user status >=Admin
+        public bool CreateGame(GameCreate model)
         {
             var entity =
                 new Game()
@@ -38,10 +41,33 @@ namespace Casino.Services
             }
         }
 
-        public IEnumerable<GameListItem> GetGames() //Limit for players with access to HS games
+        public IEnumerable<GameListItem> GetGames()
         {
-            bool highStakes = false;
-            //if(Player.HasAccessToHighLevelGame == true) { highStakes = true; }
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Games
+                        .Where(e => e.GameId > -1 )
+                        .Select(
+                            e =>
+                                new GameListItem
+                                {
+                                    GameId = e.GameId,
+                                    GameName = e.GameName,
+                                    TypeOfGame = e.TypeOfGame,
+                                    MinBet = e.MinBet,
+                                    MaxBet = e.MaxBet
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
+        public IEnumerable<GameListItem> GetGamesPlayer(Guid id) //Limit for players with access to HS games
+        {
+            bool highStakes = HighStakes(id);
 
             using (var ctx = new ApplicationDbContext())
             {
@@ -65,6 +91,30 @@ namespace Casino.Services
             }
         }
 
+        private bool HighStakes(Guid id)
+        {
+            bool stakes = false;
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Players
+                        .Where(e => e.PlayerId == id)
+                        .Select(
+                            e =>
+                                new Player
+                                {
+                                    HasAccessToHighLevelGame = e.HasAccessToHighLevelGame
+                                }
+                        );
+                stakes = Convert.ToBoolean(query.ToString());
+            }
+
+            return stakes;
+
+        }
+
         public GameListItem GetGameById(int id)
         {
             using (var ctx = new ApplicationDbContext())
@@ -85,7 +135,7 @@ namespace Casino.Services
         }
 
         //GamePlay
-        public double PlayGame(int id, double betAmt)
+        public double PlayGame(int id, double betAmt) //, double bankBalance
         {
             double amount = 0;
             var game = new GameService();
@@ -142,6 +192,7 @@ namespace Casino.Services
 
                     break;
                 default:
+                    payout = game.baseGame();
                     break;
             }
 
@@ -151,6 +202,7 @@ namespace Casino.Services
 
             return amount;
         }
+
         Random r = new Random();
         private int sum = 0;
         public double payout = 0;
