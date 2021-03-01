@@ -398,6 +398,7 @@ namespace Casino.Services
 
             return sum;
         }
+        
 
         private int EvaluateAces(List<int> hand)
         {
