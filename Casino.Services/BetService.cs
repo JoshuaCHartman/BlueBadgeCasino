@@ -10,6 +10,7 @@ namespace Casino.Services
 {
     public class BetService
     {
+        ApplicationDbContext _db = new ApplicationDbContext();
         private GameSimulation _gameSim = new GameSimulation();
         private readonly Guid _playerGuid;  //Parse from currently logged in player
         private Guid _houseGuid = GetHouseAccountGuid();
@@ -24,20 +25,26 @@ namespace Casino.Services
 
             _playerGuid = userGuid;
         }
-        public bool CreateBet(BetCreate model)
+        public BetResult CreateBet(BetCreate model)
         {
-           
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx.Games.Find(model.GameId);
+                if (query is null)
+                    return null;
+            }
             // Brought _gameSim play game mechanics outside, and captured result as variable.
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
             double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
+
             //consider returning bet results and updated player balance instead of bool
             var entity = new Bet()
             {
-                // PlayerId = _playerId; //if we go this route need to add Guid to Bet class
-                //PlayerId = Player.PlayerId;
-                PlayerId = _playerGuid,                          //System.Guid.Parse("4544850e9f694fdba953116a21ae5c43"),
+
+                PlayerId = _playerGuid,
                 GameId = model.GameId,
                 BetAmount = model.BetAmount,
                 //PayoutAmount = _gameSim.PlayGame(model.BetAmount, model.GameId),
@@ -51,10 +58,24 @@ namespace Casino.Services
                 ctx.Bets.Add(entity);
                 if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance(_playerGuid, entity.PayoutAmount) && UpdateHouseBankBalance(entity.PayoutAmount * (-1)))
                 {
-                    //calls down to helper method to update Player balance after bet has processed
-                    return true;
+                    // calls down to helper method to update Player balance after bet has processed
+
+                    //return new BetDetail
+
+                    //{
+                    //    TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
+                    //    BetId = entity.BetId,
+                    //    GameId = entity.GameId,
+                    //    BetAmount = entity.BetAmount,
+                    //    PlayerWonGame = entity.PlayerWonGame,
+                    //    PayoutAmount = entity.PayoutAmount
+                    //};
+
+
+                    return GetBetResult(entity.BetId);
+
                 }
-                return false;
+                return null;
             }
         }
         //player get all bets
@@ -70,9 +91,9 @@ namespace Casino.Services
                             e =>
                                 new BetListItem
                                 {
-                                    BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    BetId = e.BetId,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -80,7 +101,7 @@ namespace Casino.Services
                                 }
                         );
 
-                return query.ToArray();
+                return query.ToList();
             }
         }
         //admin get ALL bets
@@ -93,14 +114,15 @@ namespace Casino.Services
                     ctx
                         .Bets
                         .Where(e => e.BetId > -1) //&& model.Time < (DateTimeOffset.Now - e.DateTimeOfBet).Days)
-                                                                                                                                        //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
+                                                  //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
                         .Select(
                             e =>
                                 new BetListItem
                                 {
+
                                     BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -122,14 +144,14 @@ namespace Casino.Services
                     ctx
                         .Bets
                         .Where(e => e.PlayerId == model.PlayerId && e.GameId == model.GameId && e.PlayerWonGame == model.PlayerWonGame) //&& model.Time < (DateTimeOffset.Now - e.DateTimeOfBet).Days)
-                          //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
+                                                                                                                                        //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
                         .Select(
                             e =>
                                 new BetListItem
                                 {
                                     BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -157,7 +179,7 @@ namespace Casino.Services
                                 {
                                     BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -185,7 +207,37 @@ namespace Casino.Services
                                 {
                                     BetId = e.BetId,
                                     PlayerId = e.PlayerId,
-                                    DateTimeOfBet = e.DateTimeOfBet,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
+                                    GameId = e.GameId,
+                                    BetAmount = e.BetAmount,
+                                    PlayerWonGame = e.PlayerWonGame,
+                                    PayoutAmount = e.PayoutAmount
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
+        //Admind get by betId
+        //admin get bets by gameid
+        public IEnumerable<BetListItem> AdminGetBetsByBetId(int betId)
+        {
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Bets
+                        .Where(e => e.BetId == betId)
+                        .Select(
+
+                            e =>
+                                new BetListItem
+                                {
+                                    BetId = e.BetId,
+                                    PlayerId = e.PlayerId,
+                                    TimeOfBet = e.DateTimeOfBet.ToString(),
                                     GameId = e.GameId,
                                     BetAmount = e.BetAmount,
                                     PlayerWonGame = e.PlayerWonGame,
@@ -197,7 +249,7 @@ namespace Casino.Services
             }
         }
         //Player get bet by id
-        
+
         public BetDetail GetBetById(int id) //if this looks identical to BetListItem we can call that model instead of having 2
         {
             using (var ctx = new ApplicationDbContext())
@@ -210,13 +262,13 @@ namespace Casino.Services
                     new BetDetail
 
                     {
+                        TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
                         BetId = entity.BetId,
-                        PlayerId = entity.PlayerId,
-                        DateTimeOfBet = entity.DateTimeOfBet,
                         GameId = entity.GameId,
                         BetAmount = entity.BetAmount,
                         PlayerWonGame = entity.PlayerWonGame,
-                        PayoutAmount = entity.PayoutAmount
+                        PayoutAmount = entity.PayoutAmount,
+
                     };
             }
         }
@@ -286,6 +338,30 @@ namespace Casino.Services
             if (entity.CurrentBankBalance > bet)
                 return true;
             return false;
+        }
+        // returns BetResult Model afet BetCreate
+        public BetResult GetBetResult(int id) //if this looks identical to BetListItem we can call that model instead of having 2
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Bets
+                        .Single(e => e.BetId == id);
+                return
+                    new BetResult
+
+                    {
+                        TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
+                        BetId = entity.BetId,
+                        GameId = entity.GameId,
+                        BetAmount = entity.BetAmount,
+                        PlayerWonGame = entity.PlayerWonGame,
+                        PayoutAmount = entity.PayoutAmount,
+                        PlayerBankBalance = entity.Player.CurrentBankBalance
+
+                    };
+            }
         }
     }
 }

@@ -32,15 +32,15 @@ namespace Casino.Services
                 PlayerAddress = model.PlayerAddress, //Evaluate in testing whether its null or doesn't work
                 PlayerState = model.PlayerState,
                 PlayerDob = model.PlayerDob,
-                AccountCreated = DateTimeOffset.Now,
-                //IsActive = model.IsActive,
-                //TierStatus = model.TierStatus,
-                //HasAccessToHighLevelGame = model.HasAccessToHighLevelGame,
-                //CurrentBankBalance = model.CurrentBankBalance,
-                //EligibleForReward = model.EligibleForReward,
-                //AgeVerification = model.AgeVerification,
-                //CreatedUtc = DateTimeOffset.Now
-            };
+                IsActive = model.IsActive,
+                AccountCreated = DateTimeOffset.Now};
+            //IsActive = model.IsActive,
+            //TierStatus = model.TierStatus,
+            //HasAccessToHighLevelGame = model.HasAccessToHighLevelGame,
+            //CurrentBankBalance = model.CurrentBankBalance,
+            //EligibleForReward = model.EligibleForReward,
+            //AgeVerification = model.AgeVerification,
+            //CreatedUtc = DateTimeOffset.Now
 
             using (var ctx = new ApplicationDbContext())
             {
@@ -48,8 +48,103 @@ namespace Casino.Services
                 return ctx.SaveChanges() == 1;
             }
         }
-        //Admin get All players
-        public IEnumerable<PlayerListItem> GetPlayers()
+
+        public bool CheckActiveStatusAdmin(PlayerListItem player)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .BankTransactions
+                        .Single(e => e.PlayerId == _userId);
+                TimeSpan LastActive = DateTime.Now - query.DateTimeOfTransaction;
+                if (LastActive.Days < 180)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+        }
+
+        public bool CheckActiveStatus(PlayerDetail player)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .BankTransactions
+                        .Single(e => e.PlayerId == _userId);
+                TimeSpan LastActive = DateTime.Now - query.DateTimeOfTransaction;
+                if (LastActive.Days < 180)
+                {
+                    player.IsActive = true;
+                    return ctx.SaveChanges()==1;
+                    return true;
+                }
+                else
+                {
+                    player.IsActive = false;
+                    return ctx.SaveChanges() == 1;
+                    return false;
+                }
+            }
+        }           
+
+        public bool CheckPlayer(PlayerCreate player)
+        {   //Birthdate is not entered or correctly or legal age is not acceptable
+            if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
+            {
+                return false;
+            }
+            else
+            {
+                
+                return true;
+            }
+        }
+
+        public bool CheckDob (PlayerCreate player)
+        {
+            //Getting the string
+            var stringDob = player.PlayerDob;
+
+            //Convert the string to a DateTime
+            DateTime convertedDob;
+
+            convertedDob = DateTime.Parse(stringDob);
+
+            TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
+            if (PlayerDob.TotalDays < 7665)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
+
+            //If we leave it as a string then we can do our player.dob to cast and parse into DateTime in this method
+            //    TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - player.PlayerDob);
+            //    if (PlayerDob.TotalDays < 7665)
+            //    {
+
+            //        return false;
+
+            //    }
+            //    return true; 
+            //}
+
+
+
+            //Admin get All players
+            public IEnumerable<PlayerListItem> GetPlayers()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -187,7 +282,7 @@ namespace Casino.Services
                                     CurrentBankBalance = e.CurrentBankBalance,
                                     //CreatedUtc = e.CreatedUtc
                                 }
-                        );
+                            );
 
                 return query.ToArray();
             }
@@ -217,7 +312,7 @@ namespace Casino.Services
                                     CurrentBankBalance = e.CurrentBankBalance,
                                     //CreatedUtc = e.CreatedUtc
                                 }
-                        );
+                            );
 
                 return query.ToArray();
             }
@@ -232,20 +327,23 @@ namespace Casino.Services
                         .Players
                         .Single(e => e.PlayerId == _userId);
 
-                entity.PlayerPhone = model.PlayerPhone;
-                entity.PlayerAddress = model.PlayerAddress;
-                entity.PlayerState = model.PlayerState;
-                //entity.PlayerDob = model.PlayerDob;
-                //entity.TierStatus = model.TierStatus;
-                //entity.IsActive = model.IsActive;
-                //entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
-                //entity.CurrentBankBalance = model.CurrentBankBalance;
-                //entity.EligibleForReward = model.EligibleForReward;
-                //entity.ModifiedUtc = DateTimeOffset.UtcNow;
+                    //PlayerFirstName = model.PlayerFirstName,
+                    //PlayerLastName = model.PlayerLastName,
+                    entity.PlayerPhone = model.PlayerPhone;
+                    entity.PlayerAddress = model.PlayerAddress;
+                    entity.PlayerState = model.PlayerState;
+                    //entity.PlayerDob = model.PlayerDob;
+                    //entity.TierStatus = model.TierStatus;
+                    //entity.IsActive = model.IsActive;
+                    //entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
+                    //entity.CurrentBankBalance = model.CurrentBankBalance;
+                    //entity.EligibleForReward = model.EligibleForReward;
+                    //entity.ModifiedUtc = DateTimeOffset.UtcNow;
 
-                return ctx.SaveChanges() == 1;
+                    return ctx.SaveChanges() == 1;
+                }
             }
-        }
+
         //Admin update player
         public bool UpdatePlayerByAdmin(PlayerEdit model, Guid playerId)
         {
@@ -255,6 +353,7 @@ namespace Casino.Services
                     ctx
                         .Players
                         .Single(e => e.PlayerId == playerId);
+
                 //PlayerFirstName = model.PlayerFirstName,
                 //PlayerLastName = model.PlayerLastName,
                 entity.PlayerPhone = model.PlayerPhone;
@@ -267,9 +366,11 @@ namespace Casino.Services
                 //entity.CurrentBankBalance = model.CurrentBankBalance;
                 //entity.EligibleForReward = model.EligibleForReward;
                 //entity.ModifiedUtc = DateTimeOffset.UtcNow;
+
                 return ctx.SaveChanges() == 1;
             }
         }
+        
         //Player deletes account(only makes it inactive)
         public bool DeletePlayer() //Does not actually delete
         {
@@ -279,11 +380,12 @@ namespace Casino.Services
                     ctx
                         .Players
                         .Single(e => e.PlayerId == _userId);
-
+                if (entity.IsActive == false)
+                    return true;
                 entity.IsActive = false;
 
-                return ctx.SaveChanges() == 1;
+                    return ctx.SaveChanges() == 1;
+                }
             }
         }
     }
-}

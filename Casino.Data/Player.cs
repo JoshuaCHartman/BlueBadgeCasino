@@ -44,10 +44,12 @@ namespace Casino.Data
 
         [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
         [Required]
+        //public DateTime PlayerDob { get; set; }
         public string PlayerDob { get; set; }
 
         [Required]
         public DateTimeOffset AccountCreated { get; set; }
+        
 
         public TierStatus TierStatus { get; set; } = TierStatus.bronze;
 

@@ -7,14 +7,21 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
 namespace Casino.WebApi.Controllers
 {
     public class GameController : ApiController
     {
         //Post
-
-
+        [HttpPost]
+        public IHttpActionResult Post(GameCreate game)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var service = CreateGameService();
+            if (!service.CreateGame(game))
+                return InternalServerError();
+            return Ok();
+        }
         //Get
         [HttpGet]
         public IHttpActionResult Get()
@@ -23,30 +30,22 @@ namespace Casino.WebApi.Controllers
             var games = gameService.GetGames();
             return Ok(games);
         }
-        public IHttpActionResult Post(GameCreate game)//restrict this to admin
+        //Get by ID
+        [HttpGet]
+        public IHttpActionResult GetById(int id)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var service = CreateGameService();
-
-            if (!service.CreateGame(game))
-                return InternalServerError();
-
-            return Ok();
+            GameService gameService = CreateGameService();
+            var game = gameService.GetGameById(id);
+            return Ok(game);
         }
+        //Put
+        [HttpPut]
         private GameService CreateGameService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var gameService = new GameService(userId);
             return gameService;
         }
+
     }
-
-    //Put
-    //Only allow edit of game to be Min/Max bet for now.  
-
-    //Delete
-    //Don't delete game because it will orphan too bets
 }
-
