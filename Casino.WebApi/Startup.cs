@@ -21,6 +21,17 @@ namespace Casino.WebApi
             // run startup SEED method below (will not populate if roles already created)
             //CreateDefaultRolesAndUsers();
         }
+       
+        // STRIPE startup - remove if not using new version
+        // public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        //{
+        //    // This is your real test secret API key.
+        //    StripeConfiguration.ApiKey = "sk_test_51IPcYzEaVFltQHPezdflBTQkF7dWeii1TG5Du6Cvgc95VETYsz1VC0YzAmG2uXVoVIfHLypXdm8ghoqwgS0BLvfn00ZSfKjjZG";
+        //    if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+        //    app.UseRouting();
+        //    app.UseStaticFiles();
+        //    app.UseEndpoints(endpoints => endpoints.MapControllers());
+        //}
 
         public void CreateDefaultRolesAndUsers()
         {

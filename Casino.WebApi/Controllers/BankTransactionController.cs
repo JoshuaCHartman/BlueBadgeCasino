@@ -1,12 +1,15 @@
 ﻿using Casino.Models;
 using Casino.Services;
+using Casino.WebApi.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using Stripe;
 
 namespace Casino.WebApi.Controllers
 {
@@ -48,7 +51,7 @@ namespace Casino.WebApi.Controllers
         public IHttpActionResult Get(string guidAsString)
         {
             Guid guid = Guid.Parse(guidAsString);
-          
+
             var bankTransactions = _bankService.AdminGetBankTransactions(guid);
             return Ok(bankTransactions);
         }
@@ -58,7 +61,7 @@ namespace Casino.WebApi.Controllers
         [Route("api/Bank/admin")]
         public IHttpActionResult GetAll()
         {
-          
+
             var bankTransactions = _bankService.AdminGetBankTransactions();
             return Ok(bankTransactions);
         }
@@ -74,15 +77,26 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             return Ok();
         }
+
+
+
         //Delete
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Bank/admin/{id}/{amount}")]
-        public IHttpActionResult Delete([FromUri]int id, [FromUri]double amount)
+        public IHttpActionResult Delete([FromUri] int id, [FromUri] double amount)
         {
             var service = CreateBankTransactionService();
             if (!service.DeleteBankTransaction(id, amount))
                 return InternalServerError();
             return Ok();
         }
+
+        //    public async Task<dynamic> Pay(RevisedChargeModel charge)
+        //    {
+        //        return await MakeChargeService.ChargeAsync(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
+        //    }
+        //}
+
+
     }
 }

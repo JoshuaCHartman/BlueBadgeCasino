@@ -16,12 +16,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Blue Badge Casino", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("CasinoAPI", "Index", "Help", new { area = "" }, null)</li>
+
+                    @* navbar title, create html in cart folder in view, cart controller *@
+                    <li>@Html.ActionLink("Buy Chips", "Create", "Cart", new { area = "" }, null)</li>
                 </ul>
             </div>
         </div>
@@ -37,5 +40,8 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    @* render the stripe script fom cart  *@
+    @RenderSection("stripe", required: false)
 </body>
 </html>

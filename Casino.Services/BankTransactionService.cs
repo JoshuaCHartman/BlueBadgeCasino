@@ -27,7 +27,8 @@ namespace Casino.Services
             //maybe return the model and player balance instead of bool
             var entity = new BankTransaction()
             {
-                PlayerId = _playerGuid,
+               // PlayerId = _playerGuid,
+               PlayerId = model.PlayerId,
                 BankTransactionAmount = model.BankTransactionAmount,
                 DateTimeOfTransaction = DateTimeOffset.Now
 
@@ -35,7 +36,7 @@ namespace Casino.Services
             using (var ctx = new ApplicationDbContext())
             {
                 ctx.BankTransactions.Add(entity);
-                if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance(_playerGuid, model.BankTransactionAmount))
+                if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance/*(_playerGuid,*/(model.PlayerId, model.BankTransactionAmount)) // _playerGuid = model.PlayerId
                 { return true; }
                 return false;
             }

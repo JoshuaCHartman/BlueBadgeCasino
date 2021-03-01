@@ -1,0 +1,14 @@
+﻿
+@* front end form to submit card purchase confirmation *@
+
+@using Casino.WebApi.Models
+@model ChargeViewModel
+
+@{
+    ViewBag.Title = "PurchaseStatus";
+}
+
+<h2>PurchaseStatus</h2>
+
+<p>@Model.ChargeId</br>
+    @Model.ChargeAmount</p>
