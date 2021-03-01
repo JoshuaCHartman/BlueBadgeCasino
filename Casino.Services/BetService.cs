@@ -12,6 +12,7 @@ namespace Casino.Services
     {
         ApplicationDbContext _db = new ApplicationDbContext();
         private GameSimulation _gameSim = new GameSimulation();
+        private GameService _gameService = new GameService();
         private readonly Guid _playerGuid;  //Parse from currently logged in player
         private Guid _houseGuid = GetHouseAccountGuid();
 
@@ -38,7 +39,10 @@ namespace Casino.Services
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
-            double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
+             double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
+          // double payout = _gameService.PlayGame(model.GameId, model.BetAmount);
+
+
 
             //consider returning bet results and updated player balance instead of bool
             var entity = new Bet()

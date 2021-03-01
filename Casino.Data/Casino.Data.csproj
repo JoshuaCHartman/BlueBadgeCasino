@@ -92,13 +92,9 @@
     <Compile Include="Bet.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\202102210552522_After1237push.cs" />
-    <Compile Include="Migrations\202102210552522_After1237push.designer.cs">
-      <DependentUpon>202102210552522_After1237push.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202102210609045_NeedToManuallyAddBecauseDataLossWarning.cs" />
-    <Compile Include="Migrations\202102210609045_NeedToManuallyAddBecauseDataLossWarning.designer.cs">
-      <DependentUpon>202102210609045_NeedToManuallyAddBecauseDataLossWarning.cs</DependentUpon>
+    <Compile Include="Migrations\202102272059438_Test.cs" />
+    <Compile Include="Migrations\202102272059438_Test.designer.cs">
+      <DependentUpon>202102272059438_Test.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Player.cs" />
@@ -109,11 +105,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202102210552522_After1237push.resx">
-      <DependentUpon>202102210552522_After1237push.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202102210609045_NeedToManuallyAddBecauseDataLossWarning.resx">
-      <DependentUpon>202102210609045_NeedToManuallyAddBecauseDataLossWarning.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202102272059438_Test.resx">
+      <DependentUpon>202102272059438_Test.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
