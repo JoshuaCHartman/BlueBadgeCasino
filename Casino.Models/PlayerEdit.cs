@@ -19,6 +19,7 @@ namespace Casino.Models
         
         [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
         [Required]
+        //public DateTime PlayerDob { get; set; }
         public string PlayerDob { get; set; }
         public TierStatus TierStatus { get; set; }
         public bool IsActive { get; set; }
