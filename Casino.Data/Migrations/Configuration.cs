@@ -28,8 +28,34 @@
 
             string guidAsStringOfHouse = GetGuidOfSeededUser("house@casino.com");
             string guidAsStringOfUser = GetGuidOfSeededUser("abcdef");
+            // context.Games.AddOrUpdate(x => x.GameId,
+            //    new Game() { GameId = 1, GameName = "BlackJack" });
+
+            //Add Games On Startup
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 1, GameName = "BlackJack" });
+               new Game() { GameId = 1, GameName = "Baccarat", TypeOfGame = GameType.Cards, IsHighStakes = false, MinBet = 1, MaxBet = 100 });
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 2, GameName = "Blackjack", TypeOfGame = GameType.Cards, IsHighStakes = false, MinBet = 1, MaxBet = 100 });
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 3, GameName = "Craps", TypeOfGame = GameType.Dice, IsHighStakes = false, MinBet = 1, MaxBet = 100 });
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 4, GameName = "Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = false, MinBet = 1, MaxBet = 100 });
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 5, GameName = "Keno", TypeOfGame = GameType.Random_Num, IsHighStakes = false, MinBet = 1, MaxBet = 100 });
+            //Russian Roulette need to get players bank balance for min/Max bet
+            //context.Games.AddOrUpdate(x => x.GameId,
+            //   new Game() {GameId = 11, GameName = "Russian Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = , MaxBet = 0 });
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 6, GameName = "Baccarat", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 7, GameName = "Blackjack", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 8, GameName = "Craps", TypeOfGame = GameType.Dice, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 9, GameName = "Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 10, GameName = "Keno", TypeOfGame = GameType.Random_Num, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+
 
             context.Players.AddOrUpdate(x => x.PlayerId,
             //new Player()
@@ -53,13 +79,21 @@
             //},
             new Player()
             {
-                PlayerId = Guid.Parse(guidAsStringOfUser), PlayerFirstName = "First", PlayerLastName = "Player", PlayerEmail = "abcdef",
-                PlayerDob = "01012000", AccountCreated = DateTimeOffset.Now
+                PlayerId = Guid.Parse(guidAsStringOfUser),
+                PlayerFirstName = "First",
+                PlayerLastName = "Player",
+                PlayerEmail = "abcdef",
+                PlayerDob = "01012000",
+                AccountCreated = DateTimeOffset.Now
             },
             new Player()
             {
-                PlayerId = Guid.Parse(guidAsStringOfHouse), PlayerFirstName = "House", PlayerLastName = "Account", PlayerEmail = "house@casino.com",
-                PlayerDob = "01011999", AccountCreated = DateTimeOffset.Now
+                PlayerId = Guid.Parse(guidAsStringOfHouse),
+                PlayerFirstName = "House",
+                PlayerLastName = "Account",
+                PlayerEmail = "house@casino.com",
+                PlayerDob = "01011999",
+                AccountCreated = DateTimeOffset.Now
             }
 
             );
@@ -79,7 +113,12 @@
                //},
                new Bet()
                {
-                   BetId = 1, PlayerId = Guid.Parse(guidAsStringOfUser), GameId = 1, BetAmount = 777, PayoutAmount = 777, DateTimeOfBet = DateTimeOffset.Now,
+                   BetId = 1,
+                   PlayerId = Guid.Parse(guidAsStringOfUser),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = 777,
+                   DateTimeOfBet = DateTimeOffset.Now,
                }
 
 
@@ -90,9 +129,9 @@
         private string GetGuidOfSeededUser(string email)
         {
             var ctx = new ApplicationDbContext();
-            var entity = 
+            var entity =
             ctx.Users
-               
+
 
                 .Single(e => e.Email == email);
             return entity.Id;
@@ -220,7 +259,7 @@
             {
                 role.Name = "User";
                 roleManager.Create(role);
-            
+
 
                 // seed User 
                 ApplicationUser user = new ApplicationUser();
