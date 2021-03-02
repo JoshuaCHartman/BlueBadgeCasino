@@ -10,23 +10,23 @@ using System.Threading.Tasks;
 
 namespace Casino.Models {
 
-// Enums only exist in POCO
-//public enum PlayerState
-//{
-//    AK, AL, AR, AS, AZ, CA, CO, CT, DC, DE, FL, GA, GU, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MP, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, PR, RI, SC, SD, TN, TX, UM, UT, VA, VI, VT, WA, WI, WV, WY
-//}
+    // Enums only exist in POCO
+    //public enum PlayerState
+    //{
+    //    AK, AL, AR, AS, AZ, CA, CO, CT, DC, DE, FL, GA, GU, HI, IA, ID, IL, IN, KS, KY, LA, MA, MD, ME, MI, MN, MO, MP, MS, MT, NC, ND, NE, NH, NJ, NM, NV, NY, OH, OK, OR, PA, PR, RI, SC, SD, TN, TX, UM, UT, VA, VI, VT, WA, WI, WV, WY
+    //}
 
-//public enum TierStatus
-//{
-//    bronze = 1,
-//    silver = 2,
-//    gold = 3
-//}
+    //public enum TierStatus
+    //{
+    //    bronze = 1,
+    //    silver = 2,
+    //    gold = 3
+    //}
 
     public class PlayerCreate
     {
         [Required]
-        public string PlayerFirstName  { get; set; }
+        public string PlayerFirstName { get; set; }
         [Required]
         public string PlayerLastName { get; set; }
         public string PlayerPhone { get; set; }
@@ -43,7 +43,63 @@ namespace Casino.Models {
 
         public DateTimeOffset AccountCreated { get; set; }
 
-        public bool IsActive { get; set; } = true;
+
+
+
+        public bool IsActive
+        {
+            get
+            {
+                //if (this.IsActive != false)
+                {
+                    //bool test;
+                    TimeSpan accountCreate = DateTime.Now - AccountCreated;
+                    if (accountCreate.TotalDays < 180)
+                    {
+                        IsActive = true;
+                        return true;
+                    }
+                    IsActive = false;
+                    return false;
+                }
+                //return false;
+            }
+            set { IsActive = value; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
+        }
+
+        //public bool IsActive
+        //{
+        //    get
+        //    {
+        //        //if (this.IsActive != false)
+        //        {
+        //            //bool test;
+        //            TimeSpan accountCreate = DateTime.Now - AccountCreated;
+        //            if (accountCreate.TotalDays < 180)
+        //            {
+        //                _isActive = true;
+        //                return true;
+        //            }
+        //            _isActive = false;
+        //            return false;
+        //        }
+        //        //return false;
+        //    }
+        //    set { _isActive = value; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
+        //}
+
+        //public bool IsActive
+        //{
+        //    get
+        //    {
+        //        TimeSpan accountCreate = (DateTime.Now - AccountCreated.UtcDateTime);
+        //        if (accountCreate.TotalDays < 180)
+        //            IsActive = true;
+        //        IsActive = false;
+        //        return IsActive;
+        //    }
+        //    set {  }
+        //}
 
         //public bool IsActive { get; set; }
 
@@ -66,4 +122,4 @@ namespace Casino.Models {
 
         //public DateTimeOffset? ModifiedUtc { get; set; }
     }
-}
+        }

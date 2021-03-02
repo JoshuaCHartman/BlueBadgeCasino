@@ -22,7 +22,7 @@ namespace Casino.Services
 
         public bool CreatePlayer(PlayerCreate model)
         {
-     
+
             var entity = new Player()
             {
                 PlayerDob = model.PlayerDob,
@@ -34,7 +34,7 @@ namespace Casino.Services
                 PlayerAddress = model.PlayerAddress, //Evaluate in testing whether its null or doesn't work
                 PlayerState = model.PlayerState,
 
-               
+
                 //TierStatus = model.TierStatus,
                 //HasAccessToHighLevelGame = model.HasAccessToHighLevelGame,
                 //CurrentBankBalance = model.CurrentBankBalance,
@@ -52,50 +52,50 @@ namespace Casino.Services
             }
         }
 
-        public bool CheckActiveStatusAdmin(PlayerListItem player)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var query =
-                    ctx
-                        .BankTransactions
-                        .Single(e => e.PlayerId == _userId);
-                TimeSpan LastActive = DateTime.Now - query.DateTimeOfTransaction;
-                if (LastActive.Days < 180)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+        //public bool CheckActiveStatusAdmin(PlayerListItem player)
+        //{
+        //    using (var ctx = new ApplicationDbContext())
+        //    {
+        //        var query =
+        //            ctx
+        //                .BankTransactions
+        //                .Single(e => e.PlayerId == _userId);
+        //        TimeSpan LastActive = DateTime.Now - query.DateTimeOfTransaction;
+        //        if (LastActive.Days < 180)
+        //        {
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
-        public bool CheckActiveStatus(PlayerDetail player)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var query =
-                    ctx
-                        .BankTransactions
-                        .Single(e => e.PlayerId == _userId);
-                TimeSpan LastActive = DateTime.Now - query.DateTimeOfTransaction;
-                if (LastActive.Days < 180)
-                {
-                    player.IsActive = true;
-                    return ctx.SaveChanges()==1;
-                    return true;
-                }
-                else
-                {
-                    player.IsActive = false;
-                    return ctx.SaveChanges() == 1;
-                    return false;
-                }
-            }
-        }           
+        //public bool CheckActiveStatus(PlayerDetail player)
+        //{
+        //    using (var ctx = new ApplicationDbContext())
+        //    {
+        //        var query =
+        //            ctx
+        //                .BankTransactions
+        //                .Single(e => e.PlayerId == _userId);
+        //        TimeSpan LastActive = DateTime.Now - query.DateTimeOfTransaction;
+        //        if (LastActive.Days < 180)
+        //        {
+        //            player.IsActive = true;
+        //            return ctx.SaveChanges()==1;
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            player.IsActive = false;
+        //            return ctx.SaveChanges() == 1;
+        //            return false;
+        //        }
+        //    }
+        //}           
 
         public bool CheckPlayer(PlayerCreate player)
         {   //Birthdate is not entered or correctly or legal age is not acceptable
@@ -188,7 +188,7 @@ namespace Casino.Services
                 return
                     new PlayerDetail
                     {
-                        //PlayerId = entity.PlayerId, leave blank so player can't see Guid
+                        PlayerId = entity.PlayerId,
                         PlayerFirstName = entity.PlayerFirstName,
                         PlayerLastName = entity.PlayerLastName,
                         PlayerPhone = entity.PlayerPhone,
