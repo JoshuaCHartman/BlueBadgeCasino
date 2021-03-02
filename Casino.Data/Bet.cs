@@ -18,7 +18,7 @@ namespace Casino.Data
         public virtual Player Player { get; set; }
 
         //add range to GameId FK to ensure they choose a valid game
-        [ForeignKey(nameof(Game)), Range(1, 3, ErrorMessage = "please choose a game between 1 and 3")]
+        [ForeignKey(nameof(Game))]
         public int GameId { get; set; }
         public virtual Game Game { get; set; }
 

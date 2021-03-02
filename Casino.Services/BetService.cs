@@ -39,8 +39,10 @@ namespace Casino.Services
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
-             //double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
-           double payout = _gameService.PlayGame(model.GameId, model.BetAmount);
+
+             double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
+          // double payout = _gameService.PlayGame(model.GameId, model.BetAmount);
+
 
 
 

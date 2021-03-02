@@ -12,6 +12,7 @@ namespace Casino.WebApi.Controllers
     public class GameController : ApiController
     {
         //Post
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpPost]
         public IHttpActionResult Post(GameCreate game)
         {
@@ -30,6 +31,18 @@ namespace Casino.WebApi.Controllers
             var games = gameService.GetGames();
             return Ok(games);
         }
+
+        //Player Get - Look at bet controller
+        [Route("api/PlayerGames")]
+        [HttpGet]
+        public IHttpActionResult PlayerGet() //Not sure on this one... how do we get the Guid w/o needing the player to load it
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            GameService gameService = CreateGameService();
+            var games = gameService.GetGamesPlayer(userId);
+            return Ok(games);
+        }
+
         //Get by ID
         [HttpGet]
         public IHttpActionResult GetById(int id)
