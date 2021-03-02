@@ -119,22 +119,6 @@
     <Compile Include="ChargeForChips.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="IdentityModels.cs" />
-    <Compile Include="Migrations\202103020316452_force.cs" />
-    <Compile Include="Migrations\202103020316452_force.designer.cs">
-      <DependentUpon>202103020316452_force.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103020346561_testIsActive.cs" />
-    <Compile Include="Migrations\202103020346561_testIsActive.designer.cs">
-      <DependentUpon>202103020346561_testIsActive.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103020359031_testThe_discardBool.cs" />
-    <Compile Include="Migrations\202103020359031_testThe_discardBool.designer.cs">
-      <DependentUpon>202103020359031_testThe_discardBool.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103020439455_testPrivateFieldForBoolIsActive.cs" />
-    <Compile Include="Migrations\202103020439455_testPrivateFieldForBoolIsActive.designer.cs">
-      <DependentUpon>202103020439455_testPrivateFieldForBoolIsActive.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -142,20 +126,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202103020316452_force.resx">
-      <DependentUpon>202103020316452_force.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103020346561_testIsActive.resx">
-      <DependentUpon>202103020346561_testIsActive.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103020359031_testThe_discardBool.resx">
-      <DependentUpon>202103020359031_testThe_discardBool.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103020439455_testPrivateFieldForBoolIsActive.resx">
-      <DependentUpon>202103020439455_testPrivateFieldForBoolIsActive.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

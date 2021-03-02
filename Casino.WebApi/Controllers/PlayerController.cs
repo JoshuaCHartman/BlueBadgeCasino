@@ -32,10 +32,10 @@ namespace Casino.WebApi.Controllers
             PlayerService playerService = CreatePlayerService();
             var player = playerService.GetSelf();
 
-      //      if (Bets[Bets.Count - 1].Date - DateTime.Now < 6months)
-						//return true;
+            //      if (Bets[Bets.Count - 1].Date - DateTime.Now < 6months)
+            //return true;
 
-      //                  else return false;
+            //                  else return false;
 
 
             //Do we want to go with BankTransaction for last date of activity
@@ -48,8 +48,8 @@ namespace Casino.WebApi.Controllers
             //else
             //{
 
-                return Ok(player);
-           
+            return Ok(player);
+
         }
 
 
@@ -88,35 +88,35 @@ namespace Casino.WebApi.Controllers
 
 
 
-                //Admin gets player by Guid
-                [Authorize(Roles = "Admin, SuperAdmin")]
-                [Route("api/Player/admin/guid/{id}")]
-                public IHttpActionResult GetById(Guid id)
-                {
-                    PlayerService playerService = CreatePlayerService();
-                    var player = _service.GetPlayerById(id);
+        //Admin gets player by Guid
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Player/admin/guid/{id}")]
+        public IHttpActionResult GetById(Guid id)
+        {
+            PlayerService playerService = CreatePlayerService();
+            var player = _service.GetPlayerById(id);
 
-                    //Do we want to go with BankTransaction for last date of activity
-                    //Do we want to return the player information or BadRequest
-                    //Go off of DateTimeOfBet
-                    //if (!playerService.CheckActiveStatus(player))
-                    //{
-                    //    return BadRequest("Your player status is inactive.");
-                    //}
-                    //else
-                    //{
-                        return Ok(player);
-                    //}
-                }
+            //Do we want to go with BankTransaction for last date of activity
+            //Do we want to return the player information or BadRequest
+            //Go off of DateTimeOfBet
+            //if (!playerService.CheckActiveStatus(player))
+            //{
+            //    return BadRequest("Your player status is inactive.");
+            //}
+            //else
+            //{
+            return Ok(player);
+            //}
+        }
 
-                //Admin gets players by Tier
-                [Authorize(Roles = "Admin, SuperAdmin")]
-                [Route("api/Player/admin/tier/{tierStatus}")]
-                public IHttpActionResult GetByTierStatus(TierStatus tierStatus)
-                {
-                    PlayerService playerService = CreatePlayerService();
-                    var player = _service.GetPlayerByTierStatus(tierStatus); 
-                    return Ok(player);
+        //Admin gets players by Tier
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Player/admin/tier/{tierStatus}")]
+        public IHttpActionResult GetByTierStatus(TierStatus tierStatus)
+        {
+            PlayerService playerService = CreatePlayerService();
+            var player = _service.GetPlayerByTierStatus(tierStatus);
+            return Ok(player);
 
             //Do we want to go with BankTransaction for last date of activity
             //Do we want to return the player information or BadRequest
@@ -131,56 +131,55 @@ namespace Casino.WebApi.Controllers
             //}
         }
 
-                //Admin get players with balance
-                [Authorize(Roles = "Admin, SuperAdmin")]
-                [Route("api/Player/admin/balance")]
-                public IHttpActionResult GetPlayerHasBalance()
-                {
-                    PlayerService playerService = CreatePlayerService();
-                    var player = _service.GetPlayerByHasBalance();
-                    return Ok(player);                    
-            
-                    //Do we want to go with BankTransaction for last date of activity
-                    //Do we want to return the player information or BadRequest
-                    //Go off of DateTimeOfBet
-                    //if (!playerService.CheckActiveStatus(player))
-                    //{
-                    //    return BadRequest("Your player status is inactive.");
-                    //}
-                    //else
-                    //{
-                    //    return Ok(player);
-                    //}
-                }
+        //Admin get players with balance
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Player/admin/balance")]
+        public IHttpActionResult GetPlayerHasBalance()
+        {
+            PlayerService playerService = CreatePlayerService();
+            var player = _service.GetPlayerByHasBalance();
+            return Ok(player);
 
-                //Admin Get active players
-                [Authorize(Roles = "Admin, SuperAdmin")]
-                [Route("api/Player/admin/active")]
-                public IHttpActionResult GetActivePlayers()
-                {
-                    var player = _service.GetActivePlayers();
-                    return Ok(player);
-                }
+            //Do we want to go with BankTransaction for last date of activity
+            //Do we want to return the player information or BadRequest
+            //Go off of DateTimeOfBet
+            //if (!playerService.CheckActiveStatus(player))
+            //{
+            //    return BadRequest("Your player status is inactive.");
+            //}
+            //else
+            //{
+            //    return Ok(player);
+            //}
+        }
 
-                //User creates player account
-                //[Authorize(Roles = "User")]
-                [HttpPost]
-                [Route("api/makePlayer")]
-                public IHttpActionResult Post(PlayerCreate player)  //*BRIAN* looks like it will never get beyond that first bool check with all the "else" returning "ok"
-                {
+        //Admin Get active players
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/Player/admin/active")]
+        public IHttpActionResult GetActivePlayers()
+        {
+            var player = _service.GetActivePlayers();
+            return Ok(player);
+        }
 
-                    if (!ModelState.IsValid)
+        //User creates player account
+        //[Authorize(Roles = "User")]
+        [HttpPost]
+        [Route("api/makePlayer")]
+        public IHttpActionResult Post(PlayerCreate player)  //*BRIAN* looks like it will never get beyond that first bool check with all the "else" returning "ok"
+        {
 
-                        return BadRequest(ModelState);
+            if (!ModelState.IsValid)
 
-                    var service = CreatePlayerService();
+                return BadRequest(ModelState);
 
-                    if (!service.CheckPlayer(player))
-                    //{
-                        return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
+            var service = CreatePlayerService();
 
-                    }
+            if (!service.CheckPlayer(player))
+                //{
+                return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
 
+       
                     if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
                     {
                         return BadRequest("You are not 21 and can not create a player.");
