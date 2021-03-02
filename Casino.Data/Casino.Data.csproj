@@ -135,6 +135,16 @@
       <DependentUpon>202102272059438_Test.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Casino.Models\Casino.Models.csproj">
+      <Project>{5866ceef-9ced-499c-8b00-29ace0ac5b4c}</Project>
+      <Name>Casino.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Casino.WebApi\Casino.WebApi.csproj">
+      <Project>{fd7ef609-fe6a-4807-b5ea-03054baf33fa}</Project>
+      <Name>Casino.WebApi</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
