@@ -10,12 +10,42 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Stripe;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System.Configuration;
+using System.Net.Mail;
+using Casino.Data;
 
 namespace Casino.WebApi.Controllers
 {
     [Authorize]
     public class BankTransactionController : ApiController
     {
+        public void SendEmail(BankTransactionCreate bankTransaction)
+        {
+
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("bluebadgecasino@gmail.com", "BlueCasino1979#"),
+                EnableSsl = true,
+            };
+            var amount = Convert.ToString(bankTransaction.BankTransactionAmount);
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var customer = Convert.ToString(userId);
+              
+            smtpClient.Send("bluebadgecasino@gmail.com", "bluebadgecasino@gmail.com", $"Player withdrawal : ${amount}", $"PlayerId: {customer} wishes to withdraw $ {amount}. Please initiate a bank transfer.");
+            //var sendGridClient = new SendGridClient("SG.JVPIC3c0Siqc3quTDF3eBA.1bNEIwA2jNG3ePahX6V0KpAK - ZHPdxfzWnpAQqHC5GA");
+            //var from = new EmailAddress("joshuaCHartman", "Joshua Hartman");
+            //var subject = "Withdraw from customer";
+            //var to = new EmailAddress("joshuachartman@gmail.com", "Back of House Accounting");
+            //var plainContent = "send money to customer";
+            //var htmlContent = "<h1>Withdrawal</h1>";
+            //var mailMessage = MailHelper.CreateSingleEmail(from, to, subject, plainContent, htmlContent);
+            //sendGridClient.SendEmailAsync(mailMessage);
+
+        }
+
         private BankTransactionService _bankService = new BankTransactionService();
         private BankTransactionService CreateBankTransactionService()
         {
@@ -77,7 +107,22 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             return Ok();
         }
-
+        //Post
+        [Authorize(Roles = "User")]
+        [Route("api/bank/playerWithdraw")]
+        public IHttpActionResult Withdraw(BankTransactionCreate bankTransaction)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var service = CreateBankTransactionService();
+           
+            SendEmail(bankTransaction);
+           
+            if (!service.CreateBankTransaction(bankTransaction))
+                return InternalServerError();
+            
+            return Ok("Your account withdrawal is being initiated.");
+        }
 
 
         //Delete

@@ -22,8 +22,8 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("CasinoAPI", "Index", "Help", new { area = "" }, null)</li>
-
-                    @* navbar title, create html in cart folder in view, cart controller *@
+                    <li>@Html.ActionLink("StripeAPI", "Index", "Help", new { area = "" }, null)</li>
+                    @* navbar title, create html in cart folder in view, cart htmlcontroller *@
                     <li>@Html.ActionLink("Buy Chips", "Create", "Cart", new { area = "" }, null)</li>
                 </ul>
             </div>

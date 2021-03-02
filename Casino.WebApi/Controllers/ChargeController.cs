@@ -21,58 +21,54 @@ namespace Casino.WebApi.Controllers
             return makeChargeService;
         }
 
-
-        [Route("pay")]
+        [Authorize(Roles = "User")]
+        [Route("charge_Async")]
         public async Task<dynamic> Pay(RevisedChargeModel charge)
         {
             return await MakeChargeService.ChargeAsync(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
         }
 
-
-        [Route("paySync")]
+        [Authorize(Roles = "User")]
+        [Route("charge_deposit_as_chips")]
         public IHttpActionResult Charge(RevisedChargeModel charge)
         {
             var newCharge = MakeChargeService.Charge(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
-            if (newCharge == true)
+            if (newCharge)
             {
                 MakeChargeService chargeService = CreateMakeChargeServiceForGuid();
-                // adds entry to Charge for Chips table AND Bank transaction Table AND Player Balance
+                // adds entry to ChargeForChips table AND BankTransaction Table AND Player table's PlayerBalance
                 chargeService.CreateChargeforChips(charge);
-                return Ok("charge made - check tables for test"); // put in message
+                return Ok($"charge made: $ {charge.Value/100} charged to your card, and ${charge.Value / 100} added to your player account"); // put in message
             }
             else
                 return InternalServerError(); // put in message
-
-
-
-
         }
 
         //GET api/values
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET api/values/5
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST api/values
-        public void Post([FromBody]string value)
-        {
-        }
+        //public void Post([FromBody]string value)
+        //{
+        //}
 
         // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+        //public void Put(int id, [FromBody]string value)
+        //{
+        //}
 
         // DELETE api/values/5
-        public void Delete(int id)
-        {
-        }
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

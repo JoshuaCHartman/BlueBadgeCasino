@@ -55,7 +55,7 @@ namespace Casino.Services
 
                     
                         var bankService = new BankTransactionService();
-                        if (!bankService.CreateBankTransaction(bankModel))
+                        if (!bankService.CreateBankTransactionCharge(bankModel))
                             { return false; }
                         return true;
                     }

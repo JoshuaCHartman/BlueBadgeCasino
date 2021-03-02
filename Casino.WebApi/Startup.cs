@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using Casino.Data;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -18,10 +19,12 @@ namespace Casino.WebApi
         {
             ConfigureAuth(app);
 
+
             // run startup SEED method below (will not populate if roles already created)
             //CreateDefaultRolesAndUsers();
         }
-       
+        public static readonly HttpClient HttpClient = new HttpClient();
+
         // STRIPE startup - remove if not using new version
         // public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         //{
@@ -41,7 +44,7 @@ namespace Casino.WebApi
             CreatePlayer();
 
             // test save changes on seed methods to eliminate need to udpate-database after first run
-             // _db.SaveChanges();
+            // _db.SaveChanges();
         }
 
         public void CreateSuperAdmin()
@@ -149,7 +152,7 @@ namespace Casino.WebApi
             // bring in roleManager and userManager from entity framework 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
-            
+
 
             IdentityRole role = new IdentityRole();
             if (!roleManager.RoleExists("User"))
