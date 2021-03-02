@@ -38,9 +38,12 @@ namespace Casino.Models {
 
         [Required]
         [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
+        //public DateTime PlayerDob { get; set; }
         public string PlayerDob { get; set; }
-            
+
         public DateTimeOffset AccountCreated { get; set; }
+
+        public bool IsActive { get; set; } = true;
 
         //public bool IsActive { get; set; }
 
@@ -48,17 +51,17 @@ namespace Casino.Models {
 
         //public double CurrentBankBalance { get; set; }
 
-       // public virtual List<BankTransaction> BankTransactions { get; set; }
+        // public virtual List<BankTransaction> BankTransactions { get; set; }
 
         //public virtual List<Bet> Bets { get; set; }
 
-        
+
         //public bool EligibleForReward { get; set; }
 
-        
+
         //public bool AgeVerification { get; set; }
 
-        
+
         //public DateTimeOffset CreatedUtc { get; set; }
 
         //public DateTimeOffset? ModifiedUtc { get; set; }

@@ -35,7 +35,5 @@ namespace Casino.Models
             if (payout > 0) { wonGame = true; } else { wonGame = false; }
             return wonGame;
         }
-
-        
     }
 }

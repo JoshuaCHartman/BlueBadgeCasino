@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace Casino.Services
 {
     public class GameService
     {
+
+
         public GameService(Guid userId)
         {
             _userId = userId;
@@ -45,20 +48,71 @@ namespace Casino.Services
                 var query =
                     ctx
                         .Games
-                        .Where(e => e.GameId > -1)
+                        .Where(e => e.GameId > -1 )
                         .Select(
                             e =>
                                 new GameListItem
                                 {
                                     GameId = e.GameId,
                                     GameName = e.GameName,
-                                    TypeOfGame = e.TypeOfGame
-
+                                    TypeOfGame = e.TypeOfGame,
+                                    MinBet = e.MinBet,
+                                    MaxBet = e.MaxBet
                                 }
                         );
 
                 return query.ToArray();
             }
+        }
+
+        public IEnumerable<GameListItem> GetGamesPlayer(Guid id) //Limit for players with access to HS games
+        {
+            bool highStakes = HighStakes(id);
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Games
+                        .Where(e => e.IsHighStakes == highStakes)
+                        .Select(
+                            e =>
+                                new GameListItem
+                                {
+                                    GameId = e.GameId,
+                                    GameName = e.GameName,
+                                    TypeOfGame = e.TypeOfGame,
+                                    MinBet = e.MinBet,
+                                    MaxBet = e.MaxBet
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
+        private bool HighStakes(Guid id)
+        {
+            bool stakes = false;
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .Players
+                        .Where(e => e.PlayerId == id)
+                        .Select(
+                            e =>
+                                new Player
+                                {
+                                    HasAccessToHighLevelGame = e.HasAccessToHighLevelGame
+                                }
+                        );
+                stakes = Convert.ToBoolean(query.ToString());
+            }
+
+            return stakes;
+
         }
 
         public GameListItem GetGameById(int id)
@@ -80,9 +134,8 @@ namespace Casino.Services
             }
         }
 
-
         //GamePlay
-        public double PlayGame(int id, double betAmt)
+        public double PlayGame(int id, double betAmt) //, double bankBalance
         {
             double amount = 0;
             var game = new GameService();
@@ -139,6 +192,7 @@ namespace Casino.Services
 
                     break;
                 default:
+                    payout = game.baseGame();
                     break;
             }
 
@@ -148,6 +202,7 @@ namespace Casino.Services
 
             return amount;
         }
+
         Random r = new Random();
         private int sum = 0;
         public double payout = 0;
@@ -239,7 +294,7 @@ namespace Casino.Services
         private int EvaluateBaccarat(List<int> hand)
         {
             sum = 0;
-            foreach (int c in hand)
+            for (int c = 0; c < hand.Count; c++)
             {
                 int card = hand[c];
                 hand.Remove(card);
@@ -331,7 +386,7 @@ namespace Casino.Services
         private int EvaluateBlackjack(List<int> hand)
         {
             sum = 0;
-            foreach (int c in hand)
+            for (int c = 0; c < hand.Count; c++)
             {
                 int card = hand[c];
                 hand.Remove(card);
@@ -343,6 +398,7 @@ namespace Casino.Services
 
             return sum;
         }
+        
 
         private int EvaluateAces(List<int> hand)
         {

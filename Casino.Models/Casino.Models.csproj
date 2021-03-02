@@ -105,12 +105,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Casino.Data\Casino.Data.csproj">
-      <Project>{29217a3a-c469-4bd6-ab29-78cf40e5d861}</Project>
-      <Name>Casino.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
