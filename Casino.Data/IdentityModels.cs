@@ -48,6 +48,8 @@ namespace Casino.Data
 
         public DbSet<BankTransaction> BankTransactions { get; set; }
 
+        public DbSet<ChargeForChips> ChargesForChips { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder

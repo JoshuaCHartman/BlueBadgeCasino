@@ -22,12 +22,13 @@ namespace Casino.Services
             _playerGuid = userGuid;
         }
         //Create
-        public bool CreateBankTransaction(BankTransactionCreate model)
+        public bool CreateBankTransactionCharge(BankTransactionCreate model)
         {
             //maybe return the model and player balance instead of bool
             var entity = new BankTransaction()
             {
-                PlayerId = _playerGuid,
+               // PlayerId = _playerGuid,
+               PlayerId = model.PlayerId,
                 BankTransactionAmount = model.BankTransactionAmount,
                 DateTimeOfTransaction = DateTimeOffset.Now
 
@@ -35,7 +36,29 @@ namespace Casino.Services
             using (var ctx = new ApplicationDbContext())
             {
                 ctx.BankTransactions.Add(entity);
-                if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance(_playerGuid, model.BankTransactionAmount))
+                if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance/*(_playerGuid,*/(model.PlayerId, model.BankTransactionAmount)) // _playerGuid = model.PlayerId
+                { return true; }
+                return false;
+            }
+
+        }
+
+        // Default method (no charge, only affects bankTransaction table and player account)
+        public bool CreateBankTransaction(BankTransactionCreate model)
+        {
+            //maybe return the model and player balance instead of bool
+            var entity = new BankTransaction()
+            {
+                PlayerId = _playerGuid,
+                //PlayerId = model.PlayerId,
+                BankTransactionAmount = model.BankTransactionAmount,
+                DateTimeOfTransaction = DateTimeOffset.Now
+
+            };
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.BankTransactions.Add(entity);
+                if (ctx.SaveChanges() != 0 && UpdatePlayerBankBalance(_playerGuid, model.BankTransactionAmount)) // _playerGuid = model.PlayerId
                 { return true; }
                 return false;
             }
