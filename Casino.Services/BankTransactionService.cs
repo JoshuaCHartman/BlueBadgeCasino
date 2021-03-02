@@ -21,7 +21,8 @@ namespace Casino.Services
         {
             _playerGuid = userGuid;
         }
-        //Create
+        //Create 
+        // FOR USE IN CHARGING CREDIT CARD
         public bool CreateBankTransactionCharge(BankTransactionCreate model)
         {
             //maybe return the model and player balance instead of bool

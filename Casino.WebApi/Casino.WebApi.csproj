@@ -233,6 +233,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\ChargeForChipsController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\BankTransactionController.cs" />
     <Compile Include="Controllers\BetController.cs" />

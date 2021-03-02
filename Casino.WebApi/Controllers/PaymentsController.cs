@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+// Delete!! 03/02 jch
 // DELETE IF NOT USING NEW IMPLEMENTATION OF STRIPE 
 
 namespace Casino.WebApi.Controllers

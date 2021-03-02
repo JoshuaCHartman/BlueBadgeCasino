@@ -27,7 +27,7 @@ namespace Casino.Services
         }
 
 
-        //Create - return bool to use in if/else endpoint
+        //Create - return bool to use in if/else endpoint - flow to tables
         public bool CreateChargeforChips(RevisedChargeModel chargeModel)
         {
             // make a charge
@@ -69,7 +69,7 @@ namespace Casino.Services
         //then make entry into bank transaction at endpoint
 
 
-
+        // async standalone charge method 
         public static async Task<dynamic> ChargeAsync(string cardNumber, long month, long year, string cvc, string zip, int value)
         {
             try
@@ -139,10 +139,6 @@ namespace Casino.Services
         }
 
         // standard not-async method
-
-
-
-
         public static bool Charge(string cardNumber, long month, long year, string cvc, string zip, int value)
         {
             try
@@ -203,7 +199,98 @@ namespace Casino.Services
             //return null;
         }
 
+        //Return
+        public IEnumerable<ChargeForChipsListItem> PlayerGetChargeTransactions()//PlayerGetCharges(int playerId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .ChargesForChips
+                        .Where(e => e.PlayerId == _playerGuid)
+                                                .Select(
+                            e =>
+                                new ChargeForChipsListItem
+                                {
 
+                                    PlayerId = e.PlayerId,
+                                    ChargeTime = e.ChargeTime,
+                                    ChargeAmount = e.ChargeAmount,
+                                    ChargeId = e.ChargeId,
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
+        public ChargeForChipsListItem GetChargeTransactionById(int id) //if this looks identical to BetListItem we can call that model instead of having 2
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .ChargesForChips
+                        .Single(e => e.PlayerId == _playerGuid && e.ChargeId == id);
+                return
+                    new ChargeForChipsListItem
+
+                    {
+                        PlayerId = entity.PlayerId,
+                        ChargeTime = entity.ChargeTime,
+                        ChargeAmount = entity.ChargeAmount,
+                        ChargeId = entity.ChargeId,
+
+                    };
+            }
+        }
+
+        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions()//PlayerGetBets(int playerId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .ChargesForChips
+                        .Where(e => e.ChargeId > -1)
+                                                .Select(
+                            e =>
+                                new ChargeForChipsListItem
+                                {
+
+                                    PlayerId = e.PlayerId,
+                                    ChargeTime = e.ChargeTime,
+                                    ChargeAmount = e.ChargeAmount,
+                                    ChargeId = e.ChargeId,
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
+
+        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions(Guid guid)//PlayerGetBets(int playerId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx
+                        .ChargesForChips
+                        .Where(e => e.PlayerId == guid)
+                        .Select(e =>
+                                new ChargeForChipsListItem
+                                {
+
+                                    PlayerId = e.PlayerId,
+                                    ChargeTime = e.ChargeTime,
+                                    ChargeAmount = e.ChargeAmount,
+                                    ChargeId = e.ChargeId,
+                                }
+                        );
+
+                return query.ToArray();
+            }
+        }
     }
 }
 

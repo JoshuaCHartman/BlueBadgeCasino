@@ -14,11 +14,62 @@ namespace Casino.WebApi.Controllers
     [Authorize]
     public class ChargeController : ApiController
     {
+
+        // UNIQUE STRIPE CHARGE CONTROLLER AT BOTTOM
+
+
+        private MakeChargeService _makeChargeService = new MakeChargeService();
         private MakeChargeService CreateMakeChargeServiceForGuid()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var makeChargeService = new MakeChargeService(userId);
             return makeChargeService;
+        }
+
+        //Get
+        //Get all by logged in Player
+        [Authorize(Roles = "User")]
+        [Route("api/charges/player")]
+        public IHttpActionResult Get()
+        {
+            MakeChargeService chargeTransactionService = CreateMakeChargeServiceForGuid();
+            var chargeTransactions = chargeTransactionService.PlayerGetChargeTransactions();
+            return Ok(chargeTransactions);
+        }
+
+        //Get by id for logged in player
+        [Authorize(Roles = "User")]
+        [Route("api/charges/player/{id}")]
+
+        public IHttpActionResult GetById(int id)
+        {
+            MakeChargeService chargeTransactionService = CreateMakeChargeServiceForGuid();
+            var chargeTransactions = chargeTransactionService.GetChargeTransactionById(id);
+
+            return Ok(chargeTransactions);
+        }
+
+        //Get all by Admin for Specific player
+        [HttpGet]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/charges/admin/{guidAsString}")]
+        public IHttpActionResult Get(string guidAsString)
+        {
+            Guid guid = Guid.Parse(guidAsString);
+
+            var chargeTransactions = _makeChargeService.AdminGetChargeTransactions(guid);
+            return Ok(chargeTransactions);
+        }
+
+        //Get all by Admin
+        [HttpGet]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/charges/admin")]
+        public IHttpActionResult GetAll()
+        {
+
+            var chargeTransactions = _makeChargeService.AdminGetChargeTransactions();
+            return Ok(chargeTransactions);
         }
 
         [Authorize(Roles = "User")]
