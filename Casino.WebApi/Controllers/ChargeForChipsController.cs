@@ -7,6 +7,8 @@ using System.Web.Http;
 
 namespace Casino.WebApi.Controllers
 {
+    // DELETE 03/02 jch
+
     public class ChargeForChipsController : ApiController
     {
 
