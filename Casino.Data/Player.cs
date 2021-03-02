@@ -49,11 +49,30 @@ namespace Casino.Data
 
         [Required]
         public DateTimeOffset AccountCreated { get; set; }
-        
+
 
         public TierStatus TierStatus { get; set; } = TierStatus.bronze;
-
-        public bool IsActive { get; set; }
+        private bool _isActive;
+        public bool IsActive
+        {
+            get
+            {
+                //if (this.IsActive != false)
+                {
+                    //bool test;
+                    TimeSpan accountCreate = DateTime.Now - AccountCreated;
+                    if (accountCreate.TotalDays < 180)
+                    {
+                        _isActive = true;
+                        return true;
+                    }
+                    _isActive = false;
+                    return false;
+                }
+                //return false;
+            }
+            set { _isActive = value; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
+        }
 
         public bool HasAccessToHighLevelGame { get; set; }
 
@@ -71,6 +90,8 @@ namespace Casino.Data
         //public DateTimeOffset CreatedUtc { get; set; }
 
         //public DateTimeOffset? ModifiedUtc { get; set; }
+
+        
     }
 
 }

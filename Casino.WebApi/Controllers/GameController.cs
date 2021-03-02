@@ -32,10 +32,10 @@ namespace Casino.WebApi.Controllers
             return Ok(games);
         }
 
-        //Player Get - Look at bet controller
+        //Player Get
         [Route("api/PlayerGames")]
         [HttpGet]
-        public IHttpActionResult PlayerGet() //Not sure on this one... how do we get the Guid w/o needing the player to load it
+        public IHttpActionResult PlayerGet()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             GameService gameService = CreateGameService();

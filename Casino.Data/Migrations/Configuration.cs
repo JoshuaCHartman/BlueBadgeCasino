@@ -84,6 +84,7 @@
                 PlayerLastName = "Player",
                 PlayerEmail = "abcdef",
                 PlayerDob = "01012000",
+                CurrentBankBalance = 1000,
                 AccountCreated = DateTimeOffset.Now
             },
             new Player()
