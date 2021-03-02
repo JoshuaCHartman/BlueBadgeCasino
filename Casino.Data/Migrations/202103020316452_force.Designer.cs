@@ -7,18 +7,18 @@ namespace Casino.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class Test : IMigrationMetadata
+    public sealed partial class force : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Test));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(force));
         
         string IMigrationMetadata.Id
         {
-            get { return "202102272059438_Test"; }
+            get { return "202103020316452_force"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return null; }
+            get { return Resources.GetString("Source"); }
         }
         
         string IMigrationMetadata.Target

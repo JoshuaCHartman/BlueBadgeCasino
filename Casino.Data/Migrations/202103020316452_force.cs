@@ -1,0 +1,18 @@
+﻿namespace Casino.Data.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class force : DbMigration
+    {
+        public override void Up()
+        {
+            DropColumn("dbo.Player", "IsActive");
+        }
+        
+        public override void Down()
+        {
+            AddColumn("dbo.Player", "IsActive", c => c.Boolean(nullable: false));
+        }
+    }
+}
