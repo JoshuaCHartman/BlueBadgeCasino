@@ -47,8 +47,9 @@ namespace Casino.WebApi.Controllers
             //}
             //else
             //{
-            return Ok(player);
-            //}
+
+                return Ok(player);
+           
         }
 
 
@@ -165,7 +166,7 @@ namespace Casino.WebApi.Controllers
                 //[Authorize(Roles = "User")]
                 [HttpPost]
                 [Route("api/makePlayer")]
-                public IHttpActionResult Post(PlayerCreate player)
+                public IHttpActionResult Post(PlayerCreate player)  //*BRIAN* looks like it will never get beyond that first bool check with all the "else" returning "ok"
                 {
 
                     if (!ModelState.IsValid)
@@ -175,8 +176,9 @@ namespace Casino.WebApi.Controllers
                     var service = CreatePlayerService();
 
                     if (!service.CheckPlayer(player))
-                    {
+                    //{
                         return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
+
                     }
 
                     if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
@@ -188,7 +190,7 @@ namespace Casino.WebApi.Controllers
                     {
                         return InternalServerError();
                     }
-                    else
+                   // else
                         return Ok();
                 }
 

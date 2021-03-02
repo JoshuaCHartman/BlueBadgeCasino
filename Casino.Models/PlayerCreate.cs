@@ -44,62 +44,7 @@ namespace Casino.Models {
         public DateTimeOffset AccountCreated { get; set; }
 
 
-
-
-        public bool IsActive
-        {
-            get
-            {
-                //if (this.IsActive != false)
-                {
-                    //bool test;
-                    TimeSpan accountCreate = DateTime.Now - AccountCreated;
-                    if (accountCreate.TotalDays < 180)
-                    {
-                        IsActive = true;
-                        return true;
-                    }
-                    IsActive = false;
-                    return false;
-                }
-                //return false;
-            }
-            set { IsActive = value; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
-        }
-
-        //public bool IsActive
-        //{
-        //    get
-        //    {
-        //        //if (this.IsActive != false)
-        //        {
-        //            //bool test;
-        //            TimeSpan accountCreate = DateTime.Now - AccountCreated;
-        //            if (accountCreate.TotalDays < 180)
-        //            {
-        //                _isActive = true;
-        //                return true;
-        //            }
-        //            _isActive = false;
-        //            return false;
-        //        }
-        //        //return false;
-        //    }
-        //    set { _isActive = value; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
-        //}
-
-        //public bool IsActive
-        //{
-        //    get
-        //    {
-        //        TimeSpan accountCreate = (DateTime.Now - AccountCreated.UtcDateTime);
-        //        if (accountCreate.TotalDays < 180)
-        //            IsActive = true;
-        //        IsActive = false;
-        //        return IsActive;
-        //    }
-        //    set {  }
-        //}
+        public bool IsActive { get; set; }// = true;
 
         //public bool IsActive { get; set; }
 
