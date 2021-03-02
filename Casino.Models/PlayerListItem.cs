@@ -1,4 +1,4 @@
-﻿using Casino.Data;
+﻿ using Casino.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
