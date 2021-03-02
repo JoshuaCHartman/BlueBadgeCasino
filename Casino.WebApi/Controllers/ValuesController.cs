@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
+// delete if not using jch 03/02
 namespace Casino.WebApi.Controllers
 {
     [Authorize]

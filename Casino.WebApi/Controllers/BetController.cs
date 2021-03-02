@@ -10,7 +10,10 @@ using System.Web.Http;
 
 namespace Casino.WebApi.Controllers
 {
-    [Authorize] //do we need this if we don't use Guid.  Do we need this for PlayerController?
+    // can add [RoutePrefix("api/bet")] below first (topmost) [Authorize] and then each endpoint route can be shortened to for example
+    // [Route("player")] for Get ALL by Player
+
+    [Authorize] //do we need this if we don't use Guid.  Do we need this for PlayerController? // Yup -JCH
     public class BetController : ApiController
     {
         private BetService _service = new BetService(); // Can we do this instead of the private method way below?

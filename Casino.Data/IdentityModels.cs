@@ -26,7 +26,8 @@ namespace Casino.Data
         public ApplicationDbContext()
             // Using test db PrivateConn.config connection string
 
-            : base("Eric3", throwIfV1Schema: false)
+            : base("JoshTest3", throwIfV1Schema: false)
+
         {
         }
         
@@ -44,6 +45,8 @@ namespace Casino.Data
         public DbSet<Game> Games { get; set; }
 
         public DbSet<BankTransaction> BankTransactions { get; set; }
+
+        public DbSet<ChargeForChips> ChargesForChips { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
