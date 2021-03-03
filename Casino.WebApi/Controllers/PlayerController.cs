@@ -179,7 +179,7 @@ namespace Casino.WebApi.Controllers
                     //{
                         return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
 
-                    }
+                    
 
                     if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
                     {

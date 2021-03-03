@@ -72,7 +72,7 @@ namespace Casino.Services
 
         //    }
         //}
-
+ 
         //public bool CheckActiveStatus(PlayerDetail player)
         //{
         //    using (var ctx = new ApplicationDbContext())
@@ -96,7 +96,7 @@ namespace Casino.Services
         //        }
         //    }
         //}           
-
+        
         public bool CheckPlayer(PlayerCreate player)
         {   //Birthdate is not entered or correctly or legal age is not acceptable
             if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
