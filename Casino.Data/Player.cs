@@ -55,7 +55,7 @@ namespace Casino.Data
         private bool _isActive;
         public bool IsActive
         {
-            get
+            set
             {
                 //if (this.IsActive != false)
                 {
@@ -64,14 +64,14 @@ namespace Casino.Data
                     if (accountCreate.TotalDays < 180)
                     {
                         _isActive = true;
-                        return true;
+                        //return true;
                     }
                     _isActive = false;
-                    return false;
+                    //return false;
                 }
                 //return false;
             }
-            set { _isActive = value; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
+            get { return _isActive; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
         }
 
         public bool HasAccessToHighLevelGame { get; set; }
