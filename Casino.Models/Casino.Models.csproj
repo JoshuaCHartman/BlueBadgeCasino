@@ -85,7 +85,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankTransactionListItem.cs" />
     <Compile Include="BetResult.cs" />
+    <Compile Include="ChargeForChipsListItem.cs" />
     <Compile Include="GetBetByParameters.cs" />
     <Compile Include="PlayerCreate.cs" />
     <Compile Include="PlayerDetail.cs" />
