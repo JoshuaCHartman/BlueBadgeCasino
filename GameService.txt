@@ -1,4 +1,4 @@
-﻿using Casino.Data;
+using Casino.Data;
 using Casino.Models;
 using System;
 using System.Collections.Generic;
@@ -100,11 +100,15 @@ namespace Casino.Services
                 var query =
                     ctx
                         .Players
-                        .Single(e => e.PlayerId == id);
-                        
-
-                stakes = query.HasAccessToHighLevelGame;
-                
+                        .Where(e => e.PlayerId == id)
+                        .Select(
+                            e =>
+                                new Player
+                                {
+                                    HasAccessToHighLevelGame = e.HasAccessToHighLevelGame
+                                }
+                        );
+                stakes = Convert.ToBoolean(query.ToString());
             }
 
             return stakes;
@@ -209,7 +213,7 @@ namespace Casino.Services
                     payout = game.Craps(pass);
                     break;
                 case "roulette":
-
+                    
                     // for Red/Black use 0/1
                     List<int> betValue = new List<int>();
 

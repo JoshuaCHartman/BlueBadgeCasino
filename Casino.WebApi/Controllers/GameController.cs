@@ -43,6 +43,28 @@ namespace Casino.WebApi.Controllers
             return Ok(games);
         }
 
+
+        //Player Bet Limits
+        [Route("api/Play")]
+        [HttpGet]
+        public IHttpActionResult BetLimits(double playerBet)
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            GameService gameService = CreateGameService();
+            var games = gameService.GetGamesPlayer(userId);
+
+            var min = Convert.ToDouble(games.ToArray()[3]);
+            var max = Convert.ToDouble(games.ToArray()[4]);
+
+            var bet = playerBet;
+
+            if (bet >= min && bet <= max)
+            {
+                return Ok();
+            }
+            else { return BadRequest("Bet must be within game limits."); }
+        }
+
         //Get by ID
         [HttpGet]
         public IHttpActionResult GetById(int id)
@@ -53,6 +75,29 @@ namespace Casino.WebApi.Controllers
         }
         //Put
         [HttpPut]
+        public IHttpActionResult UpdateBetLimits(int gameId, double min, double max)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            GameService gameService = CreateGameService();
+            var game = gameService.GetGameById(gameId);
+
+            if(game is null) { return BadRequest("Game not found"); }
+
+            game.MinBet = min;
+            game.MaxBet = max;
+
+            return Ok();
+        }
+
+
+
+
+
+
         private GameService CreateGameService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
