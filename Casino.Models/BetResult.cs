@@ -1,6 +1,4 @@
-﻿
-
-namespace Casino.Models
+﻿namespace Casino.Models
 {
     public class BetResult
     {
