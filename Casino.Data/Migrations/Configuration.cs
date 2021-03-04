@@ -3,7 +3,6 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -27,9 +26,11 @@
 
 
             string guidAsStringOfHouse = GetGuidOfSeededUser("house@casino.com");
-            string guidAsStringOfUser = GetGuidOfSeededUser("abcdef");
-            // context.Games.AddOrUpdate(x => x.GameId,
-            //    new Game() { GameId = 1, GameName = "BlackJack" });
+            string guidAsStringOfUser1 = GetGuidOfSeededUser("user1@abc.com");
+            string guidAsStringOfUser2 = GetGuidOfSeededUser("user2@abc.com");
+            string guidAsStringOfUser3 = GetGuidOfSeededUser("user3@abc.com");
+            string guidAsStringOfUser4 = GetGuidOfSeededUser("user4@abc.com");
+
 
             //Add Games On Startup
             context.Games.AddOrUpdate(x => x.GameId,
@@ -46,46 +47,58 @@
             //context.Games.AddOrUpdate(x => x.GameId,
             //   new Game() {GameId = 11, GameName = "Russian Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = , MaxBet = 0 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 6, GameName = "Baccarat", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 6, GameName = "Baccarat", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 7, GameName = "Blackjack", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 7, GameName = "Blackjack", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 8, GameName = "Craps", TypeOfGame = GameType.Dice, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 8, GameName = "Craps", TypeOfGame = GameType.Dice, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 9, GameName = "Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 9, GameName = "Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 10, GameName = "Keno", TypeOfGame = GameType.Random_Num, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 10, GameName = "Keno", TypeOfGame = GameType.Random_Num, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
 
 
-            context.Players.AddOrUpdate(x => x.PlayerId,
-            //new Player()
-            //{
-            //    PlayerId = Guid.Parse("6c17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Jon", PlayerLastName = "Dikteruk",
-            //    PlayerEmail = "jd@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
-            //},
-            //new Player()
-            //{
-            //    PlayerId = Guid.Parse("1b17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Fake", PlayerLastName = "One",
-            //    PlayerEmail = "f1@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
-            //},
-            //new Player()
-            //{
-            //    PlayerId = Guid.Parse("2b17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Fake", PlayerLastName = "Two",
-            //    PlayerEmail = "f2@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
-            //}, new Player()
-            //{
-            //    PlayerId = Guid.Parse("3b17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Fake", PlayerLastName = "Three",
-            //    PlayerEmail = "f3@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
-            //},
+            context.Players.AddOrUpdate(x => x.PlayerFirstName,
+
             new Player()
             {
-                PlayerId = Guid.Parse(guidAsStringOfUser),
+                PlayerId = Guid.Parse(guidAsStringOfUser1),
                 PlayerFirstName = "First",
                 PlayerLastName = "Player",
-                PlayerEmail = "abcdef",
-                PlayerDob = "01012000",
+                PlayerEmail = "user1@abc.com",
+                PlayerDob = "01/01/2000",
                 CurrentBankBalance = 1000,
                 AccountCreated = DateTimeOffset.Now
+            },
+            new Player()
+            {
+                PlayerId = Guid.Parse(guidAsStringOfUser2),
+                PlayerFirstName = "Second",
+                PlayerLastName = "Player",
+                PlayerEmail = "user2@abc.com",
+                PlayerDob = "01/01/1990",
+                CurrentBankBalance = 2000,
+                AccountCreated = DateTimeOffset.Now
+            },
+            new Player()
+            {
+                PlayerId = Guid.Parse(guidAsStringOfUser3),
+                PlayerFirstName = "Third",
+                PlayerLastName = "Player",
+                PlayerEmail = "user3@abc.com",
+                PlayerDob = "01/01/1980",
+                CurrentBankBalance = 3000,
+                AccountCreated = new DateTime(2019, 12, 25)
+            },
+            new Player()
+            {
+                PlayerId = Guid.Parse(guidAsStringOfUser4),
+                PlayerFirstName = "Fourth",
+                PlayerLastName = "Player",
+                PlayerEmail = "user4@abc.com",
+                PlayerDob = "01/01/1970",
+                CurrentBankBalance = 4000,
+                AccountCreated = new DateTime(2020, 10, 10)              // DateTimeOffset.Now
             },
             new Player()
             {
@@ -100,29 +113,105 @@
             );
 
             context.Bets.AddOrUpdate(x => x.BetId,
-               //new Bet()
-               //{
-               //    BetId = 101, PlayerId = Guid.Parse("1b17382b787440438cf7f9da8f5a8873"), GameId = 1, BetAmount = 5, PayoutAmount = 5, DateTimeOfBet = DateTimeOffset.Now,
-               //},
-               //new Bet()
-               //{
-               //    BetId = 102, PlayerId = Guid.Parse("1b17382b787440438cf7f9da8f5a8873"), GameId = 1, BetAmount = 5, PayoutAmount = -5, DateTimeOfBet = DateTimeOffset.Now,
-               //},
-               //new Bet()
-               //{
-               //    BetId = 103, PlayerId = Guid.Parse("4544850e9f694fdba953116a21ae5c43"), GameId = 1, BetAmount = 15, PayoutAmount = 15, DateTimeOfBet = DateTimeOffset.Now,
-               //},
                new Bet()
                {
                    BetId = 1,
-                   PlayerId = Guid.Parse(guidAsStringOfUser),
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
                    GameId = 1,
                    BetAmount = 777,
                    PayoutAmount = 777,
                    DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 2,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = 777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 3,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = 777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 4,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = 777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 5,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = 777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 6,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = 777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 7,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = 777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 8,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = -777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 9,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = 777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 10,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = -777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 11,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 1,
+                   BetAmount = 777,
+                   PayoutAmount = -777,
+                   DateTimeOfBet = DateTimeOffset.Now,
                }
-
-
 
                 );
         }
@@ -263,25 +352,97 @@
 
 
                 // seed User 
-                ApplicationUser user = new ApplicationUser();
+                ApplicationUser user1 = new ApplicationUser();
+                ApplicationUser user2 = new ApplicationUser();
+                ApplicationUser user3 = new ApplicationUser();
+                ApplicationUser user4 = new ApplicationUser();
 
-                user.UserName = "ThirdSeedUserAccount";
-                user.Email = "abcdef";
-                user.EmailConfirmed = true;
+                user1.UserName = "user1";
+                user1.Email = "user1@abc.com";
+                user1.EmailConfirmed = true;
+
+                user2.UserName = "user2";
+                user2.Email = "user2@abc.com";
+                user2.EmailConfirmed = true;
+
+                user3.UserName = "user3";
+                user3.Email = "user3@abc.com";
+                user3.EmailConfirmed = true;
+
+                user4.UserName = "user4";
+                user4.Email = "user4@abc.com";
+                user4.EmailConfirmed = true;
 
                 // pass in new user and pwd
-                var Check = userManager.Create(user, "Test1!");
-                if (Check.Succeeded)
+                var Check1 = userManager.Create(user1, "Test1!");
+                var Check2 = userManager.Create(user2, "Test1!");
+                var Check3 = userManager.Create(user3, "Test1!");
+                var Check4 = userManager.Create(user4, "Test1!");
+
+               if (Check1.Succeeded)
                 {
-                    userManager.AddToRole(user.Id, "User");
+                    userManager.AddToRole(user1.Id, "User");
+                
+                }
+                else
+                {
+                    var exception = new Exception("Could not add default seed User");
+
+                    var enumerator = Check1.Errors.GetEnumerator();
+                    foreach (var error in Check1.Errors)
+                    {
+                        exception.Data.Add(enumerator.Current, error);
+                    }
+                    throw exception;
+
+                }
+                if (Check2.Succeeded)
+                {
+                                       userManager.AddToRole(user2.Id, "User");
+                 
+                }
+                else
+                {
+                    var exception = new Exception("Could not add default seed User");
+
+                    var enumerator = Check2.Errors.GetEnumerator();
+                    foreach (var error in Check2.Errors)
+                    {
+                        exception.Data.Add(enumerator.Current, error);
+                    }
+                    throw exception;
+
+                }
+
+                if (Check3.Succeeded)
+                {
+                    userManager.AddToRole(user3.Id, "User");
 
                 }
                 else
                 {
                     var exception = new Exception("Could not add default seed User");
 
-                    var enumerator = Check.Errors.GetEnumerator();
-                    foreach (var error in Check.Errors)
+                    var enumerator = Check3.Errors.GetEnumerator();
+                    foreach (var error in Check3.Errors)
+                    {
+                        exception.Data.Add(enumerator.Current, error);
+                    }
+                    throw exception;
+
+                }
+
+                if (Check4.Succeeded)
+                {
+                    userManager.AddToRole(user4.Id, "User");
+
+                }
+                else
+                {
+                    var exception = new Exception("Could not add default seed User");
+
+                    var enumerator = Check4.Errors.GetEnumerator();
+                    foreach (var error in Check4.Errors)
                     {
                         exception.Data.Add(enumerator.Current, error);
                     }
@@ -292,7 +453,7 @@
             }
         }
 
-
-
     }
+
 }
+

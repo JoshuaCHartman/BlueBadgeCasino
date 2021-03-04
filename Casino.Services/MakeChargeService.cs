@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Casino.Data;
 using Casino.Models;
@@ -9,13 +8,10 @@ using Casino.WebApi.Models;
 using Stripe;
 namespace Casino.Services
 {
-
     public class MakeChargeService
     {
         private readonly Guid _playerGuid;
         //private ApplicationDbContext _db = new ApplicationDbContext();
-
-        
 
         public MakeChargeService()
         {
@@ -26,22 +22,18 @@ namespace Casino.Services
             _playerGuid = userGuid;
         }
 
-
         //Create - return bool to use in if/else endpoint - flow to tables
         public bool CreateChargeforChips(RevisedChargeModel chargeModel)
         {
             // make a charge
-
-
             // use charge method
-
             //// if successful, make entry into charge table
           
                 var entityChips = new ChargeForChips()
                 {
                     PlayerId = _playerGuid,
                     ChargeTime = DateTimeOffset.Now,
-                    ChargeAmount = chargeModel.Value
+                    ChargeAmount = chargeModel.Value/100
                 };
                 using (var ctx = new ApplicationDbContext())
                 {
@@ -63,11 +55,9 @@ namespace Casino.Services
                     return false;
                 }
             
-
         }
 
         //then make entry into bank transaction at endpoint
-
 
         // async standalone charge method 
         public static async Task<dynamic> ChargeAsync(string cardNumber, long month, long year, string cvc, string zip, int value)
@@ -80,7 +70,7 @@ namespace Casino.Services
 
                 // capture card ( card is captured, sent to stripe, returned as token to charger to run payment
 
-                var optionsToken = new TokenCreateOptions
+                var tokenCreateOptions = new TokenCreateOptions
                 {
                     // TokenCardOptions changed from CreditCardOptions
 
@@ -96,34 +86,25 @@ namespace Casino.Services
                     }
                 };
 
-                var serviceToken = new TokenService();
-                Token stripeToken = await serviceToken.CreateAsync(optionsToken);
+                var tokenService = new TokenService();
+                Token newStripeToken = await tokenService.CreateAsync(tokenCreateOptions);
 
 
-                var options = new ChargeCreateOptions
+                var chargeOptions = new ChargeCreateOptions
                 {
                     Amount = value,
                     Currency = "usd",
                     Description = "test", // put playerId 
-                    Source = stripeToken.Id // generated token's id from the captured card
+                    Source = newStripeToken.Id // generated token's id from the captured card
 
                 };
 
                 // make the charge
                 var service = new ChargeService();
-                Charge charge = await service.CreateAsync(options);
+                Charge charge = await service.CreateAsync(chargeOptions);
 
                 if (charge.Paid)
                 {
-                    //ctx =>  add amount to bank transaction for player or move charge to bank transaction
-                    //var entity = new ChargeForChips()
-                    //{
-                    //    PlayerId = _playerGuid,
-                    //    BankTransactionAmount = model.BankTransactionAmount,
-                    //    DateTimeOfTransaction = DateTimeOffset.Now
-
-                    //};
-
                     return ($"Card successfully charged ${charge.Amount / 100}");
                 }
 
@@ -147,11 +128,11 @@ namespace Casino.Services
                 StripeConfiguration.ApiKey = "sk_test_51IPcYzEaVFltQHPezdflBTQkF7dWeii1TG5Du6Cvgc95VETYsz1VC0YzAmG2u" +
                     "XVoVIfHLypXdm8ghoqwgS0BLvfn00ZSfKjjZG";
 
-                // capture card ( card is captured, sent to stripe, returned as token to charger to run payment
+                // capture card ( card is captured, sent to stripe, returned as token to charge to run payment )
 
-                var optionsToken = new TokenCreateOptions
+                var tokenCreateOptions = new TokenCreateOptions
                 {
-                    // TokenCardOptions changed from CreditCardOptions
+                    // TokenCardOptions changed from CreditCardOptions in resources
 
                     Card = new TokenCardOptions
                     {
@@ -163,40 +144,34 @@ namespace Casino.Services
                     }
                 };
 
-                var serviceToken = new TokenService();
-                Token stripeToken = serviceToken.Create(optionsToken);
-
+                var tokenService = new TokenService();
+                Token newStripeToken = tokenService.Create(tokenCreateOptions);
 
                 var options = new ChargeCreateOptions
                 {
                     Amount = value,
                     Currency = "usd",
                     Description = "test", // put playerId 
-                    Source = stripeToken.Id // generated token's id from the captured card
+                    Source = newStripeToken.Id // generated token's id from the captured card
 
                 };
 
                 // make the charge
-                var service = new ChargeService();
-                Charge charge = service.Create(options);
+                var chargeService = new ChargeService();
+                Charge charge = chargeService.Create(options);
 
                 if (charge.Paid)
                 {
-
-                    //return ($"Card successfully charged ${ (charge.Amount/100)}");
                     return (true);
                 }
                 else { return false; };
 
             }
-            catch (Exception error)
+            catch (Exception)
             {
-
                 return (false);
             }
 
-            // return null to finish off code paths - should be changed to something better???
-            //return null;
         }
 
         //Return
@@ -224,7 +199,7 @@ namespace Casino.Services
             }
         }
 
-        public ChargeForChipsListItem GetChargeTransactionById(int id) //if this looks identical to BetListItem we can call that model instead of having 2
+        public ChargeForChipsListItem GetChargeTransactionById(int id) 
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -245,7 +220,7 @@ namespace Casino.Services
             }
         }
 
-        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions()//PlayerGetBets(int playerId)
+        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -269,7 +244,7 @@ namespace Casino.Services
             }
         }
 
-        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions(Guid guid)//PlayerGetBets(int playerId)
+        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions(Guid guid)
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -293,9 +268,3 @@ namespace Casino.Services
         }
     }
 }
-
-
-
-
-
-
