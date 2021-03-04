@@ -24,7 +24,8 @@
                     <li>@Html.ActionLink("CasinoAPI", "Index", "Help", new { area = "" }, null)</li>
                     
                     @* navbar title, create html in cart folder in view, cart htmlcontroller *@
-                    <li>@Html.ActionLink("OldStripeAPIMethod", "Create", "Cart", new { area = "" }, null)</li>
+                    @*<li>@Html.ActionLink("OldStripeAPIMethod", "Create", "Cart", new { area = "" }, null)</li>*@
+                    <li><a href="~/Views/Cart/Create.cshtml">OldStripe</a></li>
                 </ul>
             </div>
         </div>
