@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetResult.cs" />
+    <Compile Include="GameUpdate.cs" />
     <Compile Include="GetBetByParameters.cs" />
     <Compile Include="PlayerCreate.cs" />
     <Compile Include="PlayerDetail.cs" />

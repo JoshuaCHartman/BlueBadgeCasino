@@ -40,6 +40,22 @@ namespace Casino.Services
                 return ctx.SaveChanges() == 1;
             }
         }
+        public bool UpdateGame(GameUpdate model)
+        {
+            var entity =
+                new Game()
+                {
+                    GameId = model.GameId,
+                    MinBet = model.MinBet,
+                    MaxBet = model.MaxBet
+                };
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.Games.Add(entity);
+                return ctx.SaveChanges() == 1;
+            }
+        }
 
         public IEnumerable<GameListItem> GetGames()
         {
@@ -101,10 +117,10 @@ namespace Casino.Services
                     ctx
                         .Players
                         .Single(e => e.PlayerId == id);
-                        
+
 
                 stakes = query.HasAccessToHighLevelGame;
-                
+
             }
 
             return stakes;
@@ -155,30 +171,32 @@ namespace Casino.Services
             }
         }
 
-        public enum RouletteBetType
+        public enum BetType
         {
-            straight,
-            split,
-            street,
+            basket,
+            black,
+            column,
             corner,
             double_street,
-            trio,
-            basket,
-            low,
-            high,
-            red,
-            black,
-            even,
-            odd,
             dozen,
-            column,
-            snake
+            even,
+            high,
+            low,
+            no_pass,
+            odd,
+            pass,
+            red,
+            snake,
+            split,
+            straight,
+            street,
+            trio
         }
 
 
 
         //GamePlay
-        public double PlayGame(int id, double betAmt, string bType = "Pass")//, betValue = List<int>(0)
+        public double PlayGame(int id, double betAmt, bool highRoller, BetType bType = BetType.pass)//, betValue = List<int>(0)
         {
             double amount = 0;
             var game = new GameService();
@@ -186,83 +204,91 @@ namespace Casino.Services
             string gameName = game.GetGameById(id).GameName;
             double payout = 0;
 
-            //bet w/i limits
-            //catch if bet is w/i limits of game
+            //game bet limits
+            var min = game.GetGameById(id).MinBet;
+            var max = game.GetGameById(id).MaxBet;
 
-            switch (gameName.ToLower())
+            if (betAmt<min||betAmt>max) { return 0; }
+
+            else
             {
-                case "baccarat":
-                    payout = game.Baccarat();
-                    break;
-                case "blackjack":
-                    payout = game.Blackjack();
-                    break;
-                case "craps":
-                    //bool Pass or Don't Pass bet type
-                    //Not quite there yet
-                    bool pass;
-                    if (bType == "Pass")
-                    {
-                        pass = true;
-                    }
-                    else { pass = false; }
-                    payout = game.Craps(pass);
-                    break;
-                case "roulette":
+                var stakes = highRoller;
 
-                    // for Red/Black use 0/1
-                    List<int> betValue = new List<int>();
+                switch (gameName.ToLower())
+                {
+                    case "baccarat":
+                        payout = game.Baccarat();
+                        break;
+                    case "blackjack":
+                        payout = game.Blackjack();
+                        break;
+                    case "craps":
+                        //bool Pass or Don't Pass bet type
+                        //Not quite there yet
+                        bool pass;
+                        if (bType == BetType.pass)
+                        {
+                            pass = true;
+                        }
+                        else { pass = false; }
+                        payout = game.Craps(pass);
+                        break;
+                    case "roulette":
 
-                    payout = game.Roulette(bType, betValue);
-                    break;
-                case "keno":
-                    //List<int> from "player selection" range = 1-80; up to 20 #'s selected - let's use 10 #'s
-                    List<int> playerNums = new List<int>();
+                        // for Red/Black use 0/1
+                        List<int> betValue = new List<int>();
 
-
-
-
-                    payout = game.Keno(playerNums);
-                    break;
-                case "russian roulette":
-                    //need to get userId....
-
-                    double amt = PlayerBalance(_userId);
-                    payout = game.RussianRoulette();
-                    //Get player bank balance
-                    break;
-                default:
-                    //switch on gameType
-
-                    var type = GetGameById(id).TypeOfGame;
-
-                    switch (type.ToString().ToLower())
-                    {
-                        case "dice":
-                            payout = game.baseDice();
-                            break;
-                        case "wheel":
-                            payout = game.baseWheel();
-                            break;
-                        case "random_num":
-                            int numPick = r.Next(1, 10); //player selects num
-                            payout = game.baseRandNum(numPick);
-                            break;
-                        default:
-                            payout = baseGame();
-                            break;
-                    }
+                        payout = game.Roulette(bType, betValue);
+                        break;
+                    case "keno":
+                        //List<int> from "player selection" range = 1-80; up to 20 #'s selected - let's use 10 #'s
+                        List<int> playerNums = new List<int>();
 
 
-                    payout = game.baseGame();
-                    break;
+
+
+                        payout = game.Keno(playerNums);
+                        break;
+                    case "russian roulette":
+                        //need to get userId....
+
+                        double amt = PlayerBalance(_userId);
+                        payout = game.RussianRoulette();
+                        //Get player bank balance
+                        break;
+                    default:
+                        //switch on gameType
+
+                        var type = GetGameById(id).TypeOfGame;
+
+                        switch (type.ToString().ToLower())
+                        {
+                            case "dice":
+                                payout = game.baseDice();
+                                break;
+                            case "wheel":
+                                payout = game.baseWheel();
+                                break;
+                            case "random_num":
+                                int numPick = r.Next(1, 10); //player selects num
+                                payout = game.baseRandNum(numPick);
+                                break;
+                            default:
+                                payout = baseGame();
+                                break;
+                        }
+
+
+                        payout = game.baseGame();
+                        break;
+                }
+
+                if (payout > 0) { amount = payout * betAmt; }
+                else if (payout < 0) { }//accountDelete
+                else { amount = -1 * betAmt; }
+
+                return amount;
             }
-
-            if (payout > 0) { amount = payout * betAmt; }
-            else if (payout < 0) { }//accountDelete
-            else { amount = -1 * betAmt; }
-
-            return amount;
         }
 
         Random r = new Random();
@@ -658,7 +684,7 @@ namespace Casino.Services
             return payout;
         }
 
-        public double Roulette(string betType, List<int> betValue) //betValue = player's choice (ie Red, 7, 3rd Street, etc...)
+        public double Roulette(BetType betType, List<int> betValue) //betValue = player's choice (ie Red, 7, 3rd Street, etc...)
         {
             List<int> targetRange = new List<int>();
             Dictionary<int, string> rouletteWheel = RouletteWheel();
@@ -666,7 +692,7 @@ namespace Casino.Services
             int winNum = Spin(rouletteWheel.Count());
             string winColor = rouletteWheel[winNum];
 
-            switch (betType.ToLower())
+            switch (betType.ToString())
             {
                 case "straight":
                     if (betValue[0] == winNum) { payout = 35; } else { payout = 0; }
@@ -707,18 +733,18 @@ namespace Casino.Services
                     if (targetRange == betValue) { payout = 6; } else { payout = 0; }
                     break;
                 case "high low":
-                    if (betType.ToLower() == "high" && betValue[0] == 0) { payout = 1; }
-                    else if (betType.ToLower() == "low" && betValue[0] == 1) { payout = 1; }
+                    if (betType.ToString() == "high" && betValue[0] == 0) { payout = 1; }
+                    else if (betType.ToString() == "low" && betValue[0] == 1) { payout = 1; }
                     else { payout = 0; }
                     break;
                 case "color":
-                    if (betType.ToLower() == "red" && winColor.ToLower() == "red") { payout = 1; }
-                    else if (betType.ToLower() == "black" && winColor.ToLower() == "black") { payout = 1; }
+                    if (betType.ToString() == "red" && winColor.ToLower() == "red") { payout = 1; }
+                    else if (betType.ToString() == "black" && winColor.ToLower() == "black") { payout = 1; }
                     else { payout = 0; }
                     break;
                 case "even odd":
-                    if (betType.ToLower() == "even" && winNum % 2 == 0) { payout = 1; }
-                    else if (betType.ToLower() == "odd" && winNum % 2 != 0) { payout = 1; }
+                    if (betType.ToString() == "even" && winNum % 2 == 0) { payout = 1; }
+                    else if (betType.ToString() == "odd" && winNum % 2 != 0) { payout = 1; }
                     else { payout = 0; }
                     break;
                 case "dozen":

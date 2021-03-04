@@ -75,26 +75,17 @@ namespace Casino.WebApi.Controllers
         }
         //Put
         [HttpPut]
-        public IHttpActionResult UpdateBetLimits(int gameId, double min, double max)
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        [HttpPost]
+        public IHttpActionResult Put(GameUpdate game)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
-
-            GameService gameService = CreateGameService();
-            var game = gameService.GetGameById(gameId);
-
-            if(game is null) { return BadRequest("Game not found"); }
-
-            game.MinBet = min;
-            game.MaxBet = max;
-
+            var service = CreateGameService();
+            if (!service.UpdateGame(game))
+                return InternalServerError();
             return Ok();
         }
-
-
-
 
 
 
