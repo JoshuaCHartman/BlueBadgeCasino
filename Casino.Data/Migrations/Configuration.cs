@@ -1,5 +1,6 @@
 ﻿namespace Casino.Data.Migrations
-{   using Microsoft.AspNet.Identity;
+{
+    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Data.Entity.Migrations;
@@ -25,8 +26,12 @@
 
 
             string guidAsStringOfHouse = GetGuidOfSeededUser("house@casino.com");
-            string guidAsStringOfUser = GetGuidOfSeededUser("abcdef");
-          
+            string guidAsStringOfUser1 = GetGuidOfSeededUser("user1@abc.com");
+            string guidAsStringOfUser2 = GetGuidOfSeededUser("user1@abc.com");
+            string guidAsStringOfUser3 = GetGuidOfSeededUser("user1@abc.com");
+            string guidAsStringOfUser4 = GetGuidOfSeededUser("user1@abc.com");
+
+
             //Add Games On Startup
             context.Games.AddOrUpdate(x => x.GameId,
                new Game() { GameId = 1, GameName = "Baccarat", TypeOfGame = GameType.Cards, IsHighStakes = false, MinBet = 1, MaxBet = 100 });
@@ -42,28 +47,58 @@
             //context.Games.AddOrUpdate(x => x.GameId,
             //   new Game() {GameId = 11, GameName = "Russian Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = , MaxBet = 0 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 6, GameName = "Baccarat", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 6, GameName = "Baccarat", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 7, GameName = "Blackjack", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 7, GameName = "Blackjack", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 8, GameName = "Craps", TypeOfGame = GameType.Dice, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 8, GameName = "Craps", TypeOfGame = GameType.Dice, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 9, GameName = "Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 9, GameName = "Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
             context.Games.AddOrUpdate(x => x.GameId,
-               new Game() { GameId = 10, GameName = "Keno", TypeOfGame = GameType.Random_Num, IsHighStakes = true, MinBet = 1000, MaxBet = 100000});
+               new Game() { GameId = 10, GameName = "Keno", TypeOfGame = GameType.Random_Num, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
 
 
             context.Players.AddOrUpdate(x => x.PlayerId,
-            
+
             new Player()
             {
-                PlayerId = Guid.Parse(guidAsStringOfUser),
+                PlayerId = Guid.Parse(guidAsStringOfUser1),
                 PlayerFirstName = "First",
                 PlayerLastName = "Player",
-                PlayerEmail = "abcdef",
-                PlayerDob = "01012000",
+                PlayerEmail = "user1@abc.com",
+                PlayerDob = "01/01/2000",
                 CurrentBankBalance = 1000,
                 AccountCreated = DateTimeOffset.Now
+            },
+            new Player()
+            {
+                PlayerId = Guid.Parse(guidAsStringOfUser1),
+                PlayerFirstName = "Second",
+                PlayerLastName = "Player",
+                PlayerEmail = "user2@abc.com",
+                PlayerDob = "01/01/1990",
+                CurrentBankBalance = 2000,
+                AccountCreated = DateTimeOffset.Now
+            },
+            new Player()
+            {
+                PlayerId = Guid.Parse(guidAsStringOfUser1),
+                PlayerFirstName = "Third",
+                PlayerLastName = "Player",
+                PlayerEmail = "user3@abc.com",
+                PlayerDob = "01/01/1980",
+                CurrentBankBalance = 3000,
+                AccountCreated = new DateTime(2019, 12,25)
+            },
+            new Player()
+            {
+                PlayerId = Guid.Parse(guidAsStringOfUser1),
+                PlayerFirstName = "Fourth",
+                PlayerLastName = "Player",
+                PlayerEmail = "user4@abc.com",
+                PlayerDob = "01/01/1970",
+                CurrentBankBalance = 4000,
+                AccountCreated =  new DateTime (2020,10,10)              // DateTimeOffset.Now
             },
             new Player()
             {
@@ -81,7 +116,7 @@
                new Bet()
                {
                    BetId = 1,
-                   PlayerId = Guid.Parse(guidAsStringOfUser),
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
                    GameId = 1,
                    BetAmount = 777,
                    PayoutAmount = 777,
@@ -227,17 +262,39 @@
 
 
                 // seed User 
-                ApplicationUser user = new ApplicationUser();
+                ApplicationUser user1 = new ApplicationUser();
+                ApplicationUser user2 = new ApplicationUser();
+                ApplicationUser user3 = new ApplicationUser();
+                ApplicationUser user4 = new ApplicationUser();
 
-                user.UserName = "ThirdSeedUserAccount";
-                user.Email = "abcdef";
-                user.EmailConfirmed = true;
+                user1.UserName = "user1";
+                user1.Email = "user1@abc.com";
+                user1.EmailConfirmed = true;
+
+                user1.UserName = "user2";
+                user1.Email = "user2@abc.com";
+                user1.EmailConfirmed = true;
+
+                user1.UserName = "user3";
+                user1.Email = "user3@abc.com";
+                user1.EmailConfirmed = true;
+
+                user1.UserName = "user4";
+                user1.Email = "user4@abc.com";
+                user1.EmailConfirmed = true;
 
                 // pass in new user and pwd
-                var Check = userManager.Create(user, "Test1!");
+                var Check = userManager.Create(user1, "Test");
+                userManager.Create(user2, "Test");
+                userManager.Create(user3, "Test");
+                userManager.Create(user4, "Test");
+
                 if (Check.Succeeded)
                 {
-                    userManager.AddToRole(user.Id, "User");
+                    userManager.AddToRole(user1.Id, "User");
+                    userManager.AddToRole(user2.Id, "User");
+                    userManager.AddToRole(user3.Id, "User");
+                    userManager.AddToRole(user4.Id, "User");
 
                 }
                 else
@@ -252,6 +309,7 @@
                     throw exception;
 
                 }
+
 
             }
         }
