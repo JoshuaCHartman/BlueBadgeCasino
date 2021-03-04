@@ -105,35 +105,8 @@ namespace Casino.WebApi.Controllers
 
             }
 
-
-            // Unworking process
-            //IdentityResult result;
-            //using (var context = new ApplicationDbContext())
-            //{
-            //    var roleStore = new RoleStore<IdentityRole>(context);
-            //    var roleManager = new RoleManager<IdentityRole>(roleStore);
-
-            //    await roleManager.CreateAsync(new IdentityRole() { Name = "User" });
-
-            //    var userStore = new UserStore<ApplicationUser>(context);
-            //    var userManager = new UserManager<ApplicationUser>(userStore);
-
-            //    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
-            //    result = await UserManager.CreateAsync(user, model.Password);
-            //    await userManager.AddToRoleAsync(user.Id, "User");
-
-
-            //}
-
-
         }
        
-
-
-
-
-
         // ADDED FOR SUPERADMIN TO GET ALL USERS
         // GET api/account/user
         
@@ -151,7 +124,6 @@ namespace Casino.WebApi.Controllers
 
         // POST api/Account/Register
         [Authorize(Roles = "SuperAdmin, Admin")]
-        
         [Route("Create_Admin(SUPERADMIN)")]
         public async Task<IHttpActionResult> CreateAdmin(RegisterBindingModel model)
         {
@@ -200,7 +172,6 @@ namespace Casino.WebApi.Controllers
 
                 return Ok("Admin Created");
 
-
             }
         }
 
@@ -229,8 +200,6 @@ namespace Casino.WebApi.Controllers
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
             return Ok();
         }
-
-        // //////////////////////////////////////////////////////////////////////////////
 
         // POST api/Account/ChangePassword
         [Route("ChangePassword")]

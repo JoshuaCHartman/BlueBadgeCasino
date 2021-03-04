@@ -33,7 +33,7 @@ namespace Casino.Services
                 {
                     PlayerId = _playerGuid,
                     ChargeTime = DateTimeOffset.Now,
-                    ChargeAmount = chargeModel.Value
+                    ChargeAmount = chargeModel.Value/100
                 };
                 using (var ctx = new ApplicationDbContext())
                 {
@@ -70,7 +70,7 @@ namespace Casino.Services
 
                 // capture card ( card is captured, sent to stripe, returned as token to charger to run payment
 
-                var optionsToken = new TokenCreateOptions
+                var tokenCreateOptions = new TokenCreateOptions
                 {
                     // TokenCardOptions changed from CreditCardOptions
 
@@ -86,22 +86,22 @@ namespace Casino.Services
                     }
                 };
 
-                var serviceToken = new TokenService();
-                Token stripeToken = await serviceToken.CreateAsync(optionsToken);
+                var tokenService = new TokenService();
+                Token newStripeToken = await tokenService.CreateAsync(tokenCreateOptions);
 
 
-                var options = new ChargeCreateOptions
+                var chargeOptions = new ChargeCreateOptions
                 {
                     Amount = value,
                     Currency = "usd",
                     Description = "test", // put playerId 
-                    Source = stripeToken.Id // generated token's id from the captured card
+                    Source = newStripeToken.Id // generated token's id from the captured card
 
                 };
 
                 // make the charge
                 var service = new ChargeService();
-                Charge charge = await service.CreateAsync(options);
+                Charge charge = await service.CreateAsync(chargeOptions);
 
                 if (charge.Paid)
                 {
@@ -128,11 +128,11 @@ namespace Casino.Services
                 StripeConfiguration.ApiKey = "sk_test_51IPcYzEaVFltQHPezdflBTQkF7dWeii1TG5Du6Cvgc95VETYsz1VC0YzAmG2u" +
                     "XVoVIfHLypXdm8ghoqwgS0BLvfn00ZSfKjjZG";
 
-                // capture card ( card is captured, sent to stripe, returned as token to charger to run payment
+                // capture card ( card is captured, sent to stripe, returned as token to charge to run payment )
 
-                var optionsToken = new TokenCreateOptions
+                var tokenCreateOptions = new TokenCreateOptions
                 {
-                    // TokenCardOptions changed from CreditCardOptions
+                    // TokenCardOptions changed from CreditCardOptions in resources
 
                     Card = new TokenCardOptions
                     {
@@ -144,21 +144,21 @@ namespace Casino.Services
                     }
                 };
 
-                var serviceToken = new TokenService();
-                Token stripeToken = serviceToken.Create(optionsToken);
+                var tokenService = new TokenService();
+                Token newStripeToken = tokenService.Create(tokenCreateOptions);
 
                 var options = new ChargeCreateOptions
                 {
                     Amount = value,
                     Currency = "usd",
                     Description = "test", // put playerId 
-                    Source = stripeToken.Id // generated token's id from the captured card
+                    Source = newStripeToken.Id // generated token's id from the captured card
 
                 };
 
                 // make the charge
-                var service = new ChargeService();
-                Charge charge = service.Create(options);
+                var chargeService = new ChargeService();
+                Charge charge = chargeService.Create(options);
 
                 if (charge.Paid)
                 {

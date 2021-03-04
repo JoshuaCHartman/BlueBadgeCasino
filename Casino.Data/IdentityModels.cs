@@ -27,6 +27,7 @@ namespace Casino.Data
             // Using test db PrivateConn.config connection string
 
             : base("Eric3", throwIfV1Schema: false)
+
         {
         }
         

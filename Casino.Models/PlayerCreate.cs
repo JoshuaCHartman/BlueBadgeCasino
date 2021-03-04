@@ -32,7 +32,7 @@ namespace Casino.Models
         public string PlayerDob { get; set; }
 
         public DateTimeOffset AccountCreated { get; set; }
-        public bool IsActive { get; set; }// = true;
+        public bool IsActive { get; set; } = true;
 
         //public bool IsActive { get; set; }
 
