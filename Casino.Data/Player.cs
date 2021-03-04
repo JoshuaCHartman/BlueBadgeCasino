@@ -57,7 +57,7 @@ namespace Casino.Data
         {
             get
             {
-                //if (this.IsActive != false)
+               // if (this.IsActive != false)
                 {
                     //bool test;
                     TimeSpan accountCreate = DateTime.Now - AccountCreated;

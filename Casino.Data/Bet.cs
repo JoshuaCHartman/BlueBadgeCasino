@@ -23,9 +23,10 @@ namespace Casino.Data
         public double BetAmount { get; set; }
         public double PayoutAmount { get; set; } //Positive for win, Negative for loss
 
-        public bool PlayerWonGame { get;set;}
+        public bool PlayerWonGame { get; set; }
 
         public DateTimeOffset DateTimeOfBet { get; set; }
 
+        
     }
 }

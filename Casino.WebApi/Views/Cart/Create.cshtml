@@ -1,5 +1,4 @@
-﻿
-@* creates with html and javascript the page and cart for front end card entry *@
+﻿@* creates with html and javascript the page and cart for front end card entry *@
 
 @{
     ViewBag.Title = "Create";
@@ -9,7 +8,8 @@
 @*first attempt is older charge api method (using js wrapper to grab card info, as opposed to current version
     of redirecting customer to stripe capture site)*@
 
-@section stripe{
+@section stripe
+    {
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         // Set your publishable key: remember to change this to your live publishable key in production
@@ -27,7 +27,7 @@
             },
             invalid: {
                 color: '#fa755a',
-                iconColor:'#fa755a',
+                iconColor: '#fa755a',
             }
         };
 
@@ -37,16 +37,13 @@
         // Add an instance of the card Element into the `card-element` <div>.
         card.mount('#card-element');
 
-         // Handle real time validation errors from the card element
-        card.addEventListener('change', function (event)
-        {
+        // Handle real time validation errors from the card element
+        card.addEventListener('change', function (event) {
             var displayError = document.getElementById('card-errors');
-            if (event.error)
-            {
+            if (event.error) {
                 displayError.textContent = event.error.message;
             }
-            else
-            {
+            else {
                 displayError.textContent = '';
             }
         });
