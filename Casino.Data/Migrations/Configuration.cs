@@ -1,9 +1,7 @@
 ﻿namespace Casino.Data.Migrations
-{
-    using Microsoft.AspNet.Identity;
+{   using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -28,9 +26,7 @@
 
             string guidAsStringOfHouse = GetGuidOfSeededUser("house@casino.com");
             string guidAsStringOfUser = GetGuidOfSeededUser("abcdef");
-            // context.Games.AddOrUpdate(x => x.GameId,
-            //    new Game() { GameId = 1, GameName = "BlackJack" });
-
+          
             //Add Games On Startup
             context.Games.AddOrUpdate(x => x.GameId,
                new Game() { GameId = 1, GameName = "Baccarat", TypeOfGame = GameType.Cards, IsHighStakes = false, MinBet = 1, MaxBet = 100 });
@@ -58,25 +54,7 @@
 
 
             context.Players.AddOrUpdate(x => x.PlayerId,
-            //new Player()
-            //{
-            //    PlayerId = Guid.Parse("6c17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Jon", PlayerLastName = "Dikteruk",
-            //    PlayerEmail = "jd@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
-            //},
-            //new Player()
-            //{
-            //    PlayerId = Guid.Parse("1b17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Fake", PlayerLastName = "One",
-            //    PlayerEmail = "f1@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
-            //},
-            //new Player()
-            //{
-            //    PlayerId = Guid.Parse("2b17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Fake", PlayerLastName = "Two",
-            //    PlayerEmail = "f2@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
-            //}, new Player()
-            //{
-            //    PlayerId = Guid.Parse("3b17382b787440438cf7f9da8f5a8873"), PlayerFirstName = "Fake", PlayerLastName = "Three",
-            //    PlayerEmail = "f3@casino.com", PlayerDob = "unknown", AccountCreated = DateTimeOffset.Now
-            //},
+            
             new Player()
             {
                 PlayerId = Guid.Parse(guidAsStringOfUser),
@@ -100,18 +78,6 @@
             );
 
             context.Bets.AddOrUpdate(x => x.BetId,
-               //new Bet()
-               //{
-               //    BetId = 101, PlayerId = Guid.Parse("1b17382b787440438cf7f9da8f5a8873"), GameId = 1, BetAmount = 5, PayoutAmount = 5, DateTimeOfBet = DateTimeOffset.Now,
-               //},
-               //new Bet()
-               //{
-               //    BetId = 102, PlayerId = Guid.Parse("1b17382b787440438cf7f9da8f5a8873"), GameId = 1, BetAmount = 5, PayoutAmount = -5, DateTimeOfBet = DateTimeOffset.Now,
-               //},
-               //new Bet()
-               //{
-               //    BetId = 103, PlayerId = Guid.Parse("4544850e9f694fdba953116a21ae5c43"), GameId = 1, BetAmount = 15, PayoutAmount = 15, DateTimeOfBet = DateTimeOffset.Now,
-               //},
                new Bet()
                {
                    BetId = 1,
@@ -121,8 +87,6 @@
                    PayoutAmount = 777,
                    DateTimeOfBet = DateTimeOffset.Now,
                }
-
-
 
                 );
         }

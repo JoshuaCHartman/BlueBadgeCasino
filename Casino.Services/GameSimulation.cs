@@ -11,15 +11,10 @@ namespace Casino.Models
     public class GameSimulation
     {
 
-
         private readonly Random _random = new Random();
         private Game _game = new Game();
         public double PlayGame(double betAmount, int gameId)
         {
-
-            //Game game = GetGameById(gameId);
-            //if (betAmount < game.MinBet || betAmount > game.MaxBet)
-            //    return 0;
             int x = _random.Next(10);
             if (x <= 3)  //this is 60/40 odds
                 return betAmount; //player wins, wins bet amount

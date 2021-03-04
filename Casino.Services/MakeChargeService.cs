@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Casino.Data;
 using Casino.Models;
@@ -9,13 +8,10 @@ using Casino.WebApi.Models;
 using Stripe;
 namespace Casino.Services
 {
-
     public class MakeChargeService
     {
         private readonly Guid _playerGuid;
         //private ApplicationDbContext _db = new ApplicationDbContext();
-
-        
 
         public MakeChargeService()
         {
@@ -26,15 +22,11 @@ namespace Casino.Services
             _playerGuid = userGuid;
         }
 
-
         //Create - return bool to use in if/else endpoint - flow to tables
         public bool CreateChargeforChips(RevisedChargeModel chargeModel)
         {
             // make a charge
-
-
             // use charge method
-
             //// if successful, make entry into charge table
           
                 var entityChips = new ChargeForChips()
@@ -63,11 +55,9 @@ namespace Casino.Services
                     return false;
                 }
             
-
         }
 
         //then make entry into bank transaction at endpoint
-
 
         // async standalone charge method 
         public static async Task<dynamic> ChargeAsync(string cardNumber, long month, long year, string cvc, string zip, int value)
@@ -115,15 +105,6 @@ namespace Casino.Services
 
                 if (charge.Paid)
                 {
-                    //ctx =>  add amount to bank transaction for player or move charge to bank transaction
-                    //var entity = new ChargeForChips()
-                    //{
-                    //    PlayerId = _playerGuid,
-                    //    BankTransactionAmount = model.BankTransactionAmount,
-                    //    DateTimeOfTransaction = DateTimeOffset.Now
-
-                    //};
-
                     return ($"Card successfully charged ${charge.Amount / 100}");
                 }
 
@@ -166,7 +147,6 @@ namespace Casino.Services
                 var serviceToken = new TokenService();
                 Token stripeToken = serviceToken.Create(optionsToken);
 
-
                 var options = new ChargeCreateOptions
                 {
                     Amount = value,
@@ -182,21 +162,16 @@ namespace Casino.Services
 
                 if (charge.Paid)
                 {
-
-                    //return ($"Card successfully charged ${ (charge.Amount/100)}");
                     return (true);
                 }
                 else { return false; };
 
             }
-            catch (Exception error)
+            catch (Exception)
             {
-
                 return (false);
             }
 
-            // return null to finish off code paths - should be changed to something better???
-            //return null;
         }
 
         //Return
@@ -224,7 +199,7 @@ namespace Casino.Services
             }
         }
 
-        public ChargeForChipsListItem GetChargeTransactionById(int id) //if this looks identical to BetListItem we can call that model instead of having 2
+        public ChargeForChipsListItem GetChargeTransactionById(int id) 
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -245,7 +220,7 @@ namespace Casino.Services
             }
         }
 
-        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions()//PlayerGetBets(int playerId)
+        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -269,7 +244,7 @@ namespace Casino.Services
             }
         }
 
-        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions(Guid guid)//PlayerGetBets(int playerId)
+        public IEnumerable<ChargeForChipsListItem> AdminGetChargeTransactions(Guid guid)
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -293,9 +268,3 @@ namespace Casino.Services
         }
     }
 }
-
-
-
-
-
-

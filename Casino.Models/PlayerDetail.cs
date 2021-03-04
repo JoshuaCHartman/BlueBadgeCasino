@@ -1,10 +1,6 @@
 ﻿using Casino.Data;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Casino.Models
 {
@@ -18,12 +14,14 @@ namespace Casino.Models
         public string PlayerAddress { get; set; }
         public PlayerState PlayerState { get; set; }
 
+        public string PlayerZipCode { get; set; }
+
         [Required]
         [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
         //public DateTime PlayerDob { get; set; }
         public string PlayerDob { get; set; }
         public DateTimeOffset AccountCreated { get; set; }
-        public TierStatus TierStatus { get; set; }
+        public TierStatus TierStatus { get; set; } = TierStatus.bronze;
         public bool IsActive { get; set; }
         public bool HasAccessToHighLevelGame { get; set; }
         public double CurrentBankBalance { get; set; }

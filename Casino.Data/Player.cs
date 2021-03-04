@@ -39,8 +39,9 @@ namespace Casino.Data
         [Required]
         public string PlayerEmail { get; set; }
         public string PlayerAddress { get; set; }
-
         public PlayerState PlayerState { get; set; }
+
+        public string PlayerZipCode { get; set; }
 
         [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
         [Required]
