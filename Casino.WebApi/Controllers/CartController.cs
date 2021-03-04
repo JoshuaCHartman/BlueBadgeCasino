@@ -12,6 +12,12 @@ namespace Casino.WebApi.Controllers
 {
     public class CartController : Controller
     {
+        // GET: Cart/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
         // POST: Cart/Create
         [HttpPost]
         public ActionResult Create(string stripeToken)

@@ -33,7 +33,7 @@ namespace Casino.Services
                 {
                     PlayerId = _playerGuid,
                     ChargeTime = DateTimeOffset.Now,
-                    ChargeAmount = chargeModel.Value/10
+                    ChargeAmount = chargeModel.Value/100
                 };
                 using (var ctx = new ApplicationDbContext())
                 {
@@ -43,7 +43,7 @@ namespace Casino.Services
                     {
                         var bankModel = new BankTransactionCreate();
                         bankModel.PlayerId = entityChips.PlayerId;
-                        bankModel.BankTransactionAmount = entityChips.ChargeAmount/10;
+                        bankModel.BankTransactionAmount = entityChips.ChargeAmount;
 
                     
                         var bankService = new BankTransactionService();
