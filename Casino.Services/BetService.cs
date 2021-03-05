@@ -35,7 +35,7 @@ namespace Casino.Services
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
             //double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
-             double payout = _gameService.PlayGame(model.GameId, model.BetAmount);
+             double payout = _gameService.PlayGame(model.GameId, model.BetAmount, true);
             var entity = new Bet()
             {
 
