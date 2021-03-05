@@ -2,12 +2,17 @@
 using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Linq;
 using System.Web.Http;
 namespace Casino.WebApi.Controllers
 {
     public class GameController : ApiController
     {
         //Post
+        /// <summary>
+        /// Create a new game - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpPost]
         public IHttpActionResult Post(GameCreate game)
@@ -20,6 +25,10 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
         //Get
+        /// <summary>
+        /// Get a list of all games available to play
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IHttpActionResult Get()
         {
@@ -29,6 +38,10 @@ namespace Casino.WebApi.Controllers
         }
 
         //Player Get
+        /// <summary>
+        /// Get all games played by a Player, using PlayerID/GUID
+        /// </summary>
+        /// <returns></returns>
         [Route("api/PlayerGames")]
         [HttpGet]
         public IHttpActionResult PlayerGet()
@@ -41,7 +54,11 @@ namespace Casino.WebApi.Controllers
 
 
         //Player Bet Limits
-        [Route("api/Play")]
+        /// <summary>
+        /// Enter a bet amount, and discover what games area available to play
+        /// </summary>
+        /// <returns></returns>
+        [Route("api/Show_if_bet_within_limits")]
         [HttpGet]
         public IHttpActionResult BetLimits(double playerBet)
         {
@@ -62,6 +79,10 @@ namespace Casino.WebApi.Controllers
         }
 
         //Get by ID
+        /// <summary>
+        /// Get details of games by GameID
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IHttpActionResult GetById(int id)
         {
@@ -70,6 +91,10 @@ namespace Casino.WebApi.Controllers
             return Ok(game);
         }
         //Put
+        /// <summary>
+        /// Edit an existing Game - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [HttpPut]
         [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpPost]

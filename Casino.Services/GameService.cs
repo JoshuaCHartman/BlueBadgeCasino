@@ -193,6 +193,7 @@ namespace Casino.Services
 
 
         //GamePlay
+        
         public double PlayGame(int id, double betAmt, bool highRoller, BetType bType = BetType.pass)//, betValue = List<int>(0)
         {
             double amount = 0;

@@ -20,6 +20,10 @@ namespace Casino.WebApi.Controllers
         private PlayerService _service = new PlayerService();
 
         //Player gets own player info
+        /// <summary>
+        /// Return Player info for logged in Player - restricted to User/Player
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/Player/")]
 
@@ -49,7 +53,11 @@ namespace Casino.WebApi.Controllers
         }
 
 
-        //Admin get all players-Note: Might need a loop
+        //Admin get all players
+        /// <summary>
+        /// Get all Players - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Player/admin")]
         public IHttpActionResult GetAllPlayers()
@@ -85,6 +93,10 @@ namespace Casino.WebApi.Controllers
 
 
         //Admin gets player by Guid
+        /// <summary>
+        /// Get a Player by PlayerID/GUID - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Player/admin/guid/{id}")]
         public IHttpActionResult GetById(Guid id)
@@ -106,6 +118,10 @@ namespace Casino.WebApi.Controllers
         }
 
         //Admin gets players by Tier
+        /// <summary>
+        /// Get all Players by Tier Level - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Player/admin/tier/{tierStatus}")]
         public IHttpActionResult GetByTierStatus(TierStatus tierStatus)
@@ -128,6 +144,10 @@ namespace Casino.WebApi.Controllers
         }
 
         //Admin get players with balance
+        /// <summary>
+        /// Get all Players with an account balance - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Player/admin/balance")]
         public IHttpActionResult GetPlayerHasBalance()
@@ -150,6 +170,10 @@ namespace Casino.WebApi.Controllers
         }
 
         //Admin Get active players
+        /// <summary>
+        /// Get all active Players - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Player/admin/active")]
         public IHttpActionResult GetActivePlayers()
@@ -159,6 +183,10 @@ namespace Casino.WebApi.Controllers
         }
 
         //User creates player account
+        /// <summary>
+        /// Create a new Player account
+        /// </summary>
+        /// <returns></returns>
         //[Authorize(Roles = "User")]
         [HttpPost]
         [Route("api/makePlayer")]
@@ -174,36 +202,25 @@ namespace Casino.WebApi.Controllers
             if (!service.CheckPlayer(player))
                 //{
                 return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
-       
-                    if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
-                    {
-                        return BadRequest("You are not 21 and can not create a player.");
-                    }
-                    
-                    if (!service.CreatePlayer(player))
-                    {
-                        return InternalServerError();
-                    }
-                   // else
-                        return Ok();
-                }
 
-                //Player Deletes account(just makes it inactive)
-                [Authorize(Roles = "User")]
-                [Route("api/Player/delete")]
-                public IHttpActionResult Delete()
-                {
-                    var service = CreatePlayerService();
-
-                    if (!service.DeletePlayer())
-                        return InternalServerError();
-
-                    return Ok();
-                }
+            if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
+            {
+                return BadRequest("You are not 21 and can not create a player.");
             }
+
+            if (!service.CreatePlayer(player))
+            {
+                return InternalServerError();
+            }
+            // else
+            return Ok();
         }
 
         //Player Deletes account(just makes it inactive)
+        /// <summary>
+        /// Set account to inactive - restricted to User/Player
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/Player/delete")]
         public IHttpActionResult Delete()

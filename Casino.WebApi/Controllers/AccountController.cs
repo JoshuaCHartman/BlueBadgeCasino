@@ -54,6 +54,11 @@ namespace Casino.WebApi.Controllers
         // ADD ACCOUNT CONTROLLER ENDPOINTS FROM THIS POINT ON:
 
         // POST api/Account/Register
+        /// <summary>
+        ///  Register a new user account with an email and password
+        /// </summary>
+        
+        /// <returns></returns>
         [AllowAnonymous]
         [Route("Register_New_Account")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
@@ -106,10 +111,14 @@ namespace Casino.WebApi.Controllers
             }
 
         }
-       
+
         // ADDED FOR SUPERADMIN TO GET ALL USERS
         // GET api/account/user
+        /// <summary>
+        /// Return all users - restricted to SuperAdmin
+        /// </summary>
         
+        /// <returns></returns>
         [Authorize(Roles = "SuperAdmin")] // limits to superadmin
                                           
         [Route("Get_AllUsers(SUPERADMIN)")] // display route
@@ -123,6 +132,11 @@ namespace Casino.WebApi.Controllers
         }
 
         // POST api/Account/Register
+        /// <summary>
+        /// Create an Admin account - restriced to SuperAdmin, Admin
+        /// </summary>
+        
+        /// <returns></returns>
         [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Create_Admin(SUPERADMIN)")]
         public async Task<IHttpActionResult> CreateAdmin(RegisterBindingModel model)
@@ -178,6 +192,11 @@ namespace Casino.WebApi.Controllers
 
         // keep : update as needed ?
         // GET api/Account/UserInfo
+        /// <summary>
+        /// Get user account info
+        /// </summary>
+        
+        /// <returns></returns>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("Get_UserInfo")]
         public UserInfoViewModel GetUserInfo()
@@ -194,6 +213,11 @@ namespace Casino.WebApi.Controllers
         }
 
         // POST api/Account/Logout
+        /// <summary>
+        /// Logout of your user account
+        /// </summary>
+        
+        /// <returns></returns>
         [Route("Logout")]
         public IHttpActionResult Logout()
         {
@@ -202,26 +226,32 @@ namespace Casino.WebApi.Controllers
         }
 
         // POST api/Account/ChangePassword
-        [Route("ChangePassword")]
-        public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        
+        //[Route("ChangePassword")]
+        //public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-                model.NewPassword);
+        //    IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
+        //        model.NewPassword);
 
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
+        //    if (!result.Succeeded)
+        //    {
+        //        return GetErrorResult(result);
+        //    }
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         // POST api/Account/SetPassword
+        /// <summary>
+        /// Change your user account password 
+        /// </summary>
+        
+        /// <returns></returns>
         [Route("SetPassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
         {
@@ -245,35 +275,36 @@ namespace Casino.WebApi.Controllers
         // Admin functions below : 
 
         // POST api/Account/RemoveLogin
-        [Authorize(Roles = "SuperAdmin, Admin")]
+
+        //[Authorize(Roles = "SuperAdmin, Admin")]
         
-        [Route("RemoveLogin")]
-        public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[Route("RemoveLogin")]
+        //public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            IdentityResult result;
+        //    IdentityResult result;
 
-            if (model.LoginProvider == LocalLoginProvider)
-            {
-                result = await UserManager.RemovePasswordAsync(User.Identity.GetUserId());
-            }
-            else
-            {
-                result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(),
-                    new UserLoginInfo(model.LoginProvider, model.ProviderKey));
-            }
+        //    if (model.LoginProvider == LocalLoginProvider)
+        //    {
+        //        result = await UserManager.RemovePasswordAsync(User.Identity.GetUserId());
+        //    }
+        //    else
+        //    {
+        //        result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(),
+        //            new UserLoginInfo(model.LoginProvider, model.ProviderKey));
+        //    }
 
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
+        //    if (!result.Succeeded)
+        //    {
+        //        return GetErrorResult(result);
+        //    }
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
 
         #region Helpers
