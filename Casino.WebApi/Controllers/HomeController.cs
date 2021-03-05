@@ -10,7 +10,8 @@ namespace Casino.WebApi.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            //ViewBag.Title = "Home Page";
+            ViewBag.Title = "Blue Badge Casino Web API";
 
             return View();
         }

@@ -109,7 +109,6 @@ namespace Casino.WebApi.Controllers
         }
 
 
-
         private GameService CreateGameService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
