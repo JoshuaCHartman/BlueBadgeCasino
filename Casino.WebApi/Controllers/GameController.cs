@@ -2,6 +2,7 @@
 using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Linq;
 using System.Web.Http;
 namespace Casino.WebApi.Controllers
 {
@@ -72,7 +73,6 @@ namespace Casino.WebApi.Controllers
         //Put
         [HttpPut]
         [Authorize(Roles = "SuperAdmin, Admin")]
-        [HttpPost]
         public IHttpActionResult Put(GameUpdate game)
         {
             if (!ModelState.IsValid)

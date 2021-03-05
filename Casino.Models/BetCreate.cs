@@ -1,11 +1,12 @@
 ﻿
+using PinnacleWrapper.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Casino.Models
 {
     public class BetCreate
     {
-        
+
         [Required]
         public int GameId { get; set; }
 
@@ -16,6 +17,7 @@ namespace Casino.Models
         {
             get; set;
         }
+        public BetType? TypeOfBet { get; set; }
 
     }
 }

@@ -43,9 +43,8 @@
                new Game() { GameId = 4, GameName = "Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = false, MinBet = 1, MaxBet = 100 });
             context.Games.AddOrUpdate(x => x.GameId,
                new Game() { GameId = 5, GameName = "Keno", TypeOfGame = GameType.Random_Num, IsHighStakes = false, MinBet = 1, MaxBet = 100 });
-            //Russian Roulette need to get players bank balance for min/Max bet
-            //context.Games.AddOrUpdate(x => x.GameId,
-            //   new Game() {GameId = 11, GameName = "Russian Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = , MaxBet = 0 });
+            context.Games.AddOrUpdate(x => x.GameId,
+               new Game() { GameId = 11, GameName = "Russian Roulette", TypeOfGame = GameType.Wheel, IsHighStakes = true, MinBet = 0, MaxBet = 0 });
             context.Games.AddOrUpdate(x => x.GameId,
                new Game() { GameId = 6, GameName = "Baccarat", TypeOfGame = GameType.Cards, IsHighStakes = true, MinBet = 1000, MaxBet = 100000 });
             context.Games.AddOrUpdate(x => x.GameId,
@@ -220,10 +219,9 @@
         {
             var ctx = new ApplicationDbContext();
             var entity =
-            ctx.Users
-
-
-                .Single(e => e.Email == email);
+                ctx
+                    .Users
+                    .Single(e => e.Email == email);
             return entity.Id;
         }
 
@@ -379,10 +377,10 @@
                 var Check3 = userManager.Create(user3, "Test1!");
                 var Check4 = userManager.Create(user4, "Test1!");
 
-               if (Check1.Succeeded)
+                if (Check1.Succeeded)
                 {
                     userManager.AddToRole(user1.Id, "User");
-                
+
                 }
                 else
                 {
@@ -398,8 +396,8 @@
                 }
                 if (Check2.Succeeded)
                 {
-                                       userManager.AddToRole(user2.Id, "User");
-                 
+                    userManager.AddToRole(user2.Id, "User");
+
                 }
                 else
                 {
