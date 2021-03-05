@@ -2,6 +2,7 @@
 using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Linq;
 using System.Web.Http;
 namespace Casino.WebApi.Controllers
 {
@@ -20,6 +21,7 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
         //Get
+        
         [HttpGet]
         public IHttpActionResult Get()
         {

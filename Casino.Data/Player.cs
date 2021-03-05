@@ -39,6 +39,7 @@ namespace Casino.Data
         [Required]
         public string PlayerEmail { get; set; }
         public string PlayerAddress { get; set; }
+
         public PlayerState PlayerState { get; set; }
 
         public string PlayerZipCode { get; set; }
@@ -51,31 +52,53 @@ namespace Casino.Data
         [Required]
         public DateTimeOffset AccountCreated { get; set; }
 
+        private TierStatus _tier;
+        public TierStatus TierStatus
+        {
+            set
+            {
 
-        public TierStatus TierStatus { get; set; } = TierStatus.bronze;
+                if (CurrentBankBalance > 5000)
+                    _tier = TierStatus.gold;
+                else
+                _tier = TierStatus.bronze;
+                
+            }
+
+            get { return _tier; }
+        }
+
+
         private bool _isActive;
         public bool IsActive
         {
-            get
+            set
             {
-               // if (this.IsActive != false)
+                // if (this.IsActive != false)
                 {
                     //bool test;
                     TimeSpan accountCreate = DateTime.Now - AccountCreated;
                     if (accountCreate.TotalDays < 180)
-                    {
                         _isActive = true;
-                        return true;
-                    }
-                    _isActive = false;
-                    return false;
-                }
-                //return false;
-            }
-            set { _isActive = value; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
-        }
+                    else
+                        _isActive = false;
 
-        public bool HasAccessToHighLevelGame { get; set; }
+                }
+
+            }
+            get { return _isActive; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
+        }
+        private bool _hasAccess;
+        public bool HasAccessToHighLevelGame
+        {
+            set
+            {
+                if (TierStatus == TierStatus.gold)
+                    _hasAccess = true;
+
+            }
+            get { return _hasAccess; }
+        }
 
         public double CurrentBankBalance { get; set; }
 
@@ -92,7 +115,7 @@ namespace Casino.Data
 
         //public DateTimeOffset? ModifiedUtc { get; set; }
 
-        
+
     }
 
 }

@@ -18,7 +18,7 @@ namespace Casino.Models
         [Required]
         //public DateTime PlayerDob { get; set; }
         public string PlayerDob { get; set; }
-        public TierStatus TierStatus { get; set; } = TierStatus.bronze;
+        public TierStatus TierStatus { get; set; } = TierStatus.silver;
         public bool IsActive { get; set; }
         //public bool HasAccessToHighLevelGame { get; set; }
         //public double CurrentBankBalance { get; set; }

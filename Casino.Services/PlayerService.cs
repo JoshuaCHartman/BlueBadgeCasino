@@ -32,9 +32,9 @@ namespace Casino.Services
                 PlayerAddress = model.PlayerAddress, //Evaluate in testing whether its null or doesn't work
                 PlayerState = model.PlayerState,
                 PlayerZipCode = model.PlayerZipCode,
+                TierStatus = model.TierStatus,
 
 
-                //TierStatus = model.TierStatus,
                 //HasAccessToHighLevelGame = model.HasAccessToHighLevelGame,
                 //CurrentBankBalance = model.CurrentBankBalance,
                 //EligibleForReward = model.EligibleForReward,
@@ -199,7 +199,10 @@ namespace Casino.Services
                         AccountCreated = entity.AccountCreated,
                         IsActive = entity.IsActive,
                         CurrentBankBalance = entity.CurrentBankBalance,
+                        TierStatus = entity.TierStatus,
+                        HasAccessToHighLevelGame = entity.HasAccessToHighLevelGame
                         //ModifiedUtc = entity.ModifiedUtc
+                        
                     };
             }
         }
@@ -338,7 +341,7 @@ namespace Casino.Services
                     entity.PlayerState = model.PlayerState;
                     entity.PlayerZipCode = model.PlayerZipCode;
                     //entity.PlayerDob = model.PlayerDob;
-                    //entity.TierStatus = model.TierStatus;
+                    entity.TierStatus = model.TierStatus;
                     //entity.IsActive = model.IsActive;
                     //entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
                     //entity.CurrentBankBalance = model.CurrentBankBalance;

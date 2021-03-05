@@ -31,6 +31,8 @@ namespace Casino.Models
         //public DateTime PlayerDob { get; set; }
         public string PlayerDob { get; set; }
 
+        public TierStatus TierStatus { get; set; }
+
         public DateTimeOffset AccountCreated { get; set; }
         public bool IsActive { get; set; } = true;
 
