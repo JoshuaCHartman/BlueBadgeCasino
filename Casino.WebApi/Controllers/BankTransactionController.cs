@@ -1,20 +1,10 @@
 ﻿using Casino.Models;
 using Casino.Services;
-using Casino.WebApi.Models;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
-using Stripe;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using System.Configuration;
 using System.Net.Mail;
-using Casino.Data;
 
 namespace Casino.WebApi.Controllers
 {
@@ -38,15 +28,6 @@ namespace Casino.WebApi.Controllers
             var customer = Convert.ToString(userId);
 
             smtpClient.Send("automatedbluebadgecasino@bluebadgecasino.com", "accountingbluebadgecasino@bluebadgecasino.com", $"Player withdrawal : ${amount}", $"PlayerId: {customer} wishes to withdraw $ {amount}. Please initiate a bank transfer.");
-            
-            //var sendGridClient = new SendGridClient("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");
-            //var from = new EmailAddress("joshuaCHartman", "Joshua Hartman");
-            //var subject = "Withdraw from customer";
-            //var to = new EmailAddress("joshuachartman@gmail.com", "Back of House Accounting");
-            //var plainContent = "send money to customer";
-            //var htmlContent = "<h1>Withdrawal</h1>";
-            //var mailMessage = MailHelper.CreateSingleEmail(from, to, subject, plainContent, htmlContent);
-            //sendGridClient.SendEmailAsync(mailMessage);
 
         }
 
@@ -139,12 +120,6 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             return Ok();
         }
-
-        //    public async Task<dynamic> Pay(RevisedChargeModel charge)
-        //    {
-        //        return await MakeChargeService.ChargeAsync(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
-        //    }
-        //}
 
 
     }

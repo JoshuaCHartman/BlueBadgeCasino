@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using Casino.Data;
 using Microsoft.AspNet.Identity;
@@ -19,22 +17,10 @@ namespace Casino.WebApi
         {
             ConfigureAuth(app);
 
-
             // run startup SEED method below (will not populate if roles already created)
             //CreateDefaultRolesAndUsers();
         }
         public static readonly HttpClient HttpClient = new HttpClient();
-
-        // STRIPE startup - remove if not using new version
-        // public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        //{
-        //    // This is your real test secret API key.
-        //    StripeConfiguration.ApiKey = "sk_test_51IPcYzEaVFltQHPezdflBTQkF7dWeii1TG5Du6Cvgc95VETYsz1VC0YzAmG2uXVoVIfHLypXdm8ghoqwgS0BLvfn00ZSfKjjZG";
-        //    if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-        //    app.UseRouting();
-        //    app.UseStaticFiles();
-        //    app.UseEndpoints(endpoints => endpoints.MapControllers());
-        //}
 
         public void CreateDefaultRolesAndUsers()
         {
@@ -147,12 +133,9 @@ namespace Casino.WebApi
         //USER
         public void CreateUser()
         {
-
-
             // bring in roleManager and userManager from entity framework 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
-
 
             IdentityRole role = new IdentityRole();
             if (!roleManager.RoleExists("User"))

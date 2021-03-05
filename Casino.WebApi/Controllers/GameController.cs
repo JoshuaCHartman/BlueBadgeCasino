@@ -2,10 +2,7 @@
 using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 namespace Casino.WebApi.Controllers
 {
@@ -24,6 +21,7 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
         //Get
+        
         [HttpGet]
         public IHttpActionResult Get()
         {
@@ -43,6 +41,28 @@ namespace Casino.WebApi.Controllers
             return Ok(games);
         }
 
+
+        //Player Bet Limits
+        [Route("api/Play")]
+        [HttpGet]
+        public IHttpActionResult BetLimits(double playerBet)
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            GameService gameService = CreateGameService();
+            var games = gameService.GetGamesPlayer(userId);
+
+            var min = Convert.ToDouble(games.ToArray()[3]);
+            var max = Convert.ToDouble(games.ToArray()[4]);
+
+            var bet = playerBet;
+
+            if (bet >= min && bet <= max)
+            {
+                return Ok();
+            }
+            else { return BadRequest("Bet must be within game limits."); }
+        }
+
         //Get by ID
         [HttpGet]
         public IHttpActionResult GetById(int id)
@@ -53,6 +73,20 @@ namespace Casino.WebApi.Controllers
         }
         //Put
         [HttpPut]
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        [HttpPost]
+        public IHttpActionResult Put(GameUpdate game)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var service = CreateGameService();
+            if (!service.UpdateGame(game))
+                return InternalServerError();
+            return Ok();
+        }
+
+
+
         private GameService CreateGameService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());

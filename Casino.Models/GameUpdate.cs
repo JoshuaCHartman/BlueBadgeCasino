@@ -1,14 +1,17 @@
-﻿using Casino.Data;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Casino.Models
 {
-    public class GameCreate
+    public class GameUpdate
     {
         [Required]
-        public string GameName { get; set; }
+        public int GameId { get; set; }
         [Required]
-        public GameType TypeOfGame { get; set; }
         public double MinBet { get; set; }
         public double MaxBet { get; set; }
     }
