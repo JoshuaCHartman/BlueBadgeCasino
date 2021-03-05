@@ -1,48 +1,33 @@
 ﻿using Casino.Models;
 using Casino.Services;
-using Casino.WebApi.Models;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
-using Stripe;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using System.Configuration;
 using System.Net.Mail;
-using Casino.Data;
 
 namespace Casino.WebApi.Controllers
 {
     [Authorize]
     public class BankTransactionController : ApiController
     {
-        public void SendEmail(BankTransactionCreate bankTransaction)
+        private void SendEmail(BankTransactionCreate bankTransaction)
         {
-
-            var smtpClient = new SmtpClient("smtp.gmail.com")
+            // switched to mailtrap.io for testing - use mailtrap dashboard for verification of receipt of emails (works)
+            //var smtpClient = new SmtpClient("smtp.emailserver.com")
+            var smtpClient = new SmtpClient("smtp.mailtrap.io")
             {
-                Port = 587,
-                Credentials = new NetworkCredential("bluebadgecasino@gmail.com", "BlueCasino1979#"),
+                //Port = xxx expected port of receiving smtp,
+                Port = 2525,
+                // Credentials = new NetworkCredential("account@account.com", "password"),
+                Credentials = new NetworkCredential("40389242ceb32f", "ed8d9f5b311ca1"),
                 EnableSsl = true,
             };
             var amount = Convert.ToString(bankTransaction.BankTransactionAmount);
             var userId = Guid.Parse(User.Identity.GetUserId());
             var customer = Convert.ToString(userId);
-              
-            smtpClient.Send("bluebadgecasino@gmail.com", "bluebadgecasino@gmail.com", $"Player withdrawal : ${amount}", $"PlayerId: {customer} wishes to withdraw $ {amount}. Please initiate a bank transfer.");
-            //var sendGridClient = new SendGridClient("SG.JVPIC3c0Siqc3quTDF3eBA.1bNEIwA2jNG3ePahX6V0KpAK - ZHPdxfzWnpAQqHC5GA");
-            //var from = new EmailAddress("joshuaCHartman", "Joshua Hartman");
-            //var subject = "Withdraw from customer";
-            //var to = new EmailAddress("joshuachartman@gmail.com", "Back of House Accounting");
-            //var plainContent = "send money to customer";
-            //var htmlContent = "<h1>Withdrawal</h1>";
-            //var mailMessage = MailHelper.CreateSingleEmail(from, to, subject, plainContent, htmlContent);
-            //sendGridClient.SendEmailAsync(mailMessage);
+
+            smtpClient.Send("automatedbluebadgecasino@bluebadgecasino.com", "accountingbluebadgecasino@bluebadgecasino.com", $"Player withdrawal : ${amount}", $"PlayerId: {customer} wishes to withdraw $ {amount}. Please initiate a bank transfer.");
 
         }
 
@@ -115,13 +100,13 @@ namespace Casino.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var service = CreateBankTransactionService();
-           
+
             SendEmail(bankTransaction);
-           
+
             if (!service.CreateBankTransaction(bankTransaction))
                 return InternalServerError();
-            
-            return Ok("Your account withdrawal is being initiated.");
+
+            return Ok($"Your account withdrawal is being initiated in the amount of : $ {bankTransaction.BankTransactionAmount}.");
         }
 
 
@@ -135,12 +120,6 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             return Ok();
         }
-
-        //    public async Task<dynamic> Pay(RevisedChargeModel charge)
-        //    {
-        //        return await MakeChargeService.ChargeAsync(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
-        //    }
-        //}
 
 
     }

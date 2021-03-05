@@ -1,9 +1,5 @@
 ﻿using Casino.WebApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Casino.Services;
@@ -14,11 +10,61 @@ namespace Casino.WebApi.Controllers
     [Authorize]
     public class ChargeController : ApiController
     {
+
+        // UNIQUE STRIPE CHARGE CONTROLLER AT BOTTOM
+        
+        private MakeChargeService _makeChargeService = new MakeChargeService();
         private MakeChargeService CreateMakeChargeServiceForGuid()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var makeChargeService = new MakeChargeService(userId);
             return makeChargeService;
+        }
+
+        //Get
+        //Get all by logged in Player
+        [Authorize(Roles = "User")]
+        [Route("api/charges/player")]
+        public IHttpActionResult Get()
+        {
+            MakeChargeService chargeTransactionService = CreateMakeChargeServiceForGuid();
+            var chargeTransactions = chargeTransactionService.PlayerGetChargeTransactions();
+            return Ok(chargeTransactions);
+        }
+
+        //Get by id for logged in player
+        [Authorize(Roles = "User")]
+        [Route("api/charges/player/{id}")]
+
+        public IHttpActionResult GetById(int id)
+        {
+            MakeChargeService chargeTransactionService = CreateMakeChargeServiceForGuid();
+            var chargeTransactions = chargeTransactionService.GetChargeTransactionById(id);
+
+            return Ok(chargeTransactions);
+        }
+
+        //Get all by Admin for Specific player
+        [HttpGet]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/charges/admin/{guidAsString}")]
+        public IHttpActionResult Get(string guidAsString)
+        {
+            Guid guid = Guid.Parse(guidAsString);
+
+            var chargeTransactions = _makeChargeService.AdminGetChargeTransactions(guid);
+            return Ok(chargeTransactions);
+        }
+
+        //Get all by Admin
+        [HttpGet]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        [Route("api/charges/admin")]
+        public IHttpActionResult GetAll()
+        {
+
+            var chargeTransactions = _makeChargeService.AdminGetChargeTransactions();
+            return Ok(chargeTransactions);
         }
 
         [Authorize(Roles = "User")]
@@ -43,32 +89,5 @@ namespace Casino.WebApi.Controllers
             else
                 return InternalServerError(); // put in message
         }
-
-        //GET api/values
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        // GET api/values/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST api/values
-        //public void Post([FromBody]string value)
-        //{
-        //}
-
-        // PUT api/values/5
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //}
-
-        // DELETE api/values/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

@@ -3,32 +3,29 @@ using Casino.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Casino.Services
 {
     public class BankTransactionService
     {
         private readonly Guid _playerGuid;
-        private readonly int _playerId;
 
         public BankTransactionService()
         {
-
         }
         public BankTransactionService(Guid userGuid)
         {
             _playerGuid = userGuid;
         }
-        //Create
+        //Create 
+        // FOR USE IN CHARGING CREDIT CARD
         public bool CreateBankTransactionCharge(BankTransactionCreate model)
         {
             //maybe return the model and player balance instead of bool
             var entity = new BankTransaction()
             {
-               // PlayerId = _playerGuid,
-               PlayerId = model.PlayerId,
+                // PlayerId = _playerGuid,
+                PlayerId = model.PlayerId,
                 BankTransactionAmount = model.BankTransactionAmount,
                 DateTimeOfTransaction = DateTimeOffset.Now
 
@@ -46,11 +43,10 @@ namespace Casino.Services
         // Default method (no charge, only affects bankTransaction table and player account)
         public bool CreateBankTransaction(BankTransactionCreate model)
         {
-            //maybe return the model and player balance instead of bool
+
             var entity = new BankTransaction()
             {
                 PlayerId = _playerGuid,
-                //PlayerId = model.PlayerId,
                 BankTransactionAmount = model.BankTransactionAmount,
                 DateTimeOfTransaction = DateTimeOffset.Now
 
@@ -65,7 +61,7 @@ namespace Casino.Services
 
         }
         //Return
-        public IEnumerable<BankTransactionListItem> PlayerGetBankTransactions()//PlayerGetBets(int playerId)
+        public IEnumerable<BankTransactionListItem> PlayerGetBankTransactions()//similar to PlayerGetBets(int playerId)
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -77,7 +73,6 @@ namespace Casino.Services
                             e =>
                                 new BankTransactionListItem
                                 {
-
                                     PlayerId = e.PlayerId,
                                     DateTimeOfTransaction = e.DateTimeOfTransaction,
                                     BankTransactionAmount = e.BankTransactionAmount,
@@ -89,7 +84,7 @@ namespace Casino.Services
             }
         }
         //Admin Get All by Player Guid
-        public IEnumerable<BankTransactionListItem> AdminGetBankTransactions(Guid guid)//PlayerGetBets(int playerId)
+        public IEnumerable<BankTransactionListItem> AdminGetBankTransactions(Guid guid)
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -101,7 +96,6 @@ namespace Casino.Services
                             e =>
                                 new BankTransactionListItem
                                 {
-
                                     PlayerId = e.PlayerId,
                                     DateTimeOfTransaction = e.DateTimeOfTransaction,
                                     BankTransactionAmount = e.BankTransactionAmount,
@@ -113,7 +107,7 @@ namespace Casino.Services
             }
         }
         //Admin GetAll
-        public IEnumerable<BankTransactionListItem> AdminGetBankTransactions()//PlayerGetBets(int playerId)
+        public IEnumerable<BankTransactionListItem> AdminGetBankTransactions()
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -125,7 +119,6 @@ namespace Casino.Services
                             e =>
                                 new BankTransactionListItem
                                 {
-
                                     PlayerId = e.PlayerId,
                                     DateTimeOfTransaction = e.DateTimeOfTransaction,
                                     BankTransactionAmount = e.BankTransactionAmount,
