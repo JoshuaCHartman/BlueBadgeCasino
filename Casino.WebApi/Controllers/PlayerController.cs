@@ -203,17 +203,3 @@ namespace Casino.WebApi.Controllers
             }
         }
 
-        //Player Deletes account(just makes it inactive)
-        [Authorize(Roles = "User")]
-        [Route("api/Player/delete")]
-        public IHttpActionResult Delete()
-        {
-            var service = CreatePlayerService();
-
-            if (!service.DeletePlayer())
-                return InternalServerError();
-
-            return Ok();
-        }
-    }
-}

@@ -1,4 +1,6 @@
 ﻿using Casino.Data;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,7 +14,8 @@ namespace Casino.Models
         public string PlayerPhone { get; set; }
         public string PlayerEmail { get; set; }
         public string PlayerAddress { get; set; }
-        public PlayerState PlayerState { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public string PlayerState { get; set; }
 
         public string PlayerZipCode { get; set; }
 
