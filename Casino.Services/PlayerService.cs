@@ -116,50 +116,50 @@ namespace Casino.Services
             }
         }
 
-        public bool CheckPlayer(PlayerCreate player)
-        {   //Birthdate is not entered or correctly or legal age is not acceptable
+        //public bool CheckPlayer(PlayerCreate player)
+        //{   //Birthdate is not entered or correctly or legal age is not acceptable
 
-            // when this was changed to a string, this always fails and we cannot create any players
+        //    // when this was changed to a string, this always fails and we cannot create any players
 
-            //if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
-            DateTime parsedDob;
-            DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
-                           CultureInfo.CurrentCulture,
-                           DateTimeStyles.None,
-                           out parsedDob);
+        //    //if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
+        //    DateTime parsedDob;
+        //    DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
+        //                   CultureInfo.CurrentCulture,
+        //                   DateTimeStyles.None,
+        //                   out parsedDob);
             
-                if (parsedDob == null)
-                return false;
-            return true;
+        //        if (parsedDob == null)
+        //        return false;
+        //    return true;
 
-        }
+        //}
 
-        public bool CheckDob (PlayerCreate player)
-        {
-            //Getting the string
-            var stringDob = player.PlayerDob;
+        //public bool CheckDob (PlayerCreate player)
+        //{
+        //    //Getting the string
+        //    var stringDob = player.PlayerDob;
 
-            //Convert the string to a DateTime
-            DateTime convertedDob;
+        //    //Convert the string to a DateTime
+        //    DateTime convertedDob;
 
-            // This doesnt actually parse, switched to method from above jch
-            //convertedDob = DateTime.Parse(stringDob);
+        //    // This doesnt actually parse, switched to method from above jch
+        //    //convertedDob = DateTime.Parse(stringDob);
             
-            DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
-                           CultureInfo.CurrentCulture,
-                           DateTimeStyles.None,
-                           out convertedDob);
+        //    DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
+        //                   CultureInfo.CurrentCulture,
+        //                   DateTimeStyles.None,
+        //                   out convertedDob);
 
-            TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
-            if (PlayerDob.TotalDays < 7665)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+        //    TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
+        //    if (PlayerDob.TotalDays < 7665)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }
+        //}
 
 
 
