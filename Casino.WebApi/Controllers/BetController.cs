@@ -9,10 +9,10 @@ namespace Casino.WebApi.Controllers
     // can add [RoutePrefix("api/bet")] below first (topmost) [Authorize] and then each endpoint route can be shortened to for example
     // [Route("player")] for Get ALL by Player
 
-    [Authorize] 
+    [Authorize]
     public class BetController : ApiController
     {
-        private BetService _service = new BetService(); 
+        private BetService _service = new BetService();
 
         private BetService CreateBetService()
         {
