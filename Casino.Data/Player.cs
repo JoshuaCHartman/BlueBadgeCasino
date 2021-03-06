@@ -105,17 +105,6 @@ namespace Casino.Data
         public virtual List<BankTransaction> BankTransactions { get; set; }
 
         public virtual List<Bet> Bets { get; set; }
-
-        //[Required]
-        //public bool EligibleForReward { get; set; }
-
-        public bool AgeVerification { get; set; }
-
-        //public DateTimeOffset CreatedUtc { get; set; }
-
-        //public DateTimeOffset? ModifiedUtc { get; set; }
-
-
     }
 
 }
