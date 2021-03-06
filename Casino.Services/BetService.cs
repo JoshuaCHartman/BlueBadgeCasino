@@ -30,10 +30,6 @@ namespace Casino.Services
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
-            //double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
-
-
-             //double payout = _gameService.PlayGame(model.GameId, model.BetAmount, true);
 
 
             if (!model.TypeOfBet.HasValue)
@@ -41,7 +37,7 @@ namespace Casino.Services
             else
                 payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, (GameService.BetType)model.TypeOfBet);
             if (payout == 0)
-                return null;
+                return null;  //if playing keno or roulette postman needs a list of int.  Keno up to 10 int(1-80). roulette
 
             var entity = new Bet()
             {
@@ -536,10 +532,13 @@ namespace Casino.Services
                         TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
                         BetId = entity.BetId,
                         GameId = entity.GameId,
+                        GameName = entity.Game.GameName,
                         BetAmount = entity.BetAmount,
                         PlayerWonGame = entity.PlayerWonGame,
                         PayoutAmount = entity.PayoutAmount,
                         PlayerBankBalance = entity.Player.CurrentBankBalance
+
+                        
 
                     };
             }

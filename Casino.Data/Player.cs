@@ -51,6 +51,11 @@ namespace Casino.Data
 
         [Required]
         public DateTimeOffset AccountCreated { get; set; }
+        public double CurrentBankBalance { get; set; }
+        public virtual List<BankTransaction> BankTransactions { get; set; }
+
+        public virtual List<Bet> Bets { get; set; }
+        public bool PlayerClosedAccount { get; set; }
 
         private TierStatus _tier;
         public TierStatus TierStatus
@@ -60,9 +65,12 @@ namespace Casino.Data
 
                 if (CurrentBankBalance > 5000)
                     _tier = TierStatus.gold;
+                else if
+                    (CurrentBankBalance < 5000 && CurrentBankBalance > 999)
+                    _tier = TierStatus.silver;
                 else
                 _tier = TierStatus.bronze;
-                
+
             }
 
             get { return _tier; }
@@ -76,12 +84,13 @@ namespace Casino.Data
             {
                 // if (this.IsActive != false)
                 {
+
                     //bool test;
                     TimeSpan accountCreate = DateTime.Now - AccountCreated;
-                    if (accountCreate.TotalDays < 180)
-                        _isActive = true;
-                    else
+                    if (accountCreate.TotalDays > 180 && CurrentBankBalance < 1 || PlayerClosedAccount)
                         _isActive = false;
+                    else
+                        _isActive = true;
 
                 }
 
@@ -95,16 +104,12 @@ namespace Casino.Data
             {
                 if (TierStatus == TierStatus.gold)
                     _hasAccess = true;
-
+                else _hasAccess = false;
             }
             get { return _hasAccess; }
         }
 
-        public double CurrentBankBalance { get; set; }
 
-        public virtual List<BankTransaction> BankTransactions { get; set; }
-
-        public virtual List<Bet> Bets { get; set; }
     }
 
 }
