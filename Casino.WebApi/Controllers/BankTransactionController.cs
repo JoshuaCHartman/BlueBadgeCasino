@@ -3,8 +3,8 @@ using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Net;
-using System.Web.Http;
 using System.Net.Mail;
+using System.Web.Http;
 
 namespace Casino.WebApi.Controllers
 {
@@ -43,7 +43,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Return all Bank Transactions by the currently logged in Player
         /// </summary>
-       
+
         /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bank/player")]
@@ -57,7 +57,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Return a detailed Bank Transaction by its ID number
         /// </summary>
-        
+
         /// <returns></returns>
 
         [Authorize(Roles = "User")]
@@ -73,7 +73,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Get all Bank Transaction by PlayerID - restricted to SuperAdmin, Admin
         /// </summary>
-        
+
         /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
@@ -89,7 +89,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Return all Bank Transactions - restricted to Admin
         /// </summary>
-        
+
         /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
@@ -104,7 +104,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Post a deposit Bank Transactions - restricted to Player (left for testing purposes, use Charge method)
         /// </summary>
-        
+
         /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bank/player")]
@@ -121,7 +121,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Make a withdrawal Bank Transactions - restricted to Player
         /// </summary>
-        
+
         /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bank/playerWithdraw")]
@@ -144,7 +144,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Delete a Bank Transactions - restricted to SuperAdmin, Admin
         /// </summary>
-        
+
         /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Bank/admin/{id}/{amount}")]

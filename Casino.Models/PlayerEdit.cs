@@ -1,6 +1,5 @@
 ﻿using Casino.Data;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Casino.Models
 {
@@ -14,7 +13,7 @@ namespace Casino.Models
         public PlayerState PlayerState { get; set; }
 
         public string PlayerZipCode { get; set; }
-        
-      
+
+
     }
 }

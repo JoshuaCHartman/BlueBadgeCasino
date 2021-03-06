@@ -26,6 +26,6 @@ namespace Casino.Data
 
         public DateTimeOffset DateTimeOfBet { get; set; }
 
-        
+
     }
 }

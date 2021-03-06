@@ -3,7 +3,6 @@ using Casino.Models;
 using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Linq;
 using System.Web.Http;
 namespace Casino.WebApi.Controllers
 {
