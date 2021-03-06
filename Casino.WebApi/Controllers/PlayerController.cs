@@ -3,6 +3,7 @@ using Casino.Models;
 using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Linq;
 using System.Web.Http;
 
 namespace Casino.WebApi.Controllers
@@ -174,33 +175,33 @@ namespace Casino.WebApi.Controllers
             if (!service.CheckPlayer(player))
                 //{
                 return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
-       
-                    if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
-                    {
-                        return BadRequest("You are not 21 and can not create a player.");
-                    }
-                    
-                    if (!service.CreatePlayer(player))
-                    {
-                        return InternalServerError();
-                    }
-                   // else
-                        return Ok();
-                }
 
-                //Player Deletes account(just makes it inactive)
-                [Authorize(Roles = "User")]
-                [Route("api/Player/delete")]
-                public IHttpActionResult Delete()
-                {
-                    var service = CreatePlayerService();
-
-                    if (!service.DeletePlayer())
-                        return InternalServerError();
-
-                    return Ok();
-                }
+            if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
+            {
+                return BadRequest("You are not 21 and can not create a player.");
             }
+
+            if (!service.CreatePlayer(player))
+            {
+                return InternalServerError();
+            }
+            // else
+            return Ok();
+        }
+
+        [Authorize(Roles = "User")]
+        [Route("api/UpdatePlayer/")]
+        public IHttpActionResult Put(PlayerEdit player)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreatePlayerService();
+
+            if (!service.UpdatePlayer(player))
+                return InternalServerError();
+
+            return Ok();
         }
 
         //Player Deletes account(just makes it inactive)
@@ -217,3 +218,4 @@ namespace Casino.WebApi.Controllers
         }
     }
 }
+

@@ -101,11 +101,14 @@ namespace Casino.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var service = CreateBetService();
+            if (!_service.CheckIfGameIdExists(bet.GameId))
+                return BadRequest($"The game with gameId {bet.GameId} does not exist. Please choose another.  For a list of games try the following endpoint: " +
+                    "/api/PlayerGames");
             if (!service.CheckPlayerBalance(bet.BetAmount))//confirm player has enough funds
                 return BadRequest("Bet Amount Exceeds Player Balance");
             var betResult = service.CreateBet(bet);
             if (betResult is null)
-                return BadRequest("Sorry, we are not sure what went wrong");
+                return BadRequest("Sorry, your bet did not post.  You either tried to play a game outside of your access level, or outside the range of the MinMax bet");
             return Ok(betResult);
         }
         //Delete
