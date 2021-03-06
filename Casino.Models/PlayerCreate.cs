@@ -19,6 +19,7 @@ namespace Casino.Models
         public string PlayerLastName { get; set; }
         public string PlayerPhone { get; set; }
         [Required]
+        [DataType(DataType.EmailAddress, ErrorMessage = "E-mail is not valid")]
         public string PlayerEmail { get; set; }
         public string PlayerAddress { get; set; }
 
