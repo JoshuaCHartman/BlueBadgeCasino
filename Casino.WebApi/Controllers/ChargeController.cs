@@ -36,18 +36,7 @@ namespace Casino.WebApi.Controllers
             return Ok(chargeTransactions);
         }
 
-        //Get by id for logged in player
-
-        //[Authorize(Roles = "User")]
-        //[Route("api/charges/player/{id}")]
-
-        //public IHttpActionResult GetById(int id)
-        //{
-        //    MakeChargeService chargeTransactionService = CreateMakeChargeServiceForGuid();
-        //    var chargeTransactions = chargeTransactionService.GetChargeTransactionById(id);
-
-        //    return Ok(chargeTransactions);
-        //}
+  
 
         //Get all by Admin for Specific player
         /// <summary>
@@ -81,6 +70,7 @@ namespace Casino.WebApi.Controllers
         }
 
         // Original Async charge method, used to confirm functionality. Changed to synchronous method below for ease of integration into other methods within application
+       
         //[Authorize(Roles = "User")]
         //[Route("charge_Async")]
         //public async Task<dynamic> Pay(RevisedChargeModel charge)
