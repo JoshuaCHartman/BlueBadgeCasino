@@ -1,8 +1,8 @@
+using Casino.WebApi.Areas.HelpPage.ModelDescriptions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
-using Casino.WebApi.Areas.HelpPage.ModelDescriptions;
 
 namespace Casino.WebApi.Areas.HelpPage.Models
 {

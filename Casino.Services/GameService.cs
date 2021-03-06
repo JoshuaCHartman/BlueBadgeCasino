@@ -78,7 +78,7 @@ namespace Casino.Services
             }
         }
 
-        public IEnumerable<GameListItem> GetGamesPlayer(Guid id) 
+        public IEnumerable<GameListItem> GetGamesPlayer(Guid id)
         {
             bool highStakes = HighStakes(id);
 
@@ -543,7 +543,7 @@ namespace Casino.Services
             return sum;
         }
 
-        public double Blackjack() 
+        public double Blackjack()
         {
             List<int> houseHand = Deal(2);
             List<int> playerHand = Deal(2);
@@ -585,7 +585,7 @@ namespace Casino.Services
         public double Craps(BetType Pass) //Pass or Don't Pass bet
         {
             bool pass = true; ;
-            if(Pass != BetType.pass) { pass = false; } else { pass = true; }
+            if (Pass != BetType.pass) { pass = false; } else { pass = true; }
             int point = 0;
             sum = Roll(2).Sum();
             int round = 1;
@@ -721,25 +721,25 @@ namespace Casino.Services
                 switch (type.ToString())
                 {
                     case "column": //player selects column 1, 2, or 3
-                        n = playerChoice[0]; 
+                        n = playerChoice[0];
                         betVal.Add(n);
                         break;
                     case "corner": //player selection; must be adjoining numbers; must pass in 2 num
-                        int n1=playerChoice[0]; //lowest num on lowest row
-                        int n2= playerChoice[1]; //lowest num on highest row
+                        int n1 = playerChoice[0]; //lowest num on lowest row
+                        int n2 = playerChoice[1]; //lowest num on highest row
                         betVal.Add(n1);
-                        betVal.Add(n1+1);
+                        betVal.Add(n1 + 1);
                         betVal.Add(n2);
-                        betVal.Add(n2+1);
+                        betVal.Add(n2 + 1);
                         break;
                     case "double_street": //player selection; pass in 1 num
                         n = playerChoice[0]; //lowest num from 2 adjoining rows
                         betVal.Add(n);
-                        betVal.Add(n+1);
-                        betVal.Add(n+2);
-                        betVal.Add(n+3);
-                        betVal.Add(n+4);
-                        betVal.Add(n+5);
+                        betVal.Add(n + 1);
+                        betVal.Add(n + 2);
+                        betVal.Add(n + 3);
+                        betVal.Add(n + 4);
+                        betVal.Add(n + 5);
                         break;
                     case "dozen": //player selection 1st doz, 2nd doz, 3rd doz
                         betVal.Add(playerChoice[0]);
@@ -767,10 +767,10 @@ namespace Casino.Services
                         break;
                     case "street": // player selects row 
                         n = playerChoice[0];
-                        if (n > 1) { n = 2*(n -1); }
+                        if (n > 1) { n = 2 * (n - 1); }
                         betVal.Add(n);
-                        betVal.Add(n+1);
-                        betVal.Add(n+2);
+                        betVal.Add(n + 1);
+                        betVal.Add(n + 2);
                         break;
                     case "trio": //player selects 1st or 2nd trio
                         betVal.Add(playerChoice[0]);
@@ -842,7 +842,7 @@ namespace Casino.Services
 
                     if (targetRange.Contains(winNum)) { payout = 6; } else { payout = 0; }
                     break;
-                case "high": 
+                case "high":
                     if (betValue[0] == 0) { payout = 1; } else { payout = 0; }
                     break;
                 case "low":
@@ -858,7 +858,7 @@ namespace Casino.Services
                     if (winNum % 2 == 0) { payout = 1; } else { payout = 0; }
                     break;
                 case "odd":
-                    if (winNum % 2 != 0) { payout = 1; }else { payout = 0; }
+                    if (winNum % 2 != 0) { payout = 1; } else { payout = 0; }
                     break;
                 case "dozen":
                     if (betValue[0] == 1)

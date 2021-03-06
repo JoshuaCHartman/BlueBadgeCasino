@@ -14,7 +14,6 @@ namespace Casino.Data
         public Guid PlayerId { get; set; }
         public virtual Player Player { get; set; }
 
-        //add range to GameId FK to ensure they choose a valid game
         [ForeignKey(nameof(Game))]
         public int GameId { get; set; }
         public virtual Game Game { get; set; }
@@ -27,6 +26,6 @@ namespace Casino.Data
 
         public DateTimeOffset DateTimeOfBet { get; set; }
 
-        
+
     }
 }

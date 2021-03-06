@@ -1,23 +1,23 @@
-﻿using System;
+﻿using Casino.Data;
+using Casino.WebApi.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Casino.WebApi.Models;
-using Casino.Data;
-using System.Linq;
 
 namespace Casino.WebApi.Controllers
 {
-   // Add endpoints belovw (inside accountcontroller)
+    // Add endpoints belovw (inside accountcontroller)
 
     [Authorize]
     [RoutePrefix("api/Account")]
@@ -57,7 +57,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         ///  Register a new user account with an email and password
         /// </summary>
-        
+
         /// <returns></returns>
         [AllowAnonymous]
         [Route("Register_New_Account")]
@@ -128,10 +128,10 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Return all users - restricted to SuperAdmin
         /// </summary>
-        
+
         /// <returns></returns>
         [Authorize(Roles = "SuperAdmin")] // limits to superadmin
-                                          
+
         [Route("Get_AllUsers(SUPERADMIN)")] // display route
         public List<ApplicationUser> GetAllUsers()
         {
@@ -146,7 +146,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Create a new Admin account - restriced to SuperAdmin, Admin
         /// </summary>
-        
+
         /// <returns></returns>
         [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Create_Admin(SUPERADMIN)")]
@@ -201,12 +201,12 @@ namespace Casino.WebApi.Controllers
         }
 
 
-        // keep : update as needed ?
+        
         // GET api/Account/UserInfo
         /// <summary>
         /// Get user account info
         /// </summary>
-        
+
         /// <returns></returns>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("Get_UserInfo")]
@@ -227,7 +227,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Logout of your user account
         /// </summary>
-        
+
         /// <returns></returns>
         [Route("Logout")]
         public IHttpActionResult Logout()
@@ -236,32 +236,12 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
-        // POST api/Account/ChangePassword
-        
-        //[Route("ChangePassword")]
-        //public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-        //        model.NewPassword);
-
-        //    if (!result.Succeeded)
-        //    {
-        //        return GetErrorResult(result);
-        //    }
-
-        //    return Ok();
-        //}
 
         // POST api/Account/SetPassword
         /// <summary>
         /// Change your user account password 
         /// </summary>
-        
+
         /// <returns></returns>
         [Route("SetPassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
@@ -281,41 +261,11 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
-        
+
 
         // Admin functions below : 
 
-        // POST api/Account/RemoveLogin
-
-        //[Authorize(Roles = "SuperAdmin, Admin")]
-        
-        //[Route("RemoveLogin")]
-        //public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    IdentityResult result;
-
-        //    if (model.LoginProvider == LocalLoginProvider)
-        //    {
-        //        result = await UserManager.RemovePasswordAsync(User.Identity.GetUserId());
-        //    }
-        //    else
-        //    {
-        //        result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(),
-        //            new UserLoginInfo(model.LoginProvider, model.ProviderKey));
-        //    }
-
-        //    if (!result.Succeeded)
-        //    {
-        //        return GetErrorResult(result);
-        //    }
-
-        //    return Ok();
-        //}
+       
 
 
         #region Helpers
