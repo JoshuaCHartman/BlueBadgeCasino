@@ -1,5 +1,4 @@
-﻿
-@* creates with html and javascript the page and cart for front end card entry *@
+﻿@* creates with html and javascript the page and cart for front end card entry *@
 
 @{
     ViewBag.Title = "Create";
@@ -27,7 +26,7 @@
             },
             invalid: {
                 color: '#fa755a',
-                iconColor:'#fa755a',
+                iconColor: '#fa755a',
             }
         };
 
@@ -37,16 +36,13 @@
         // Add an instance of the card Element into the `card-element` <div>.
         card.mount('#card-element');
 
-         // Handle real time validation errors from the card element
-        card.addEventListener('change', function (event)
-        {
+        // Handle real time validation errors from the card element
+        card.addEventListener('change', function (event) {
             var displayError = document.getElementById('card-errors');
-            if (event.error)
-            {
+            if (event.error) {
                 displayError.textContent = event.error.message;
             }
-            else
-            {
+            else {
                 displayError.textContent = '';
             }
         });
@@ -90,7 +86,8 @@
 
 
 <h2>Purchase Chips</h2>
-<h3>Use a credit card to purchase virtual casino chips to use to play games!</h3>
+<h3>A javascript wrapper is used to capture card details, which are submitted and, if valid, a token is returned. This uses a deprecated Stripe charge API, and is no longer supported.</h3>
+
 
 @*<form action="/charge" method="post" id="payment-form">*@
 @* change form action from default to pass info from card entry into controller  *@
