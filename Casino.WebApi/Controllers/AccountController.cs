@@ -63,12 +63,23 @@ namespace Casino.WebApi.Controllers
         [Route("Register_New_Account")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
+            // authetication check - wont allow authenticated user to create another user
+
+            bool isAuthenticated = User.Identity.IsAuthenticated;
+
+            if (isAuthenticated == true)
+            {
+                return BadRequest("User authenticated and cannot create another user");
+            }
+
             var _db = new ApplicationDbContext();
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+
 
             // Create new role instance
             IdentityRole role = new IdentityRole();

@@ -187,11 +187,13 @@ namespace Casino.WebApi.Controllers
         /// Create a new Player account
         /// </summary>
         /// <returns></returns>
-        //[Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         [HttpPost]
         [Route("api/makePlayer")]
         public IHttpActionResult Post(PlayerCreate player)  //*BRIAN* looks like it will never get beyond that first bool check with all the "else" returning "ok"
         {
+            
+
 
             if (!ModelState.IsValid)
 
@@ -199,11 +201,15 @@ namespace Casino.WebApi.Controllers
 
             var service = CreatePlayerService();
 
+            bool query = service.CheckPlayerIdAlreadyExists();
+            if (query == true)
+                return BadRequest("UserID already in system");
+           
             if (!service.CheckPlayer(player))
                 //{
                 return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
 
-            if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
+            if (service.CheckDob(player) == false)  //Is this false or does it need to be revised.  If service.checkplayer = false
             {
                 return BadRequest("You are not 21 and can not create a player.");
             }
@@ -213,7 +219,9 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             }
             // else
-            return Ok();
+
+
+            return Ok("Your Player Account has been created. Please buy chips to play games!");
         }
 
         //Player Deletes account(just makes it inactive)
@@ -232,5 +240,7 @@ namespace Casino.WebApi.Controllers
 
             return Ok();
         }
+
+        
     }
 }
