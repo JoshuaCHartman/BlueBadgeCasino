@@ -16,6 +16,7 @@ namespace Casino.WebApi.Controllers
             return playerService;
         }
         private PlayerService _service = new PlayerService();
+
         //Player gets own player info
         /// <summary>
         /// Return Player info for logged in Player - restricted to User/Player
