@@ -21,7 +21,8 @@ namespace Casino.Services
 
         public bool CreatePlayer(PlayerCreate model)
         {
-
+            var ctx = new ApplicationDbContext();
+            
             var entity = new Player()
             {
                 PlayerDob = model.PlayerDob,
@@ -105,16 +106,15 @@ namespace Casino.Services
             var ctx = new ApplicationDbContext();
 
             using (ctx)
-            {
+
+              {
                 var query = ctx.Players
                             .Find(_userId);
                 if (query != null)
                 {
-
                     return true;
                 }
                 return false;
-
             }
         }
 
@@ -143,11 +143,13 @@ namespace Casino.Services
         }
 
 
+     
         //public bool CheckPlayer(PlayerCreate player)
         //{   //Getting the string
-        // var stringDob = player.PlayerDob;
+              // var stringDob = player.PlayerDob;
+      
+          //Birthdate is not entered or correctly or legal age is not acceptable
 
-        //Birthdate is not entered or correctly or legal age is not acceptable
         //    // when this was changed to a string, this always fails and we cannot create any players
 
         //    //if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
@@ -168,8 +170,8 @@ namespace Casino.Services
             //Getting the string
             var stringDob = player.PlayerDob;
 
-            //Convert the string to a DateTime
-            DateTime convertedDob;
+
+        //}
 
             // This doesnt actually parse, switched to method from above jch
             //convertedDob = DateTime.Parse(stringDob);
@@ -179,16 +181,28 @@ namespace Casino.Services
                            DateTimeStyles.None,
                            out convertedDob);
 
-            TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
-            if (PlayerDob.TotalDays < 7665)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+
+        //    //Convert the string to a DateTime
+        //    DateTime convertedDob;
+
+        //    // This doesnt actually parse, switched to method from above jch
+        //    //convertedDob = DateTime.Parse(stringDob);
+            
+        //    DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
+        //                   CultureInfo.CurrentCulture,
+        //                   DateTimeStyles.None,
+        //                   out convertedDob);
+
+        //    TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
+        //    if (PlayerDob.TotalDays < 7665)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }
+        //}
 
 
 
