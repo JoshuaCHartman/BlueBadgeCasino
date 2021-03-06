@@ -534,7 +534,7 @@ namespace Casino.Services
                         TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
                         BetId = entity.BetId,
                         GameId = entity.GameId,
-                        
+                        GameName = entity.Game.GameName,
                         BetAmount = entity.BetAmount,
                         PlayerWonGame = entity.PlayerWonGame,
                         PayoutAmount = entity.PayoutAmount,
