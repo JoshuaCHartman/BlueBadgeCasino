@@ -435,7 +435,7 @@ namespace Casino.Services
 
                 throw error;
             }
-            
+
         }
         public bool DeleteBet(int id, double amount)
         {
@@ -546,7 +546,7 @@ namespace Casino.Services
                         PayoutAmount = entity.PayoutAmount,
                         PlayerBankBalance = entity.Player.CurrentBankBalance
 
-                        
+
 
                     };
             }

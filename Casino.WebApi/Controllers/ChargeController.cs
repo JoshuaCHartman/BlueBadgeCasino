@@ -1,9 +1,8 @@
-﻿using Casino.WebApi.Models;
-using System;
-using System.Threading.Tasks;
-using System.Web.Http;
-using Casino.Services;
+﻿using Casino.Services;
+using Casino.WebApi.Models;
 using Microsoft.AspNet.Identity;
+using System;
+using System.Web.Http;
 
 namespace Casino.WebApi.Controllers
 {
@@ -12,7 +11,7 @@ namespace Casino.WebApi.Controllers
     {
 
         // UNIQUE STRIPE CHARGE CONTROLLER AT BOTTOM
-        
+
         private MakeChargeService _makeChargeService = new MakeChargeService();
         private MakeChargeService CreateMakeChargeServiceForGuid()
         {
@@ -102,7 +101,7 @@ namespace Casino.WebApi.Controllers
                 MakeChargeService chargeService = CreateMakeChargeServiceForGuid();
                 // adds entry to ChargeForChips table AND BankTransaction Table AND Player table's PlayerBalance
                 chargeService.CreateChargeforChips(charge);
-                return Ok($"charge made: $ {charge.Value/100} charged to your card, and ${charge.Value / 100} added to your player account"); // put in message
+                return Ok($"charge made: $ {charge.Value / 100} charged to your card, and ${charge.Value / 100} added to your player account"); // put in message
             }
             else
                 return InternalServerError(); // put in message

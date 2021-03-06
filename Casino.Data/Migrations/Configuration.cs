@@ -30,9 +30,9 @@
             string guidAsStringOfUser2 = GetGuidOfSeededUser("user2@abc.com");
             string guidAsStringOfUser3 = GetGuidOfSeededUser("user3@abc.com");
             string guidAsStringOfUser4 = GetGuidOfSeededUser("user4@abc.com");
-            string guidAsStringOfUser5 =("0052320b-3b0a-4b90-93c5-1d3d4d5ac8cb");
-            string guidAsStringOfUser6 =("0052320b-3b0a-4b90-93c5-1d3d4d5a1984");
-           string guidAsStringOfUser7 = ("0052320b-3b0a-4b90-93c5-1d3d4d5a1960");
+            string guidAsStringOfUser5 = ("0052320b-3b0a-4b90-93c5-1d3d4d5ac8cb");
+            string guidAsStringOfUser6 = ("0052320b-3b0a-4b90-93c5-1d3d4d5a1984");
+            string guidAsStringOfUser7 = ("0052320b-3b0a-4b90-93c5-1d3d4d5a1960");
             string guidAsStringOfUser8 = ("0052320b-3b0a-4b90-93c5-1d3d4d5a1950");
             string guidAsStringOfUser9 = ("0052320b-3b0a-4b90-93c5-1d3d4d5a1900");
 
@@ -63,8 +63,8 @@
 
             context.Players.AddOrUpdate(x => x.PlayerFirstName,
 
-               
-                
+
+
             new Player()
             {
                 PlayerId = Guid.Parse(guidAsStringOfUser1),
@@ -175,17 +175,17 @@
             );
 
             context.Bets.AddOrUpdate(x => x.BetId,
-               
+
                 new Bet()
-               {
-                   BetId = 1,
-                   PlayerId = Guid.Parse(guidAsStringOfUser1),
-                   GameId = 1,
-                   BetAmount = 7,
-                   PayoutAmount = 7,
-                   DateTimeOfBet = DateTimeOffset.Now,
-                   PlayerWonGame = true
-               },
+                {
+                    BetId = 1,
+                    PlayerId = Guid.Parse(guidAsStringOfUser1),
+                    GameId = 1,
+                    BetAmount = 7,
+                    PayoutAmount = 7,
+                    DateTimeOfBet = DateTimeOffset.Now,
+                    PlayerWonGame = true
+                },
                new Bet()
                {
                    BetId = 2,
@@ -629,7 +629,7 @@
                  },
                   new Bet()
                   {
-                      BetId =48,
+                      BetId = 48,
                       PlayerId = Guid.Parse(guidAsStringOfUser4),
                       GameId = 8,
                       BetAmount = 25,
@@ -752,7 +752,7 @@
                         PlayerWonGame = true
                     }
 
-                ) ;
+                );
         }
 
         private string GetGuidOfSeededUser(string email)

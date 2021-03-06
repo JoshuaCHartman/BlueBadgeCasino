@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Casino.Data
@@ -69,7 +65,7 @@ namespace Casino.Data
                     (CurrentBankBalance < 5000 && CurrentBankBalance > 999)
                     _tier = TierStatus.silver;
                 else
-                _tier = TierStatus.bronze;
+                    _tier = TierStatus.bronze;
 
             }
 

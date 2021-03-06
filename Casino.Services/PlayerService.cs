@@ -2,7 +2,6 @@
 using Casino.Models;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 
@@ -133,7 +132,7 @@ namespace Casino.Services
                                     PlayerEmail = e.PlayerEmail,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
-                                   
+
                                 }
                         );
                 return query.ToArray();
@@ -165,7 +164,7 @@ namespace Casino.Services
                         CurrentBankBalance = entity.CurrentBankBalance,
                         TierStatus = entity.TierStatus,
                         HasAccessToHighLevelGame = entity.HasAccessToHighLevelGame
-                       
+
                     };
             }
         }
@@ -180,7 +179,7 @@ namespace Casino.Services
                 return
                     new PlayerDetail
                     {
-                        PlayerId = entity.PlayerId, 
+                        PlayerId = entity.PlayerId,
                         PlayerFirstName = entity.PlayerFirstName,
                         PlayerLastName = entity.PlayerLastName,
                         PlayerPhone = entity.PlayerPhone,
@@ -192,7 +191,7 @@ namespace Casino.Services
                         AccountCreated = entity.AccountCreated,
                         IsActive = entity.IsActive,
                         CurrentBankBalance = entity.CurrentBankBalance,
-                       
+
                     };
             }
 
@@ -281,12 +280,12 @@ namespace Casino.Services
                         .Players
                         .Single(e => e.PlayerId == _userId);
 
-              
+
                 entity.PlayerPhone = model.PlayerPhone;
                 entity.PlayerAddress = model.PlayerAddress;
                 entity.PlayerState = model.PlayerState;
                 entity.PlayerZipCode = model.PlayerZipCode;
-               
+
                 return ctx.SaveChanges() == 1;
             }
         }
@@ -301,12 +300,12 @@ namespace Casino.Services
                         .Players
                         .Single(e => e.PlayerId == playerId);
 
-               
+
                 entity.PlayerPhone = model.PlayerPhone;
                 entity.PlayerAddress = model.PlayerAddress;
                 entity.PlayerState = model.PlayerState;
                 entity.PlayerZipCode = model.PlayerZipCode;
-              
+
                 return ctx.SaveChanges() == 1;
             }
         }

@@ -24,7 +24,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Get a complete Bet History - restricted to Player
         /// </summary>
-        
+
         /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bet/player")]
@@ -39,7 +39,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Get all Bets - restricted to SuperAdmin, Admin
         /// </summary>
-        
+
         /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [HttpGet]
@@ -54,7 +54,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Get Bets from parameters (Player win/lose, Amount, Timespan) - restricted to SuperAdmin, Admin
         /// </summary>
-        
+
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Admin, SuperAdmin")]
@@ -69,7 +69,7 @@ namespace Casino.WebApi.Controllers
         /// <summary>
         /// Get Bet by Bet ID - restricted to Player
         /// </summary>
-        
+
         /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bet/player/{id}")]
