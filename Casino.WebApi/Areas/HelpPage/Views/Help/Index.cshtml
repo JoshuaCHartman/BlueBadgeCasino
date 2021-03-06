@@ -6,7 +6,7 @@
 @model Collection<ApiDescription>
 
 @{
-    ViewBag.Title = "ASP.NET Web API Help Page";
+    ViewBag.Title = "Blue Badge Casino Web API";
 
     // Group APIs by controller
     ILookup<HttpControllerDescriptor, ApiDescription> apiGroups = Model.ToLookup(api => api.ActionDescriptor.ControllerDescriptor);
@@ -24,12 +24,12 @@
     <section class="featured">
         <div class="content-wrapper">
             <h2>Introduction</h2>
-            <p>
-                Provide a general description of your APIs here.
+            <p style="font-size:21px">
+                An online casino model built as a .NET Framework Web API, and designed around the principles of n-tier architecture and RESTful APIs to access a code-first relational database.
             </p>
         </div>
     </section>
-    <section class="content-wrapper main-content clear-fix">
+    <section class="content-wrapper main-content clear-fix"; style="font-size:21px">
         @foreach (var group in apiGroups)
         {
             @Html.DisplayFor(m => group, "ApiGroup")

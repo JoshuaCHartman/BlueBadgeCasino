@@ -1,11 +1,10 @@
-﻿using System.Data.Entity;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 
 namespace Casino.Data
 {
@@ -24,10 +23,14 @@ namespace Casino.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+
+          // Using test db PrivateConn.config connection string
+
+          : base("Brian3", throwIfV1Schema: false)
+
         {
         }
-        
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
@@ -42,6 +45,8 @@ namespace Casino.Data
         public DbSet<Game> Games { get; set; }
 
         public DbSet<BankTransaction> BankTransactions { get; set; }
+
+        public DbSet<ChargeForChips> ChargesForChips { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
