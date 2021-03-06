@@ -144,7 +144,7 @@ namespace Casino.WebApi.Controllers
 
         // POST api/Account/Register
         /// <summary>
-        /// Create an Admin account - restriced to SuperAdmin, Admin
+        /// Create a new Admin account - restriced to SuperAdmin, Admin
         /// </summary>
         
         /// <returns></returns>

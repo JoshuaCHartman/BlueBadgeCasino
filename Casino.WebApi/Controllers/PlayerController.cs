@@ -164,7 +164,7 @@ namespace Casino.WebApi.Controllers
         //User creates player account
         // Commented out - includes ddmmyyyy no slashes fix 
         /// <summary>
-        /// Create a new Player account
+        /// Create a new Player account / BIRTHDAY MUST BE ENTERED MM/DD/YYYY WITH SLASHES
         /// </summary>
         /// <returns></returns>
         [Authorize(Roles = "User")]

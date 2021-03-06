@@ -171,7 +171,7 @@ namespace Casino.Services
             //Convert the string to a DateTime
             DateTime convertedDob;
 
-            // This doesnt actually parse, switched to method from above jch
+            // This only parses with slashes 
             //convertedDob = DateTime.Parse(stringDob);
 
             DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
@@ -256,11 +256,11 @@ namespace Casino.Services
                         PlayerState = entity.PlayerState,
                         PlayerZipCode = entity.PlayerZipCode,
                         PlayerDob = entity.PlayerDob,
-                        //AccountCreated = entity.AccountCreated,
-                        //IsActive = entity.IsActive,
-                        //CurrentBankBalance = entity.CurrentBankBalance,
-                        //TierStatus = entity.TierStatus,
-                        //HasAccessToHighLevelGame = entity.HasAccessToHighLevelGame
+                        AccountCreated = entity.AccountCreated,
+                        IsActive = entity.IsActive,
+                        CurrentBankBalance = entity.CurrentBankBalance,
+                        TierStatus = entity.TierStatus,
+                        HasAccessToHighLevelGame = entity.HasAccessToHighLevelGame
                         //ModifiedUtc = entity.ModifiedUtc
 
                     };

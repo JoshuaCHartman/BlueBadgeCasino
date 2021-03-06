@@ -433,7 +433,7 @@ namespace Casino.Services
                         };
                 }
             }
-            catch (Exception error)
+            catch (GetBetException error)
             {
 
                 throw error;
@@ -551,5 +551,14 @@ namespace Casino.Services
                     };
             }
         }
+        private class GetBetException : Exception
+        {
+            public GetBetException(string message)
+               : base(message)
+            {
+            }
+        }
+
+
     }
 }
