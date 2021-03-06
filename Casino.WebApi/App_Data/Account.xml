@@ -485,240 +485,42 @@
             <summary>
              Register a new user account with an email and password
             </summary>
+            <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:Casino.WebApi.Controllers.AccountController.GetAllUsers">
             <summary>
             Return all users - restricted to SuperAdmin
             </summary>
+            <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:Casino.WebApi.Controllers.AccountController.CreateAdmin(Casino.WebApi.Models.RegisterBindingModel)">
             <summary>
             Create an Admin account - restriced to SuperAdmin, Admin
             </summary>
+            <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:Casino.WebApi.Controllers.AccountController.GetUserInfo">
             <summary>
             Get user account info
             </summary>
+            <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:Casino.WebApi.Controllers.AccountController.Logout">
             <summary>
             Logout of your user account
             </summary>
+            <param name="model"></param>
             <returns></returns>
         </member>
         <member name="M:Casino.WebApi.Controllers.AccountController.SetPassword(Casino.WebApi.Models.SetPasswordBindingModel)">
             <summary>
             Change your user account password 
             </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.GameController.Post(Casino.Models.GameCreate)">
-            <summary>
-            Create a new game - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.GameController.Get">
-            <summary>
-            Get a list of all games available to play
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.GameController.PlayerGet">
-            <summary>
-            Get all games played by a Player, using PlayerID/GUID
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.GameController.BetLimits(System.Double)">
-            <summary>
-            Enter a bet amount, and discover what games area available to play
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.GameController.GetById(System.Int32)">
-            <summary>
-            Get details of games by GameID
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.GameController.Put(Casino.Models.GameUpdate)">
-            <summary>
-            Edit an existing Game - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BankTransactionController.Get">
-            <summary>
-            Return all Bank Transactions by the currently logged in Player
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BankTransactionController.GetById(System.Int32)">
-            <summary>
-            Return a detailed Bank Transaction by its ID number
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BankTransactionController.Get(System.String)">
-            <summary>
-            Get all Bank Transaction by PlayerID - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BankTransactionController.GetAll">
-            <summary>
-            Return all Bank Transactions - restricted to Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BankTransactionController.Post(Casino.Models.BankTransactionCreate)">
-            <summary>
-            Post a deposit Bank Transactions - restricted to Player (left for testing purposes, use Charge method)
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BankTransactionController.Withdraw(Casino.Models.BankTransactionCreate)">
-            <summary>
-            Make a withdrawal Bank Transactions - restricted to Player
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BankTransactionController.Delete(System.Int32,System.Double)">
-            <summary>
-            Delete a Bank Transactions - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BetController.Get">
-            <summary>
-            Get a complete Bet History - restricted to Player
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BetController.GetAllByAdmin">
-            <summary>
-            Get all Bets - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BetController.PostbyAdminSearch(Casino.Models.GetBetByParameters)">
-            <summary>
-            Get Bets from parameters (Player win/lose, Amount, Timespan) - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BetController.GetById(System.Int32)">
-            <summary>
-            Get Bet by Bet ID - restricted to Player
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BetController.GetbyAdminByGuid(System.String)">
-            <summary>
-            Get Bets by PlayerID/GUID - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BetController.GetbyAdminByGame(System.Int32)">
-            <summary>
-            Get Bets by GameID - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BetController.GetByAdminByBetId(System.Int32)">
-            <summary>
-            Get Bets by BetID - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BetController.Post(Casino.Models.BetCreate)">
-            <summary>
-            Enter a new bet - restricted to Players
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.BetController.Delete(System.Int32,System.Double)">
-            <summary>
-            Delete Bet by BetID - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.PlayerController.GetSelf">
-            <summary>
-            Return Player info for logged in Player - restricted to User/Player
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.PlayerController.GetAllPlayers">
-            <summary>
-            Get all Players - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.PlayerController.GetById(System.Guid)">
-            <summary>
-            Get a Player by PlayerID/GUID - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.PlayerController.GetByTierStatus(Casino.Data.TierStatus)">
-            <summary>
-            Get all Players by Tier Level - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.PlayerController.GetPlayerHasBalance">
-            <summary>
-            Get all Players with an account balance - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.PlayerController.GetActivePlayers">
-            <summary>
-            Get all active Players - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.PlayerController.Post(Casino.Models.PlayerCreate)">
-            <summary>
-            Create a new Player account
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.PlayerController.Delete">
-            <summary>
-            Set account to inactive - restricted to User/Player
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.ChargeController.Get">
-            <summary>
-            Get Charges by logged in Player - restricted to Player
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.ChargeController.Get(System.String)">
-            <summary>
-            Get all Charges by PlayerID - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.ChargeController.GetAll">
-            <summary>
-            Get all Charges - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.ChargeController.Charge(Casino.WebApi.Models.RevisedChargeModel)">
-            <summary>
-            Buy chips by entering credit card info - use test card number 4242424242424242, and future month and year, 3 digits for the CVC, and 5 digits for the zipcode
-            </summary>
+            <param name="model"></param>
             <returns></returns>
         </member>
     </members>

@@ -23,6 +23,10 @@ namespace Casino.WebApi.Controllers
 
         //Get
         //Get all by logged in Player
+        /// <summary>
+        /// Get Charges by logged in Player - restricted to Player
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/charges/player")]
         public IHttpActionResult Get()
@@ -33,18 +37,23 @@ namespace Casino.WebApi.Controllers
         }
 
         //Get by id for logged in player
-        [Authorize(Roles = "User")]
-        [Route("api/charges/player/{id}")]
 
-        public IHttpActionResult GetById(int id)
-        {
-            MakeChargeService chargeTransactionService = CreateMakeChargeServiceForGuid();
-            var chargeTransactions = chargeTransactionService.GetChargeTransactionById(id);
+        //[Authorize(Roles = "User")]
+        //[Route("api/charges/player/{id}")]
 
-            return Ok(chargeTransactions);
-        }
+        //public IHttpActionResult GetById(int id)
+        //{
+        //    MakeChargeService chargeTransactionService = CreateMakeChargeServiceForGuid();
+        //    var chargeTransactions = chargeTransactionService.GetChargeTransactionById(id);
+
+        //    return Ok(chargeTransactions);
+        //}
 
         //Get all by Admin for Specific player
+        /// <summary>
+        /// Get all Charges by PlayerID - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/charges/admin/{guidAsString}")]
@@ -57,6 +66,10 @@ namespace Casino.WebApi.Controllers
         }
 
         //Get all by Admin
+        /// <summary>
+        /// Get all Charges - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/charges/admin")]
@@ -67,13 +80,18 @@ namespace Casino.WebApi.Controllers
             return Ok(chargeTransactions);
         }
 
-        [Authorize(Roles = "User")]
-        [Route("charge_Async")]
-        public async Task<dynamic> Pay(RevisedChargeModel charge)
-        {
-            return await MakeChargeService.ChargeAsync(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
-        }
+        // Original Async charge method, used to confirm functionality. Changed to synchronous method below for ease of integration into other methods within application
+        //[Authorize(Roles = "User")]
+        //[Route("charge_Async")]
+        //public async Task<dynamic> Pay(RevisedChargeModel charge)
+        //{
+        //    return await MakeChargeService.ChargeAsync(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
+        //}
 
+        /// <summary>
+        /// Buy chips by entering credit card info - use test card number 4242424242424242, and future month and year, 3 digits for the CVC, and 5 digits for the zipcode
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("charge_deposit_as_chips")]
         public IHttpActionResult Charge(RevisedChargeModel charge)

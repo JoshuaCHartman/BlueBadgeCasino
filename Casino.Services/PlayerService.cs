@@ -2,6 +2,7 @@
 using Casino.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Casino.Services
@@ -20,7 +21,8 @@ namespace Casino.Services
 
         public bool CreatePlayer(PlayerCreate model)
         {
-
+            var ctx = new ApplicationDbContext();
+            
             var entity = new Player()
             {
                 PlayerDob = model.PlayerDob,
@@ -44,7 +46,12 @@ namespace Casino.Services
                 AccountCreated = DateTimeOffset.Now
             };
 
+             
+              // using (ctx)
+
+
             using (var ctx = new ApplicationDbContext())
+
             {
                 ctx.Players.Add(entity);
                 return ctx.SaveChanges() == 1;
@@ -96,11 +103,40 @@ namespace Casino.Services
         //    }
         //}           
 
+        
+        public bool CheckPlayerIdAlreadyExists()
+        {
+            var ctx = new ApplicationDbContext();
+
+            using (ctx)
+              {
+                var query = ctx.Players
+                            .Find(_userId);
+                if (query != null)
+                {
+                  
+                    return true;
+                }
+                return false;
+              
+            }
+        }
+
+
         public bool CheckPlayer(PlayerCreate player)
         {   //Birthdate is not entered or correctly or legal age is not acceptable
             if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
+
             {
+                var query = ctx.Players
+                            .Find(_userId);
+                if (query != null)
+                {
+                  
+                    return true;
+                }
                 return false;
+
             }
             else
             {
@@ -109,26 +145,53 @@ namespace Casino.Services
             }
         }
 
-        public bool CheckDob(PlayerCreate player)
-        {
-            //Getting the string
-            var stringDob = player.PlayerDob;
+     
+        //public bool CheckPlayer(PlayerCreate player)
+        //{   //Getting the string
+              // var stringDob = player.PlayerDob;
+      
+          //Birthdate is not entered or correctly or legal age is not acceptable
+        //    // when this was changed to a string, this always fails and we cannot create any players
 
-            //Convert the string to a DateTime
-            DateTime convertedDob;
+        //    //if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
+        //    DateTime parsedDob;
+        //    DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
+        //                   CultureInfo.CurrentCulture,
+        //                   DateTimeStyles.None,
+        //                   out parsedDob);
+            
+        //        if (parsedDob == null)
+        //        return false;
+        //    return true;
 
-            convertedDob = DateTime.Parse(stringDob);
+        //}
 
-            TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
-            if (PlayerDob.TotalDays < 7665)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+        //public bool CheckDob (PlayerCreate player)
+        //{
+        //    //Getting the string
+        //    var stringDob = player.PlayerDob;
+
+        //    //Convert the string to a DateTime
+        //    DateTime convertedDob;
+
+        //    // This doesnt actually parse, switched to method from above jch
+        //    //convertedDob = DateTime.Parse(stringDob);
+            
+        //    DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
+        //                   CultureInfo.CurrentCulture,
+        //                   DateTimeStyles.None,
+        //                   out convertedDob);
+
+        //    TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
+        //    if (PlayerDob.TotalDays < 7665)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }
+        //}
 
 
 
