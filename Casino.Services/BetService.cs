@@ -32,7 +32,7 @@ namespace Casino.Services
             //      from _gameSim.
             //double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
 
-             double payout = _gameService.PlayGame(model.GameId, model.BetAmount, true);
+             payout = _gameService.PlayGame(model.GameId, model.BetAmount, true);
 
             if (!model.TypeOfBet.HasValue)
                 payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess);
