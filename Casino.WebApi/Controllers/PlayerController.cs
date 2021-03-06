@@ -189,45 +189,22 @@ namespace Casino.WebApi.Controllers
         /// Create a new Player account
         /// </summary>
         /// <returns></returns>
-        //[Authorize(Roles = "User")]
-        //[HttpPost]
-        //[Route("api/makePlayer")]
-        //public IHttpActionResult Post(PlayerCreate player)  //*BRIAN* looks like it will never get beyond that first bool check with all the "else" returning "ok"
-        //{
-            
+        [Authorize(Roles = "User")]
+        [HttpPost]
+        [Route("api/makePlayer")]
+        public IHttpActionResult Post(PlayerCreate player)  //*BRIAN* looks like it will never get beyond that first bool check with all the "else" returning "ok"
+        {
 
+            if (!ModelState.IsValid)
 
-        //    if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        //        return BadRequest(ModelState);
+            var service = CreatePlayerService();
 
-        //    var service = CreatePlayerService();
-
-        //    bool query = service.CheckPlayerIdAlreadyExists();
-        //    if (query == true)
-        //        return BadRequest("UserID already in system");
-           
-        //    if (!service.CheckPlayer(player))
-        //        //{
-        //        return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
-
-        //    if (service.CheckDob(player) == false)  //Is this false or does it need to be revised.  If service.checkplayer = false
-        //    {
-        //        return BadRequest("You are not 21 and can not create a player.");
-        //    }
-
-        //    if (!service.CreatePlayer(player))
-        //    {
-        //        return InternalServerError();
-        //    }
-        //    // else
-
-
-        //    return Ok("Your Player Account has been created. Please buy chips to play games!");
-        //}
+         
 
             if (!service.CheckPlayer(player))
-                //{
+                
                 return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
 
             if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
@@ -239,7 +216,7 @@ namespace Casino.WebApi.Controllers
             {
                 return InternalServerError();
             }
-            // else
+        
             return Ok();
         }
 
@@ -273,7 +250,8 @@ namespace Casino.WebApi.Controllers
             if (!service.DeletePlayer())
                 return InternalServerError();
 
-            return Ok();
+            return Ok("Your account is now inactive.  " +
+                      "You will recieve a check in the mail within 5 business days for any remaining balance.");
         }
 
         

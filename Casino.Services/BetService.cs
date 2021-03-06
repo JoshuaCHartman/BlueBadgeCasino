@@ -32,14 +32,14 @@ namespace Casino.Services
             //      from _gameSim.
             //double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
 
-             double payout = _gameService.PlayGame(model.GameId, model.BetAmount, true);
+            // double payout = _gameService.PlayGame(model.GameId, model.BetAmount, true);
 
             if (!model.TypeOfBet.HasValue)
                 payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess);
             else
                 payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, (GameService.BetType)model.TypeOfBet);
             if (payout == 0)
-                return null;
+                return null;  //if playing keno or roulette postman needs a list of int.  Keno up to 10 int(1-80). roulette
 
             var entity = new Bet()
             {
@@ -534,10 +534,13 @@ namespace Casino.Services
                         TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
                         BetId = entity.BetId,
                         GameId = entity.GameId,
+                        
                         BetAmount = entity.BetAmount,
                         PlayerWonGame = entity.PlayerWonGame,
                         PayoutAmount = entity.PayoutAmount,
                         PlayerBankBalance = entity.Player.CurrentBankBalance
+
+                        
 
                     };
             }
