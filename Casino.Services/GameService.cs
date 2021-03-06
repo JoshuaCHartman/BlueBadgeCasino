@@ -162,8 +162,10 @@ namespace Casino.Services
                         GameId = entity.GameId,
                         GameName = entity.GameName,
                         TypeOfGame = entity.TypeOfGame,
+                        IsHighStakes = entity.IsHighStakes,
                         MinBet = entity.MinBet,
                         MaxBet = entity.MaxBet
+
                     };
             }
         }
@@ -207,6 +209,7 @@ namespace Casino.Services
             var max = game.GetGameById(id).MaxBet;
 
             if (betAmt < min || betAmt > max) { return 0; }
+            else if (!highRoller == game.GetGameById(id).IsHighStakes) { return 0; }
 
             else
             {
