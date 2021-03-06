@@ -691,6 +691,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Casino.WebApi.Controllers.PlayerController.Put(Casino.Models.PlayerEdit)">
+            <summary>
+            Player can update contact info (phone number, address)
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Casino.WebApi.Controllers.PlayerController.Delete">
             <summary>
             Set account to inactive - restricted to User/Player

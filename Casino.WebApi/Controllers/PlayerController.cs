@@ -134,7 +134,10 @@ namespace Casino.WebApi.Controllers
                 return Ok("Your Player Account has been created. Please buy chips to play games!");
         }
 
-
+        /// <summary>
+        /// Player can update contact info (phone number, address)
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/UpdatePlayer/")]
         public IHttpActionResult Put(PlayerEdit player)
