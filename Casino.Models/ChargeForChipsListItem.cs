@@ -5,7 +5,7 @@ namespace Casino.Data
 {
     public class ChargeForChipsListItem
     {
-        
+
         public int ChargeId { get; set; }
         public Guid PlayerId { get; set; }
         public DateTimeOffset ChargeTime { get; set; }

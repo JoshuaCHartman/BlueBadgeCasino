@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Casino.Data;
+﻿using Casino.Data;
 using Casino.Models;
 using Casino.WebApi.Models;
 using Stripe;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 namespace Casino.Services
 {
     public class MakeChargeService
@@ -28,33 +28,33 @@ namespace Casino.Services
             // make a charge
             // use charge method
             //// if successful, make entry into charge table
-          
-                var entityChips = new ChargeForChips()
-                {
-                    PlayerId = _playerGuid,
-                    ChargeTime = DateTimeOffset.Now,
-                    ChargeAmount = chargeModel.Value/100
-                };
-                using (var ctx = new ApplicationDbContext())
-                {
-                    ctx.ChargesForChips.Add(entityChips);
-                    // add entry to charges and if successful add entry to bank table
-                    if (ctx.SaveChanges() != 0)
-                    {
-                        var bankModel = new BankTransactionCreate();
-                        bankModel.PlayerId = entityChips.PlayerId;
-                        bankModel.BankTransactionAmount = entityChips.ChargeAmount;
 
-                    
-                        var bankService = new BankTransactionService();
-                        if (!bankService.CreateBankTransactionCharge(bankModel))
-                            { return false; }
-                        return true;
-                    }
+            var entityChips = new ChargeForChips()
+            {
+                PlayerId = _playerGuid,
+                ChargeTime = DateTimeOffset.Now,
+                ChargeAmount = chargeModel.Value / 100
+            };
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.ChargesForChips.Add(entityChips);
+                // add entry to charges and if successful add entry to bank table
+                if (ctx.SaveChanges() != 0)
+                {
+                    var bankModel = new BankTransactionCreate();
+                    bankModel.PlayerId = entityChips.PlayerId;
+                    bankModel.BankTransactionAmount = entityChips.ChargeAmount;
 
-                    return false;
+
+                    var bankService = new BankTransactionService();
+                    if (!bankService.CreateBankTransactionCharge(bankModel))
+                    { return false; }
+                    return true;
                 }
-            
+
+                return false;
+            }
+
         }
 
         //then make entry into bank transaction at endpoint
@@ -199,7 +199,7 @@ namespace Casino.Services
             }
         }
 
-        public ChargeForChipsListItem GetChargeTransactionById(int id) 
+        public ChargeForChipsListItem GetChargeTransactionById(int id)
         {
             using (var ctx = new ApplicationDbContext())
             {

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Net.Http;
-using Casino.Data;
+﻿using Casino.Data;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Owin;
+using System;
+using System.Net.Http;
 
 [assembly: OwinStartup(typeof(Casino.WebApi.Startup))]
 
