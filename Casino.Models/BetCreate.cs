@@ -6,7 +6,7 @@ namespace Casino.Models
 {
     public class BetCreate
     {
-        
+
         [Required]
         public int GameId { get; set; }
 

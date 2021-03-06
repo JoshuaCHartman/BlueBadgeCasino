@@ -40,6 +40,11 @@ namespace Casino.WebApi.Controllers
         }
         //Get
         //Get all by logged in Player
+        /// <summary>
+        /// Return all Bank Transactions by the currently logged in Player
+        /// </summary>
+       
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bank/player")]
         public IHttpActionResult Get()
@@ -49,9 +54,14 @@ namespace Casino.WebApi.Controllers
             return Ok(bankTransactions);
         }
         //Get by id for logged in player
+        /// <summary>
+        /// Return a detailed Bank Transaction by its ID number
+        /// </summary>
+        
+        /// <returns></returns>
+
         [Authorize(Roles = "User")]
         [Route("api/bank/player/{id}")]
-
         public IHttpActionResult GetById(int id)
         {
             BankTransactionService bankTransactionService = CreateBankTransactionService();
@@ -60,6 +70,11 @@ namespace Casino.WebApi.Controllers
             return Ok(bankTransaction);
         }
         //Get all by Admin for Specific player
+        /// <summary>
+        /// Get all Bank Transaction by PlayerID - restricted to SuperAdmin, Admin
+        /// </summary>
+        
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Bank/admin/{guidAsString}")]
@@ -71,6 +86,11 @@ namespace Casino.WebApi.Controllers
             return Ok(bankTransactions);
         }
         //Get all by Admin
+        /// <summary>
+        /// Return all Bank Transactions - restricted to Admin
+        /// </summary>
+        
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Bank/admin")]
@@ -81,6 +101,11 @@ namespace Casino.WebApi.Controllers
             return Ok(bankTransactions);
         }
         //Post
+        /// <summary>
+        /// Post a deposit Bank Transactions - restricted to Player (left for testing purposes, use Charge method)
+        /// </summary>
+        
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bank/player")]
         public IHttpActionResult Post(BankTransactionCreate bankTransaction)
@@ -93,6 +118,11 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
         //Post
+        /// <summary>
+        /// Make a withdrawal Bank Transactions - restricted to Player
+        /// </summary>
+        
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bank/playerWithdraw")]
         public IHttpActionResult Withdraw(BankTransactionCreate bankTransaction)
@@ -111,6 +141,11 @@ namespace Casino.WebApi.Controllers
 
 
         //Delete
+        /// <summary>
+        /// Delete a Bank Transactions - restricted to SuperAdmin, Admin
+        /// </summary>
+        
+        /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/Bank/admin/{id}/{amount}")]
         public IHttpActionResult Delete([FromUri] int id, [FromUri] double amount)

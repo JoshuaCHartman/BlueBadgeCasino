@@ -256,11 +256,11 @@ namespace Casino.Services
                         PlayerState = entity.PlayerState,
                         PlayerZipCode = entity.PlayerZipCode,
                         PlayerDob = entity.PlayerDob,
-                        //AccountCreated = entity.AccountCreated,
-                        //IsActive = entity.IsActive,
-                        //CurrentBankBalance = entity.CurrentBankBalance,
-                        //TierStatus = entity.TierStatus,
-                        //HasAccessToHighLevelGame = entity.HasAccessToHighLevelGame
+                        AccountCreated = entity.AccountCreated,
+                        IsActive = entity.IsActive,
+                        CurrentBankBalance = entity.CurrentBankBalance,
+                        TierStatus = entity.TierStatus,
+                        HasAccessToHighLevelGame = entity.HasAccessToHighLevelGame
                         //ModifiedUtc = entity.ModifiedUtc
 
                     };
@@ -454,11 +454,10 @@ namespace Casino.Services
                 {
                     entity.IsActive = false;
                     return ctx.SaveChanges() == 1;
-                    return true;
                 }
                 else
                 {
-                    return ctx.SaveChanges() == 1;
+                    return true;
                 }
 
             }

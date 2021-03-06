@@ -9,10 +9,10 @@ namespace Casino.WebApi.Controllers
     // can add [RoutePrefix("api/bet")] below first (topmost) [Authorize] and then each endpoint route can be shortened to for example
     // [Route("player")] for Get ALL by Player
 
-    [Authorize] 
+    [Authorize]
     public class BetController : ApiController
     {
-        private BetService _service = new BetService(); 
+        private BetService _service = new BetService();
 
         private BetService CreateBetService()
         {
@@ -21,6 +21,11 @@ namespace Casino.WebApi.Controllers
             return betService;
         }
         //Get All by Player
+        /// <summary>
+        /// Get a complete Bet History - restricted to Player
+        /// </summary>
+        
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bet/player")]
         public IHttpActionResult Get() //Get([FromBody] int playerId)
@@ -31,6 +36,11 @@ namespace Casino.WebApi.Controllers
             return Ok(bets);
         }
         //Get All by Admin
+        /// <summary>
+        /// Get all Bets - restricted to SuperAdmin, Admin
+        /// </summary>
+        
+        /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [HttpGet]
         [Route("api/bet/admin/all")]
@@ -41,6 +51,11 @@ namespace Casino.WebApi.Controllers
         }
 
         //Get by model by admin
+        /// <summary>
+        /// Get Bets from parameters (Player win/lose, Amount, Timespan) - restricted to SuperAdmin, Admin
+        /// </summary>
+        
+        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/bet/admin/model")]
@@ -51,6 +66,11 @@ namespace Casino.WebApi.Controllers
 
         }
         //Player Get By BetId
+        /// <summary>
+        /// Get Bet by Bet ID - restricted to Player
+        /// </summary>
+        
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bet/player/{id}")]
         public IHttpActionResult GetById(int id)
@@ -61,6 +81,10 @@ namespace Casino.WebApi.Controllers
             return Ok(bet);
         }
         //Get By Guid by Admin
+        /// <summary>
+        /// Get Bets by PlayerID/GUID - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/bet/admin/guid/{guidAsString}")]
@@ -73,6 +97,10 @@ namespace Casino.WebApi.Controllers
         }
 
         //Get By GameId by Admin
+        /// <summary>
+        /// Get Bets by GameID - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/bet/admin/game/{gameId}")]
@@ -83,6 +111,10 @@ namespace Casino.WebApi.Controllers
 
         }
         //Get By BetId by Admin
+        /// <summary>
+        /// Get Bets by BetID - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/bet/admin/betId/{betId}")]
@@ -94,6 +126,10 @@ namespace Casino.WebApi.Controllers
         }
 
         //Post
+        /// <summary>
+        /// Enter a new bet - restricted to Players
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/bet/player/")]
         public IHttpActionResult Post(BetCreate bet)
@@ -112,6 +148,10 @@ namespace Casino.WebApi.Controllers
             return Ok(betResult);
         }
         //Delete
+        /// <summary>
+        /// Delete Bet by BetID - restricted to SuperAdmin, Admin
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin, SuperAdmin")]
         [Route("api/bet/admin/{id}/{amount}")]
         public IHttpActionResult Delete([FromUri] int id, [FromUri] double amount)
