@@ -21,7 +21,7 @@ namespace Casino.Services
 
         public bool CreatePlayer(PlayerCreate model)
         {
-          
+
             var entity = new Player()
             {
                 PlayerDob = model.PlayerDob,
@@ -106,14 +106,17 @@ namespace Casino.Services
 
             using (ctx)
 
-              {
+            {
+
                 var query = ctx.Players
                             .Find(_userId);
                 if (query != null)
                 {
+
                     return true;
                 }
                 return false;
+
             }
         }
 
@@ -171,7 +174,9 @@ namespace Casino.Services
 
 
 
+
         //}
+
 
            
 
@@ -460,10 +465,12 @@ namespace Casino.Services
                 if (entity.IsActive == true)
                 {
 
+
                      entity.PlayerClosedAccount = true;
                     entity.CurrentBankBalance = 0;
                     return ctx.SaveChanges() > 0;
                    
+
                 }
                 else
                 {
