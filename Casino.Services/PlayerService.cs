@@ -105,7 +105,9 @@ namespace Casino.Services
             var ctx = new ApplicationDbContext();
 
             using (ctx)
+
             {
+
                 var query = ctx.Players
                             .Find(_userId);
                 if (query != null)
@@ -123,8 +125,8 @@ namespace Casino.Services
         {   //Birthdate is not entered or correctly or legal age is not acceptable
             var ctx = new ApplicationDbContext();
             if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
-
-            {
+               
+                {
                 var query = ctx.Players
                             .Find(_userId);
                 if (query != null)
@@ -143,11 +145,13 @@ namespace Casino.Services
         }
 
 
+
         //public bool CheckPlayer(PlayerCreate player)
         //{   //Getting the string
         // var stringDob = player.PlayerDob;
 
         //Birthdate is not entered or correctly or legal age is not acceptable
+
         //    // when this was changed to a string, this always fails and we cannot create any players
 
         //    //if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
@@ -167,6 +171,14 @@ namespace Casino.Services
         {
             //Getting the string
             var stringDob = player.PlayerDob;
+
+
+
+
+        //}
+
+
+           
 
             //Convert the string to a DateTime
             DateTime convertedDob;
@@ -256,11 +268,11 @@ namespace Casino.Services
                         PlayerState = entity.PlayerState,
                         PlayerZipCode = entity.PlayerZipCode,
                         PlayerDob = entity.PlayerDob,
-                        //AccountCreated = entity.AccountCreated,
-                        //IsActive = entity.IsActive,
-                        //CurrentBankBalance = entity.CurrentBankBalance,
-                        //TierStatus = entity.TierStatus,
-                        //HasAccessToHighLevelGame = entity.HasAccessToHighLevelGame
+                        AccountCreated = entity.AccountCreated,
+                        IsActive = entity.IsActive,
+                        CurrentBankBalance = entity.CurrentBankBalance,
+                        TierStatus = entity.TierStatus,
+                        HasAccessToHighLevelGame = entity.HasAccessToHighLevelGame
                         //ModifiedUtc = entity.ModifiedUtc
 
                     };
@@ -452,12 +464,18 @@ namespace Casino.Services
 
                 if (entity.IsActive == true)
                 {
-                    entity.IsActive = false;
-                    return ctx.SaveChanges() == 1;
+
+
+                     entity.PlayerClosedAccount = true;
+                    entity.CurrentBankBalance = 0;
+                    return ctx.SaveChanges() > 0;
+                   
+
                 }
                 else
                 {
-                    return ctx.SaveChanges() == 1;
+                  return true;
+
                 }
 
             }
