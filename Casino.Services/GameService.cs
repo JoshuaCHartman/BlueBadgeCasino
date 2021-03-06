@@ -207,7 +207,7 @@ namespace Casino.Services
             var max = game.GetGameById(id).MaxBet;
 
             if (betAmt < min || betAmt > max) { return 0; }
-
+            else if(!highRoller && id > 5) { return 0; }
             else
             {
                 var stakes = highRoller;
