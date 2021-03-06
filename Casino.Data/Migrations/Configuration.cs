@@ -30,7 +30,11 @@
             string guidAsStringOfUser2 = GetGuidOfSeededUser("user2@abc.com");
             string guidAsStringOfUser3 = GetGuidOfSeededUser("user3@abc.com");
             string guidAsStringOfUser4 = GetGuidOfSeededUser("user4@abc.com");
-
+            string guidAsStringOfUser5 =("0052320b-3b0a-4b90-93c5-1d3d4d5ac8cb");
+            string guidAsStringOfUser6 =("0052320b-3b0a-4b90-93c5-1d3d4d5a1984");
+           string guidAsStringOfUser7 = ("0052320b-3b0a-4b90-93c5-1d3d4d5a1960");
+            string guidAsStringOfUser8 = ("0052320b-3b0a-4b90-93c5-1d3d4d5a1950");
+            string guidAsStringOfUser9 = ("0052320b-3b0a-4b90-93c5-1d3d4d5a1900");
 
             //Add Games On Startup
             context.Games.AddOrUpdate(x => x.GameId,
@@ -59,6 +63,8 @@
 
             context.Players.AddOrUpdate(x => x.PlayerFirstName,
 
+               
+                
             new Player()
             {
                 PlayerId = Guid.Parse(guidAsStringOfUser1),
@@ -102,6 +108,62 @@
             },
             new Player()
             {
+                PlayerId = Guid.Parse(guidAsStringOfUser5),
+                PlayerFirstName = "Lex",
+                PlayerLastName = "Luthor",
+                PlayerEmail = "lex@luthor.com",
+                PlayerDob = "02/01/1960",
+                CurrentBankBalance = 6000,
+                AccountCreated = new DateTime(2020, 12, 20),
+                TierStatus = TierStatus.gold
+            },
+                new Player()
+                {
+                    PlayerId = Guid.Parse(guidAsStringOfUser6),
+                    PlayerFirstName = "Bruce",
+                    PlayerLastName = "Wayne",
+                    PlayerEmail = "bruce@wayne.com",
+                    PlayerDob = "02/01/1960",
+                    CurrentBankBalance = 30000,
+                    AccountCreated = new DateTime(2020, 12, 20),
+                    TierStatus = TierStatus.gold
+                },
+                 new Player()
+                 {
+                     PlayerId = Guid.Parse(guidAsStringOfUser7),
+                     PlayerFirstName = "Other",
+                     PlayerLastName = "Guy",
+                     PlayerEmail = "other@guy.com",
+                     PlayerDob = "02/01/1960",
+                     CurrentBankBalance = 300,
+                     AccountCreated = new DateTime(2020, 12, 20),
+                     TierStatus = TierStatus.bronze
+                 },
+                new Player()
+                {
+                    PlayerId = Guid.Parse(guidAsStringOfUser8),
+                    PlayerFirstName = "Old",
+                    PlayerLastName = "Guy",
+                    PlayerEmail = "old@guy.com",
+                    PlayerDob = "01/01/1960",
+                    CurrentBankBalance = 5100,
+                    AccountCreated = new DateTime(2020, 12, 20),
+                    TierStatus = TierStatus.gold
+                },
+
+                new Player()
+                {
+                    PlayerId = Guid.Parse(guidAsStringOfUser9),
+                    PlayerFirstName = "New",
+                    PlayerLastName = "Guy",
+                    PlayerEmail = "new@guy.com",
+                    PlayerDob = "01/01/1950",
+                    CurrentBankBalance = 8000,
+                    AccountCreated = new DateTime(2020, 12, 20),
+                    TierStatus = TierStatus.gold
+                },
+            new Player()
+            {
                 PlayerId = Guid.Parse(guidAsStringOfHouse),
                 PlayerFirstName = "House",
                 PlayerLastName = "Account",
@@ -113,7 +175,8 @@
             );
 
             context.Bets.AddOrUpdate(x => x.BetId,
-               new Bet()
+               
+                new Bet()
                {
                    BetId = 1,
                    PlayerId = Guid.Parse(guidAsStringOfUser1),
@@ -127,27 +190,27 @@
                {
                    BetId = 2,
                    PlayerId = Guid.Parse(guidAsStringOfUser1),
-                   GameId = 1,
-                   BetAmount = 777,
-                   PayoutAmount = -777,
+                   GameId = 2,
+                   BetAmount = 10,
+                   PayoutAmount = -10,
                    DateTimeOfBet = DateTimeOffset.Now,
                },
                new Bet()
                {
                    BetId = 3,
                    PlayerId = Guid.Parse(guidAsStringOfUser1),
-                   GameId = 1,
-                   BetAmount = 777,
-                   PayoutAmount = -777,
+                   GameId = 3,
+                   BetAmount = 15,
+                   PayoutAmount = -15,
                    DateTimeOfBet = DateTimeOffset.Now,
                },
                new Bet()
                {
                    BetId = 4,
                    PlayerId = Guid.Parse(guidAsStringOfUser1),
-                   GameId = 1,
-                   BetAmount = 777,
-                   PayoutAmount = 777,
+                   GameId = 4,
+                   BetAmount = 100,
+                   PayoutAmount = 300,
                    DateTimeOfBet = DateTimeOffset.Now,
                    PlayerWonGame = true
                },
@@ -155,69 +218,539 @@
                {
                    BetId = 5,
                    PlayerId = Guid.Parse(guidAsStringOfUser1),
-                   GameId = 1,
+                   GameId = 5,
+                   BetAmount = 111,
+                   PayoutAmount = 333,
+                   DateTimeOfBet = DateTimeOffset.Now,
+                   PlayerWonGame = true
+               },
+                new Bet()
+                {
+                    BetId = 6,
+                    PlayerId = Guid.Parse(guidAsStringOfUser1),
+                    GameId = 6,
+                    BetAmount = 10,
+                    PayoutAmount = 20,
+                    DateTimeOfBet = DateTimeOffset.Now,
+                    PlayerWonGame = true
+                },
+                 new Bet()
+                 {
+                     BetId = 7,
+                     PlayerId = Guid.Parse(guidAsStringOfUser1),
+                     GameId = 7,
+                     BetAmount = 150,
+                     PayoutAmount = -150,
+                     DateTimeOfBet = DateTimeOffset.Now
+                 },
+                  new Bet()
+                  {
+                      BetId = 8,
+                      PlayerId = Guid.Parse(guidAsStringOfUser1),
+                      GameId = 8,
+                      BetAmount = 25,
+                      PayoutAmount = -25,
+                      DateTimeOfBet = DateTimeOffset.Now
+                  },
+                   new Bet()
+                   {
+                       BetId = 9,
+                       PlayerId = Guid.Parse(guidAsStringOfUser1),
+                       GameId = 9,
+                       BetAmount = 125,
+                       PayoutAmount = -125,
+                       DateTimeOfBet = DateTimeOffset.Now
+                   },
+                    new Bet()
+                    {
+                        BetId = 10,
+                        PlayerId = Guid.Parse(guidAsStringOfUser1),
+                        GameId = 1,
+                        BetAmount = 33,
+                        PayoutAmount = 66,
+                        DateTimeOfBet = DateTimeOffset.Now,
+                        PlayerWonGame = true
+                    },
+                    new Bet()
+                    {
+                        BetId = 11,
+                        PlayerId = Guid.Parse(guidAsStringOfUser1),
+                        GameId = 2,
+                        BetAmount = 7,
+                        PayoutAmount = 7,
+                        DateTimeOfBet = DateTimeOffset.Now,
+                        PlayerWonGame = true
+                    },
+               new Bet()
+               {
+                   BetId = 12,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 3,
                    BetAmount = 777,
-                   PayoutAmount = 777,
-                   DateTimeOfBet = DateTimeOffset.Now,
-                   PlayerWonGame = true
-               },
-               new Bet()
-               {
-                   BetId = 6,
-                   PlayerId = Guid.Parse(guidAsStringOfUser2),
-                   GameId = 1,
-                   BetAmount = 77,
-                   PayoutAmount = 77,
-                   DateTimeOfBet = DateTimeOffset.Now,
-                   PlayerWonGame = true
-               },
-               new Bet()
-               {
-                   BetId = 7,
-                   PlayerId = Guid.Parse(guidAsStringOfUser2),
-                   GameId = 1,
-                   BetAmount = 7,
-                   PayoutAmount = -7,
+                   PayoutAmount = -777,
                    DateTimeOfBet = DateTimeOffset.Now,
                },
                new Bet()
                {
-                   BetId = 8,
-                   PlayerId = Guid.Parse(guidAsStringOfUser2),
-                   GameId = 1,
-                   BetAmount = 50,
-                   PayoutAmount = -50,
-                   DateTimeOfBet = DateTimeOffset.Now,
-               },
-               new Bet()
-               {
-                   BetId = 9,
-                   PlayerId = Guid.Parse(guidAsStringOfUser3),
-                   GameId = 1,
+                   BetId = 13,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 4,
                    BetAmount = 100,
-                   PayoutAmount = 100,
-                   DateTimeOfBet = new DateTime(2020, 10, 10),
+                   PayoutAmount = -100,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 14,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 5,
+                   BetAmount = 100,
+                   PayoutAmount = 125,
+                   DateTimeOfBet = DateTimeOffset.Now,
                    PlayerWonGame = true
                },
                new Bet()
                {
-                   BetId = 10,
-                   PlayerId = Guid.Parse(guidAsStringOfUser3),
-                   GameId = 1,
+                   BetId = 15,
+                   PlayerId = Guid.Parse(guidAsStringOfUser1),
+                   GameId = 6,
+                   BetAmount = 100,
+                   PayoutAmount = 133,
+                   DateTimeOfBet = DateTimeOffset.Now,
+                   PlayerWonGame = true
+               },
+                new Bet()
+                {
+                    BetId = 16,
+                    PlayerId = Guid.Parse(guidAsStringOfUser1),
+                    GameId = 7,
+                    BetAmount = 100,
+                    PayoutAmount = -1007,
+                    DateTimeOfBet = DateTimeOffset.Now
+                },
+                 new Bet()
+                 {
+                     BetId = 17,
+                     PlayerId = Guid.Parse(guidAsStringOfUser1),
+                     GameId = 8,
+                     BetAmount = 666,
+                     PayoutAmount = 777,
+                     DateTimeOfBet = DateTimeOffset.Now,
+                     PlayerWonGame = true
+                 },
+                  new Bet()
+                  {
+                      BetId = 18,
+                      PlayerId = Guid.Parse(guidAsStringOfUser1),
+                      GameId = 9,
+                      BetAmount = 107,
+                      PayoutAmount = -107,
+                      DateTimeOfBet = DateTimeOffset.Now
+                  },
+                   new Bet()
+                   {
+                       BetId = 19,
+                       PlayerId = Guid.Parse(guidAsStringOfUser1),
+                       GameId = 1,
+                       BetAmount = 25,
+                       PayoutAmount = 35,
+                       DateTimeOfBet = DateTimeOffset.Now,
+                       PlayerWonGame = true
+                   },
+                    new Bet()
+                    {
+                        BetId = 20,
+                        PlayerId = Guid.Parse(guidAsStringOfUser1),
+                        GameId = 2,
+                        BetAmount = 166,
+                        PayoutAmount = 195,
+                        DateTimeOfBet = DateTimeOffset.Now,
+                        PlayerWonGame = true
+                    },
+
+
+                 new Bet()
+                 {
+                     BetId = 21,
+                     PlayerId = Guid.Parse(guidAsStringOfUser2),
+                     GameId = 1,
+                     BetAmount = 7,
+                     PayoutAmount = 7,
+                     DateTimeOfBet = DateTimeOffset.Now,
+                     PlayerWonGame = true
+                 },
+               new Bet()
+               {
+                   BetId = 22,
+                   PlayerId = Guid.Parse(guidAsStringOfUser2),
+                   GameId = 2,
                    BetAmount = 10,
                    PayoutAmount = -10,
-                   DateTimeOfBet = new DateTime(2020, 10, 10)
+                   DateTimeOfBet = DateTimeOffset.Now,
                },
                new Bet()
                {
-                   BetId = 11,
+                   BetId = 23,
+                   PlayerId = Guid.Parse(guidAsStringOfUser2),
+                   GameId = 3,
+                   BetAmount = 15,
+                   PayoutAmount = -15,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 24,
+                   PlayerId = Guid.Parse(guidAsStringOfUser2),
+                   GameId = 4,
+                   BetAmount = 100,
+                   PayoutAmount = 300,
+                   DateTimeOfBet = DateTimeOffset.Now,
+                   PlayerWonGame = true
+               },
+               new Bet()
+               {
+                   BetId = 25,
+                   PlayerId = Guid.Parse(guidAsStringOfUser2),
+                   GameId = 5,
+                   BetAmount = 111,
+                   PayoutAmount = 333,
+                   DateTimeOfBet = DateTimeOffset.Now,
+                   PlayerWonGame = true
+               },
+                new Bet()
+                {
+                    BetId = 26,
+                    PlayerId = Guid.Parse(guidAsStringOfUser2),
+                    GameId = 6,
+                    BetAmount = 10,
+                    PayoutAmount = 20,
+                    DateTimeOfBet = DateTimeOffset.Now,
+                    PlayerWonGame = true
+                },
+                 new Bet()
+                 {
+                     BetId = 27,
+                     PlayerId = Guid.Parse(guidAsStringOfUser2),
+                     GameId = 7,
+                     BetAmount = 150,
+                     PayoutAmount = -150,
+                     DateTimeOfBet = DateTimeOffset.Now
+                 },
+                  new Bet()
+                  {
+                      BetId = 28,
+                      PlayerId = Guid.Parse(guidAsStringOfUser2),
+                      GameId = 8,
+                      BetAmount = 25,
+                      PayoutAmount = -25,
+                      DateTimeOfBet = DateTimeOffset.Now
+                  },
+                   new Bet()
+                   {
+                       BetId = 29,
+                       PlayerId = Guid.Parse(guidAsStringOfUser2),
+                       GameId = 9,
+                       BetAmount = 125,
+                       PayoutAmount = -125,
+                       DateTimeOfBet = DateTimeOffset.Now
+                   },
+                    new Bet()
+                    {
+                        BetId = 30,
+                        PlayerId = Guid.Parse(guidAsStringOfUser2),
+                        GameId = 1,
+                        BetAmount = 33,
+                        PayoutAmount = 66,
+                        DateTimeOfBet = DateTimeOffset.Now,
+                        PlayerWonGame = true
+                    },
+                    new Bet()
+                    {
+                        BetId = 31,
+                        PlayerId = Guid.Parse(guidAsStringOfUser2),
+                        GameId = 2,
+                        BetAmount = 7,
+                        PayoutAmount = 7,
+                        DateTimeOfBet = DateTimeOffset.Now,
+                        PlayerWonGame = true
+                    },
+               new Bet()
+               {
+                   BetId = 32,
+                   PlayerId = Guid.Parse(guidAsStringOfUser2),
+                   GameId = 3,
+                   BetAmount = 777,
+                   PayoutAmount = -777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 33,
+                   PlayerId = Guid.Parse(guidAsStringOfUser2),
+                   GameId = 4,
+                   BetAmount = 100,
+                   PayoutAmount = -100,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 34,
+                   PlayerId = Guid.Parse(guidAsStringOfUser2),
+                   GameId = 5,
+                   BetAmount = 100,
+                   PayoutAmount = 125,
+                   DateTimeOfBet = DateTimeOffset.Now,
+                   PlayerWonGame = true
+               },
+               new Bet()
+               {
+                   BetId = 35,
+                   PlayerId = Guid.Parse(guidAsStringOfUser2),
+                   GameId = 6,
+                   BetAmount = 100,
+                   PayoutAmount = 133,
+                   DateTimeOfBet = DateTimeOffset.Now,
+                   PlayerWonGame = true
+               },
+                new Bet()
+                {
+                    BetId = 36,
+                    PlayerId = Guid.Parse(guidAsStringOfUser2),
+                    GameId = 7,
+                    BetAmount = 100,
+                    PayoutAmount = -1007,
+                    DateTimeOfBet = DateTimeOffset.Now
+                },
+                 new Bet()
+                 {
+                     BetId = 37,
+                     PlayerId = Guid.Parse(guidAsStringOfUser2),
+                     GameId = 8,
+                     BetAmount = 666,
+                     PayoutAmount = 777,
+                     DateTimeOfBet = DateTimeOffset.Now,
+                     PlayerWonGame = true
+                 },
+                  new Bet()
+                  {
+                      BetId = 38,
+                      PlayerId = Guid.Parse(guidAsStringOfUser2),
+                      GameId = 9,
+                      BetAmount = 107,
+                      PayoutAmount = -107,
+                      DateTimeOfBet = DateTimeOffset.Now
+                  },
+                   new Bet()
+                   {
+                       BetId = 39,
+                       PlayerId = Guid.Parse(guidAsStringOfUser2),
+                       GameId = 1,
+                       BetAmount = 25,
+                       PayoutAmount = 35,
+                       DateTimeOfBet = DateTimeOffset.Now,
+                       PlayerWonGame = true
+                   },
+                    new Bet()
+                    {
+                        BetId = 40,
+                        PlayerId = Guid.Parse(guidAsStringOfUser2),
+                        GameId = 2,
+                        BetAmount = 166,
+                        PayoutAmount = 195,
+                        DateTimeOfBet = DateTimeOffset.Now,
+                        PlayerWonGame = true
+                    },
+                      new Bet()
+                      {
+                          BetId = 41,
+                          PlayerId = Guid.Parse(guidAsStringOfUser3),
+                          GameId = 1,
+                          BetAmount = 7,
+                          PayoutAmount = 7,
+                          DateTimeOfBet = DateTimeOffset.Now,
+                          PlayerWonGame = true
+                      },
+               new Bet()
+               {
+                   BetId = 42,
                    PlayerId = Guid.Parse(guidAsStringOfUser3),
                    GameId = 2,
                    BetAmount = 10,
-                   PayoutAmount = 10,
-                   DateTimeOfBet = new DateTime(2020, 10, 10),
+                   PayoutAmount = -10,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 43,
+                   PlayerId = Guid.Parse(guidAsStringOfUser3),
+                   GameId = 3,
+                   BetAmount = 15,
+                   PayoutAmount = -15,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 44,
+                   PlayerId = Guid.Parse(guidAsStringOfUser3),
+                   GameId = 4,
+                   BetAmount = 100,
+                   PayoutAmount = 300,
+                   DateTimeOfBet = DateTimeOffset.Now,
                    PlayerWonGame = true
-               }
+               },
+               new Bet()
+               {
+                   BetId = 45,
+                   PlayerId = Guid.Parse(guidAsStringOfUser3),
+                   GameId = 5,
+                   BetAmount = 111,
+                   PayoutAmount = 333,
+                   DateTimeOfBet = DateTimeOffset.Now,
+                   PlayerWonGame = true
+               },
+                new Bet()
+                {
+                    BetId = 46,
+                    PlayerId = Guid.Parse(guidAsStringOfUser3),
+                    GameId = 6,
+                    BetAmount = 10,
+                    PayoutAmount = 20,
+                    DateTimeOfBet = DateTimeOffset.Now,
+                    PlayerWonGame = true
+                },
+                 new Bet()
+                 {
+                     BetId = 47,
+                     PlayerId = Guid.Parse(guidAsStringOfUser4),
+                     GameId = 7,
+                     BetAmount = 150,
+                     PayoutAmount = -150,
+                     DateTimeOfBet = DateTimeOffset.Now
+                 },
+                  new Bet()
+                  {
+                      BetId =48,
+                      PlayerId = Guid.Parse(guidAsStringOfUser4),
+                      GameId = 8,
+                      BetAmount = 25,
+                      PayoutAmount = -25,
+                      DateTimeOfBet = DateTimeOffset.Now
+                  },
+                   new Bet()
+                   {
+                       BetId = 49,
+                       PlayerId = Guid.Parse(guidAsStringOfUser4),
+                       GameId = 9,
+                       BetAmount = 125,
+                       PayoutAmount = -125,
+                       DateTimeOfBet = DateTimeOffset.Now
+                   },
+                    new Bet()
+                    {
+                        BetId = 50,
+                        PlayerId = Guid.Parse(guidAsStringOfUser4),
+                        GameId = 1,
+                        BetAmount = 33,
+                        PayoutAmount = 66,
+                        DateTimeOfBet = DateTimeOffset.Now,
+                        PlayerWonGame = true
+                    },
+                    new Bet()
+                    {
+                        BetId = 51,
+                        PlayerId = Guid.Parse(guidAsStringOfUser5),
+                        GameId = 2,
+                        BetAmount = 7,
+                        PayoutAmount = 7,
+                        DateTimeOfBet = DateTimeOffset.Now,
+                        PlayerWonGame = true
+                    },
+               new Bet()
+               {
+                   BetId = 52,
+                   PlayerId = Guid.Parse(guidAsStringOfUser5),
+                   GameId = 3,
+                   BetAmount = 777,
+                   PayoutAmount = -777,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 53,
+                   PlayerId = Guid.Parse(guidAsStringOfUser6),
+                   GameId = 4,
+                   BetAmount = 100,
+                   PayoutAmount = -100,
+                   DateTimeOfBet = DateTimeOffset.Now,
+               },
+               new Bet()
+               {
+                   BetId = 54,
+                   PlayerId = Guid.Parse(guidAsStringOfUser6),
+                   GameId = 5,
+                   BetAmount = 100,
+                   PayoutAmount = 125,
+                   DateTimeOfBet = DateTimeOffset.Now,
+                   PlayerWonGame = true
+               },
+               new Bet()
+               {
+                   BetId = 55,
+                   PlayerId = Guid.Parse(guidAsStringOfUser7),
+                   GameId = 6,
+                   BetAmount = 100,
+                   PayoutAmount = 133,
+                   DateTimeOfBet = DateTimeOffset.Now,
+                   PlayerWonGame = true
+               },
+                new Bet()
+                {
+                    BetId = 56,
+                    PlayerId = Guid.Parse(guidAsStringOfUser7),
+                    GameId = 7,
+                    BetAmount = 100,
+                    PayoutAmount = -1007,
+                    DateTimeOfBet = DateTimeOffset.Now
+                },
+                 new Bet()
+                 {
+                     BetId = 57,
+                     PlayerId = Guid.Parse(guidAsStringOfUser8),
+                     GameId = 8,
+                     BetAmount = 666,
+                     PayoutAmount = 777,
+                     DateTimeOfBet = DateTimeOffset.Now,
+                     PlayerWonGame = true
+                 },
+                  new Bet()
+                  {
+                      BetId = 58,
+                      PlayerId = Guid.Parse(guidAsStringOfUser8),
+                      GameId = 9,
+                      BetAmount = 107,
+                      PayoutAmount = -107,
+                      DateTimeOfBet = DateTimeOffset.Now
+                  },
+                   new Bet()
+                   {
+                       BetId = 59,
+                       PlayerId = Guid.Parse(guidAsStringOfUser9),
+                       GameId = 1,
+                       BetAmount = 25,
+                       PayoutAmount = 35,
+                       DateTimeOfBet = DateTimeOffset.Now,
+                       PlayerWonGame = true
+                   },
+                    new Bet()
+                    {
+                        BetId = 60,
+                        PlayerId = Guid.Parse(guidAsStringOfUser9),
+                        GameId = 2,
+                        BetAmount = 166,
+                        PayoutAmount = 195,
+                        DateTimeOfBet = DateTimeOffset.Now,
+                        PlayerWonGame = true
+                    }
 
                 ) ;
         }
@@ -244,7 +777,7 @@
 
         public void CreateSuperAdmin()
         {
-            // bring in roleManager and userManager from entity framework 
+            // bring in roleManager and userManager from Identity framework 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
 
@@ -298,7 +831,7 @@
         // ADMIN
         public void CreateAdmin()
         {
-            // bring in roleManager and userManager from entity framework 
+            // bring in roleManager and userManager from Identity framework 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
 
@@ -344,7 +877,7 @@
         {
 
 
-            // bring in roleManager and userManager from entity framework 
+            // bring in roleManager and userManager from Identity framework 
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_db));
 

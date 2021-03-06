@@ -31,7 +31,6 @@ namespace Casino.Services
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
 
-
             if (!model.TypeOfBet.HasValue)
                 payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess);
             else
@@ -409,25 +408,34 @@ namespace Casino.Services
 
         public BetDetail GetBetById(int id)
         {
-            using (var ctx = new ApplicationDbContext())
+            try
             {
-                var entity =
-                    ctx
-                        .Bets
-                        .Single(e => e.PlayerId == _playerGuid && e.BetId == id);
-                return
-                    new BetDetail
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var entity =
+                        ctx
+                            .Bets
+                            .Single(e => e.PlayerId == _playerGuid && e.BetId == id);
+                    return
+                        new BetDetail
 
-                    {
-                        TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
-                        BetId = entity.BetId,
-                        GameId = entity.GameId,
-                        BetAmount = entity.BetAmount,
-                        PlayerWonGame = entity.PlayerWonGame,
-                        PayoutAmount = entity.PayoutAmount,
+                        {
+                            TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
+                            BetId = entity.BetId,
+                            GameId = entity.GameId,
+                            BetAmount = entity.BetAmount,
+                            PlayerWonGame = entity.PlayerWonGame,
+                            PayoutAmount = entity.PayoutAmount,
 
-                    };
+                        };
+                }
             }
+            catch (GetBetException error)
+            {
+
+                throw error;
+            }
+            
         }
         public bool DeleteBet(int id, double amount)
         {
@@ -543,5 +551,14 @@ namespace Casino.Services
                     };
             }
         }
+        private class GetBetException : Exception
+        {
+            public GetBetException(string message)
+               : base(message)
+            {
+            }
+        }
+
+
     }
 }

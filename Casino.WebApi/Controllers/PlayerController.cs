@@ -75,6 +75,7 @@ namespace Casino.WebApi.Controllers
             //    } 
             //
         }
+
         //Admin gets player by Guid
         /// <summary>
         /// Get a Player by PlayerID/GUID - restricted to SuperAdmin, Admin
@@ -160,7 +161,7 @@ namespace Casino.WebApi.Controllers
         //User creates player account
         // Commented out - includes ddmmyyyy no slashes fix 
         /// <summary>
-        /// Create a new Player account
+        /// Create a new Player account / BIRTHDAY MUST BE ENTERED MM/DD/YYYY WITH SLASHES
         /// </summary>
         /// <returns></returns>
 
@@ -169,7 +170,6 @@ namespace Casino.WebApi.Controllers
         [Route("api/makePlayer")]
         public IHttpActionResult Post(PlayerCreate player)  //*BRIAN* looks like it will never get beyond that first bool check with all the "else" returning "ok"
         {
-
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -186,6 +186,7 @@ namespace Casino.WebApi.Controllers
 
             if (service.CheckDob(player) == false)  //Is this false or does it need to be revised.  If service.checkplayer = false
 
+
             {
                 return BadRequest("You are not 21 and can not create a player.");
             }
@@ -194,13 +195,11 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             }
 
-
              else
 
 
            return Ok("Your Player Account has been created. Please buy chips to play games!");
              }
-
 
 
         [Authorize(Roles = "User")]
@@ -227,8 +226,6 @@ namespace Casino.WebApi.Controllers
             var service = CreatePlayerService();
             if (!service.DeletePlayer())
                 return InternalServerError();
-
-
 
             return Ok("Your account is now inactive.  " +
                       "You will recieve a check in the mail within 5 business days for any remaining balance.");

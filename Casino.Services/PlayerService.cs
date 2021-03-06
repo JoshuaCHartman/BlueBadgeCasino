@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
+
 namespace Casino.Services
 {
     public class PlayerService
@@ -107,8 +108,7 @@ namespace Casino.Services
             using (ctx)
 
             {
-
-                var query = ctx.Players
+              var query = ctx.Players
                             .Find(_userId);
                 if (query != null)
                 {
@@ -146,6 +146,7 @@ namespace Casino.Services
 
 
 
+
         //public bool CheckPlayer(PlayerCreate player)
         //{   //Getting the string
         // var stringDob = player.PlayerDob;
@@ -165,7 +166,8 @@ namespace Casino.Services
         //        return false;
         //    return true;
 
-        //}
+
+     
 
         public bool CheckDob(PlayerCreate player)
         {
@@ -173,12 +175,24 @@ namespace Casino.Services
             var stringDob = player.PlayerDob;
 
 
+            //Convert the string to a DateTime
+            DateTime convertedDob;
 
-
-        //}
-
+            // This only parses WITH SLASHES 
+            convertedDob = DateTime.Parse(stringDob);
 
            
+            TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
+            if (PlayerDob.TotalDays < 7665)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
 
             //Convert the string to a DateTime
             DateTime convertedDob;
@@ -465,11 +479,9 @@ namespace Casino.Services
                 if (entity.IsActive == true)
                 {
 
-
                      entity.PlayerClosedAccount = true;
                     entity.CurrentBankBalance = 0;
                     return ctx.SaveChanges() > 0;
-                   
 
                 }
                 else
