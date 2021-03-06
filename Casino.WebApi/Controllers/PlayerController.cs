@@ -74,6 +74,7 @@ namespace Casino.WebApi.Controllers
             //    } 
             //
         }
+
         //Admin gets player by Guid
         /// <summary>
         /// Get a Player by PlayerID/GUID - restricted to SuperAdmin, Admin
@@ -97,6 +98,7 @@ namespace Casino.WebApi.Controllers
             return Ok(player);
             //}
         }
+
         //Admin gets players by Tier
         /// <summary>
         /// Get all Players by Tier Level - restricted to SuperAdmin, Admin
@@ -120,6 +122,7 @@ namespace Casino.WebApi.Controllers
             //{
             //}
         }
+
         //Admin get players with balance
         /// <summary>
         /// Get all Players with an account balance - restricted to SuperAdmin, Admin
@@ -144,6 +147,7 @@ namespace Casino.WebApi.Controllers
             //    return Ok(player);
             //}
         }
+
         //Admin Get active players
         /// <summary>
         /// Get all active Players - restricted to SuperAdmin, Admin
@@ -156,6 +160,7 @@ namespace Casino.WebApi.Controllers
             var player = _service.GetActivePlayers();
             return Ok(player);
         }
+
         //User creates player account
         // Commented out - includes ddmmyyyy no slashes fix 
         /// <summary>
@@ -182,6 +187,7 @@ namespace Casino.WebApi.Controllers
             }
             return Ok();
         }
+
         [Authorize(Roles = "User")]
         [Route("api/UpdatePlayer/")]
         public IHttpActionResult Put(PlayerEdit player)
@@ -193,6 +199,7 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             return Ok();
         }
+
         //Player Deletes account(just makes it inactive)
         /// <summary>
         /// Set account to inactive - restricted to User/Player

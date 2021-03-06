@@ -411,25 +411,34 @@ namespace Casino.Services
 
         public BetDetail GetBetById(int id)
         {
-            using (var ctx = new ApplicationDbContext())
+            try
             {
-                var entity =
-                    ctx
-                        .Bets
-                        .Single(e => e.PlayerId == _playerGuid && e.BetId == id);
-                return
-                    new BetDetail
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var entity =
+                        ctx
+                            .Bets
+                            .Single(e => e.PlayerId == _playerGuid && e.BetId == id);
+                    return
+                        new BetDetail
 
-                    {
-                        TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
-                        BetId = entity.BetId,
-                        GameId = entity.GameId,
-                        BetAmount = entity.BetAmount,
-                        PlayerWonGame = entity.PlayerWonGame,
-                        PayoutAmount = entity.PayoutAmount,
+                        {
+                            TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
+                            BetId = entity.BetId,
+                            GameId = entity.GameId,
+                            BetAmount = entity.BetAmount,
+                            PlayerWonGame = entity.PlayerWonGame,
+                            PayoutAmount = entity.PayoutAmount,
 
-                    };
+                        };
+                }
             }
+            catch (Exception error)
+            {
+
+                throw error;
+            }
+            
         }
         public bool DeleteBet(int id, double amount)
         {

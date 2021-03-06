@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
+
 namespace Casino.Services
 {
     public class PlayerService
@@ -21,7 +22,6 @@ namespace Casino.Services
 
         public bool CreatePlayer(PlayerCreate model)
         {
-
             var entity = new Player()
             {
                 PlayerDob = model.PlayerDob,
