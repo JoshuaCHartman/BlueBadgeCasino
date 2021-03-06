@@ -42,6 +42,7 @@ namespace Casino.WebApi.Controllers
             //{
             return Ok(player);
         }
+
         //Admin get all players
         /// <summary>
         /// Get all Players - restricted to SuperAdmin, Admin
@@ -98,7 +99,6 @@ namespace Casino.WebApi.Controllers
             return Ok(player);
             //}
         }
-
         //Admin gets players by Tier
         /// <summary>
         /// Get all Players by Tier Level - restricted to SuperAdmin, Admin
@@ -122,7 +122,6 @@ namespace Casino.WebApi.Controllers
             //{
             //}
         }
-
         //Admin get players with balance
         /// <summary>
         /// Get all Players with an account balance - restricted to SuperAdmin, Admin
@@ -147,7 +146,6 @@ namespace Casino.WebApi.Controllers
             //    return Ok(player);
             //}
         }
-
         //Admin Get active players
         /// <summary>
         /// Get all active Players - restricted to SuperAdmin, Admin
@@ -160,25 +158,31 @@ namespace Casino.WebApi.Controllers
             var player = _service.GetActivePlayers();
             return Ok(player);
         }
-
         //User creates player account
         // Commented out - includes ddmmyyyy no slashes fix 
         /// <summary>
         /// Create a new Player account / BIRTHDAY MUST BE ENTERED MM/DD/YYYY WITH SLASHES
         /// </summary>
         /// <returns></returns>
+
         [Authorize(Roles = "User")]
         [HttpPost]
         [Route("api/makePlayer")]
         public IHttpActionResult Post(PlayerCreate player)  //*BRIAN* looks like it will never get beyond that first bool check with all the "else" returning "ok"
         {
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             var service = CreatePlayerService();
             
             if (!service.CheckPlayer(player))
+                {
+
                 return BadRequest("Date of birth has been entered in the incorrect format.  Please enter Date of Birth in the format of MM/DD/YYYY.");
-            if (!service.CheckDob(player))  //Is this false or does it need to be revised.  If service.checkplayer = false
+
+            if (service.CheckDob(player) == false)  //Is this false or does it need to be revised.  If service.checkplayer = false
+
+
             {
                 return BadRequest("You are not 21 and can not create a player.");
             }
@@ -186,8 +190,13 @@ namespace Casino.WebApi.Controllers
             {
                 return InternalServerError();
             }
-            return Ok();
-        }
+
+             else
+
+
+           return Ok("Your Player Account has been created. Please buy chips to play games!");
+             }
+
 
         [Authorize(Roles = "User")]
         [Route("api/UpdatePlayer/")]
@@ -213,7 +222,11 @@ namespace Casino.WebApi.Controllers
             var service = CreatePlayerService();
             if (!service.DeletePlayer())
                 return InternalServerError();
-            return Ok();
+
+            return Ok("Your account is now inactive.  " +
+                      "You will recieve a check in the mail within 5 business days for any remaining balance.");
+
+
         }
     }
 }

@@ -21,20 +21,13 @@ namespace Casino.Models
         public string PlayerZipCode { get; set; }
 
         [Required]
-       
+
         public string PlayerDob { get; set; }
         public DateTimeOffset AccountCreated { get; set; }
         public TierStatus TierStatus { get; set; }
         public bool IsActive { get; set; }
         public bool HasAccessToHighLevelGame { get; set; }
         public double CurrentBankBalance { get; set; }
-        //public bool EligibleForReward { get; set; }
-        public bool AgeVerification { get; set; }
 
-        //[Display(Name="Created")]
-        //public DateTimeOffset CreatedUtc { get; set; }
-
-        //[Display(Name="Modified")]
-        //public DateTimeOffset? ModifiedUtc { get; set; }
     }
 }
