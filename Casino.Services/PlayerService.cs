@@ -194,27 +194,7 @@ namespace Casino.Services
         }
 
 
-            //Convert the string to a DateTime
-            DateTime convertedDob;
-
-            // This doesnt actually parse, switched to method from above jch
-            //convertedDob = DateTime.Parse(stringDob);
-
-            DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
-                           CultureInfo.CurrentCulture,
-                           DateTimeStyles.None,
-                           out convertedDob);
-
-            TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
-            if (PlayerDob.TotalDays < 7665)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+            
 
 
 
