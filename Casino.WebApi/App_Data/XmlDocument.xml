@@ -495,7 +495,7 @@
         </member>
         <member name="M:Casino.WebApi.Controllers.AccountController.CreateAdmin(Casino.WebApi.Models.RegisterBindingModel)">
             <summary>
-            Create an Admin account - restriced to SuperAdmin, Admin
+            Create a new Admin account - restriced to SuperAdmin, Admin
             </summary>
             <returns></returns>
         </member>
@@ -687,7 +687,7 @@
         </member>
         <member name="M:Casino.WebApi.Controllers.PlayerController.Post(Casino.Models.PlayerCreate)">
             <summary>
-            Create a new Player account
+            Create a new Player account / BIRTHDAY MUST BE ENTERED MM/DD/YYYY WITH SLASHES
             </summary>
             <returns></returns>
         </member>

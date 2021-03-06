@@ -76,8 +76,8 @@ namespace Casino.Data
             get { return _tier; }
         }
 
-
         private bool _isActive;
+
         public bool IsActive
         {
             set

@@ -35,13 +35,6 @@ namespace Casino.Services
                 PlayerState = model.PlayerState,
                 PlayerZipCode = model.PlayerZipCode,
                 TierStatus = model.TierStatus,
-
-
-                //HasAccessToHighLevelGame = model.HasAccessToHighLevelGame,
-                //CurrentBankBalance = model.CurrentBankBalance,
-                //EligibleForReward = model.EligibleForReward,
-                //AgeVerification = model.AgeVerification,
-                //CreatedUtc = DateTimeOffset.Now
                 IsActive = model.IsActive,
                 AccountCreated = DateTimeOffset.Now
             };
@@ -55,52 +48,6 @@ namespace Casino.Services
             }
         }
 
-        //public bool CheckActiveStatusAdmin(PlayerListItem player)
-        //{
-        //    using (var ctx = new ApplicationDbContext())
-        //    {
-        //        var query =
-        //            ctx
-        //                .BankTransactions
-        //                .Single(e => e.PlayerId == _userId);
-        //        TimeSpan LastActive = DateTime.Now - query.DateTimeOfTransaction;
-        //        if (LastActive.Days < 180)
-        //        {
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-
-        //    }
-        //}
-
-        //public bool CheckActiveStatus(PlayerDetail player)
-        //{
-        //    using (var ctx = new ApplicationDbContext())
-        //    {
-        //        var query =
-        //            ctx
-        //                .BankTransactions
-        //                .Single(e => e.PlayerId == _userId);
-        //        TimeSpan LastActive = DateTime.Now - query.DateTimeOfTransaction;
-        //        if (LastActive.Days < 180)
-        //        {
-        //            player.IsActive = true;
-        //            return ctx.SaveChanges()==1;
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            player.IsActive = false;
-        //            return ctx.SaveChanges() == 1;
-        //            return false;
-        //        }
-        //    }
-        //}           
-
-
         public bool CheckPlayerIdAlreadyExists()
         {
             var ctx = new ApplicationDbContext();
@@ -108,8 +55,8 @@ namespace Casino.Services
             using (ctx)
 
             {
-              var query = ctx.Players
-                            .Find(_userId);
+                var query = ctx.Players
+                              .Find(_userId);
                 if (query != null)
                 {
 
@@ -125,17 +72,15 @@ namespace Casino.Services
         {   //Birthdate is not entered or correctly or legal age is not acceptable
             var ctx = new ApplicationDbContext();
             if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
-               
-                {
+
+            {
                 var query = ctx.Players
                             .Find(_userId);
                 if (query != null)
                 {
-
                     return true;
                 }
                 return false;
-
             }
             else
             {
@@ -143,31 +88,6 @@ namespace Casino.Services
                 return true;
             }
         }
-
-
-
-
-        //public bool CheckPlayer(PlayerCreate player)
-        //{   //Getting the string
-        // var stringDob = player.PlayerDob;
-
-        //Birthdate is not entered or correctly or legal age is not acceptable
-
-        //    // when this was changed to a string, this always fails and we cannot create any players
-
-        //    //if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
-        //    DateTime parsedDob;
-        //    DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
-        //                   CultureInfo.CurrentCulture,
-        //                   DateTimeStyles.None,
-        //                   out parsedDob);
-
-        //        if (parsedDob == null)
-        //        return false;
-        //    return true;
-
-
-     
 
         public bool CheckDob(PlayerCreate player)
         {
@@ -181,29 +101,6 @@ namespace Casino.Services
             // This only parses WITH SLASHES 
             convertedDob = DateTime.Parse(stringDob);
 
-           
-            TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
-            if (PlayerDob.TotalDays < 7665)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-
-            //Convert the string to a DateTime
-            DateTime convertedDob;
-
-            // This doesnt actually parse, switched to method from above jch
-            //convertedDob = DateTime.Parse(stringDob);
-
-            DateTime.TryParseExact(player.PlayerDob, "MMDDYYYY",
-                           CultureInfo.CurrentCulture,
-                           DateTimeStyles.None,
-                           out convertedDob);
 
             TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - convertedDob);
             if (PlayerDob.TotalDays < 7665)
@@ -214,22 +111,8 @@ namespace Casino.Services
             {
                 return true;
             }
+
         }
-
-
-
-        //If we leave it as a string then we can do our player.dob to cast and parse into DateTime in this method
-        //    TimeSpan PlayerDob = (TimeSpan)(DateTime.Now - player.PlayerDob);
-        //    if (PlayerDob.TotalDays < 7665)
-        //    {
-
-        //        return false;
-
-        //    }
-        //    return true; 
-        //}
-
-
 
         //Admin get All players
         public IEnumerable<PlayerListItem> GetPlayers()
@@ -247,15 +130,10 @@ namespace Casino.Services
                                     PlayerId = e.PlayerId,
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
-                                    //PlayerPhone = e.PlayerPhone,
                                     PlayerEmail = e.PlayerEmail,
-                                    //PlayerAddress = e.PlayerAddress,
-                                    //PlayerState = e.PlayerState,
-                                    //PlayerDob = e.PlayerDob,
-                                    //AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
-                                    //CreatedUtc = e.CreatedUtc
+                                   
                                 }
                         );
                 return query.ToArray();
@@ -287,8 +165,7 @@ namespace Casino.Services
                         CurrentBankBalance = entity.CurrentBankBalance,
                         TierStatus = entity.TierStatus,
                         HasAccessToHighLevelGame = entity.HasAccessToHighLevelGame
-                        //ModifiedUtc = entity.ModifiedUtc
-
+                       
                     };
             }
         }
@@ -303,7 +180,7 @@ namespace Casino.Services
                 return
                     new PlayerDetail
                     {
-                        PlayerId = entity.PlayerId, //Admin SHOULD see player Guid
+                        PlayerId = entity.PlayerId, 
                         PlayerFirstName = entity.PlayerFirstName,
                         PlayerLastName = entity.PlayerLastName,
                         PlayerPhone = entity.PlayerPhone,
@@ -315,8 +192,7 @@ namespace Casino.Services
                         AccountCreated = entity.AccountCreated,
                         IsActive = entity.IsActive,
                         CurrentBankBalance = entity.CurrentBankBalance,
-                        //CreatedUtc = entity.CreatedUtc,
-                        //ModifiedUtc = entity.ModifiedUtc
+                       
                     };
             }
 
@@ -334,17 +210,12 @@ namespace Casino.Services
                             e =>
                                 new PlayerListItem
                                 {
+                                    PlayerId = e.PlayerId,
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
-                                    //PlayerPhone = e.PlayerPhone,
                                     PlayerEmail = e.PlayerEmail,
-                                    //PlayerAddress = e.PlayerAddress,
-                                    //PlayerState = e.PlayerState,
-                                    //PlayerDob = e.PlayerDob,
-                                    //AccountCreated = e.AccountCreated,
-                                    //IsActive = e.IsActive,
+                                    IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
-                                    //CreatedUtc = e.CreatedUtc
                                 }
                         );
                 return query.ToArray();
@@ -363,17 +234,12 @@ namespace Casino.Services
                             e =>
                                 new PlayerListItem
                                 {
+                                    PlayerId = e.PlayerId,
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
-                                    //PlayerPhone = e.PlayerPhone,
                                     PlayerEmail = e.PlayerEmail,
-                                    //PlayerAddress = e.PlayerAddress,
-                                    //PlayerState = e.PlayerState,
-                                    //PlayerDob = e.PlayerDob,
-                                    //AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
-                                    //CreatedUtc = e.CreatedUtc
                                 }
                             );
 
@@ -393,17 +259,12 @@ namespace Casino.Services
                             e =>
                                 new PlayerListItem
                                 {
+                                    PlayerId = e.PlayerId,
                                     PlayerFirstName = e.PlayerFirstName,
                                     PlayerLastName = e.PlayerLastName,
-                                    //PlayerPhone = e.PlayerPhone,
                                     PlayerEmail = e.PlayerEmail,
-                                    // PlayerAddress = e.PlayerAddress,
-                                    //PlayerState = e.PlayerState,
-                                    // PlayerDob = e.PlayerDob,
-                                    // AccountCreated = e.AccountCreated,
                                     IsActive = e.IsActive,
                                     CurrentBankBalance = e.CurrentBankBalance,
-                                    //CreatedUtc = e.CreatedUtc
                                 }
                             );
 
@@ -420,20 +281,12 @@ namespace Casino.Services
                         .Players
                         .Single(e => e.PlayerId == _userId);
 
-                //PlayerFirstName = model.PlayerFirstName,
-                //PlayerLastName = model.PlayerLastName,
+              
                 entity.PlayerPhone = model.PlayerPhone;
                 entity.PlayerAddress = model.PlayerAddress;
                 entity.PlayerState = model.PlayerState;
                 entity.PlayerZipCode = model.PlayerZipCode;
-                //entity.PlayerDob = model.PlayerDob;
-                //entity.TierStatus = model.TierStatus;
-                //entity.IsActive = model.IsActive;
-                //entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
-                //entity.CurrentBankBalance = model.CurrentBankBalance;
-                //entity.EligibleForReward = model.EligibleForReward;
-                //entity.ModifiedUtc = DateTimeOffset.UtcNow;
-
+               
                 return ctx.SaveChanges() == 1;
             }
         }
@@ -448,20 +301,12 @@ namespace Casino.Services
                         .Players
                         .Single(e => e.PlayerId == playerId);
 
-                //PlayerFirstName = model.PlayerFirstName,
-                //PlayerLastName = model.PlayerLastName,
+               
                 entity.PlayerPhone = model.PlayerPhone;
                 entity.PlayerAddress = model.PlayerAddress;
                 entity.PlayerState = model.PlayerState;
                 entity.PlayerZipCode = model.PlayerZipCode;
-                //entity.PlayerDob = model.PlayerDob;
-                //entity.TierStatus = model.TierStatus;
-                //entity.IsActive = model.IsActive;
-                //entity.HasAccessToHighLevelGame = model.HasAccessToHighLevelGame;
-                //entity.CurrentBankBalance = model.CurrentBankBalance;
-                //entity.EligibleForReward = model.EligibleForReward;
-                //entity.ModifiedUtc = DateTimeOffset.UtcNow;
-
+              
                 return ctx.SaveChanges() == 1;
             }
         }
@@ -479,14 +324,14 @@ namespace Casino.Services
                 if (entity.IsActive == true)
                 {
 
-                     entity.PlayerClosedAccount = true;
+                    entity.PlayerClosedAccount = true;
                     entity.CurrentBankBalance = 0;
                     return ctx.SaveChanges() > 0;
 
                 }
                 else
                 {
-                  return true;
+                    return true;
 
                 }
 
