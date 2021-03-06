@@ -1,8 +1,8 @@
+using Casino.WebApi.Areas.HelpPage.ModelDescriptions;
+using Casino.WebApi.Areas.HelpPage.Models;
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using Casino.WebApi.Areas.HelpPage.ModelDescriptions;
-using Casino.WebApi.Areas.HelpPage.Models;
 
 namespace Casino.WebApi.Areas.HelpPage.Controllers
 {

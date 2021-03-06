@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Casino.Data
@@ -42,6 +38,8 @@ namespace Casino.Data
 
         public PlayerState PlayerState { get; set; }
 
+        public string PlayerZipCode { get; set; }
+
         [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
         [Required]
         //public DateTime PlayerDob { get; set; }
@@ -49,49 +47,65 @@ namespace Casino.Data
 
         [Required]
         public DateTimeOffset AccountCreated { get; set; }
-
-
-        public TierStatus TierStatus { get; set; } = TierStatus.bronze;
-        private bool _isActive;
-        public bool IsActive
-        {
-            get
-            {
-                //if (this.IsActive != false)
-                {
-                    //bool test;
-                    TimeSpan accountCreate = DateTime.Now - AccountCreated;
-                    if (accountCreate.TotalDays < 180)
-                    {
-                        _isActive = true;
-                        return true;
-                    }
-                    _isActive = false;
-                    return false;
-                }
-                //return false;
-            }
-            set { _isActive = value; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
-        }
-
-        public bool HasAccessToHighLevelGame { get; set; }
-
         public double CurrentBankBalance { get; set; }
-
         public virtual List<BankTransaction> BankTransactions { get; set; }
 
         public virtual List<Bet> Bets { get; set; }
+        public bool PlayerClosedAccount { get; set; }
 
-        //[Required]
-        //public bool EligibleForReward { get; set; }
+        private TierStatus _tier;
+        public TierStatus TierStatus
+        {
+            set
+            {
 
-        public bool AgeVerification { get; set; }
+                if (CurrentBankBalance > 5000)
+                    _tier = TierStatus.gold;
+                else if
+                    (CurrentBankBalance < 5000 && CurrentBankBalance > 999)
+                    _tier = TierStatus.silver;
+                else
+                    _tier = TierStatus.bronze;
 
-        //public DateTimeOffset CreatedUtc { get; set; }
+            }
 
-        //public DateTimeOffset? ModifiedUtc { get; set; }
+            get { return _tier; }
+        }
 
-        
+        private bool _isActive;
+
+        public bool IsActive
+        {
+            set
+            {
+                // if (this.IsActive != false)
+                {
+
+                    //bool test;
+                    TimeSpan accountCreate = DateTime.Now - AccountCreated;
+                    if (accountCreate.TotalDays > 180 && CurrentBankBalance < 1 || PlayerClosedAccount)
+                        _isActive = false;
+                    else
+                        _isActive = true;
+
+                }
+
+            }
+            get { return _isActive; } //or _ = value; also works the same.  It returns correctly when called, but the table in SQL DB does not update. 
+        }
+        private bool _hasAccess;
+        public bool HasAccessToHighLevelGame
+        {
+            set
+            {
+                if (TierStatus == TierStatus.gold)
+                    _hasAccess = true;
+                else _hasAccess = false;
+            }
+            get { return _hasAccess; }
+        }
+
+
     }
 
 }

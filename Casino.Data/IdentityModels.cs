@@ -1,10 +1,10 @@
-﻿using System.Data.Entity;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Casino.Data
 {
@@ -23,13 +23,14 @@ namespace Casino.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            
-            // Using test db PrivateConn.config connection string
 
-            : base("JoshTest3", throwIfV1Schema: false)
+          // Using test db PrivateConn.config connection string
+
+          : base("Brian3", throwIfV1Schema: false)
+
         {
         }
-        
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

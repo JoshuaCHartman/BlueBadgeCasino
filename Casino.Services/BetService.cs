@@ -11,6 +11,7 @@ namespace Casino.Services
         private GameSimulation _gameSim = new GameSimulation();
         private readonly Guid _playerGuid;  //Parse from currently logged in player
         private Guid _houseGuid = GetHouseAccountGuid();
+        private GameService _gameService = new GameService();
 
         public BetService() { }
         public BetService(Player player)
@@ -22,18 +23,20 @@ namespace Casino.Services
         }
         public BetResult CreateBet(BetCreate model)
         {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var query =
-                    ctx.Games.Find(model.GameId);
-                if (query is null)
-                    return null;
-            }
+
+            double payout;
+            var hasAccess = CheckPlayerAccess();
             // Brought _gameSim play game mechanics outside, and captured result as variable.
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
-            double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
+
+            if (!model.TypeOfBet.HasValue)
+                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess);
+            else
+                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, (GameService.BetType)model.TypeOfBet, model.ValueOfBet);
+            if (payout == 0)
+                return null;  //if playing keno or roulette postman needs a list of int.  Keno up to 10 int(1-80). roulette
 
             var entity = new Bet()
             {
@@ -112,31 +115,209 @@ namespace Casino.Services
         //admin get bets by search paramaters model
         public IEnumerable<BetListItem> AdminGetBets(GetBetByParameters model)
         {
-
             using (var ctx = new ApplicationDbContext())
             {
-                var query =
-                    ctx
-                        .Bets
-                        .Where(e => e.PlayerId == model.PlayerId && e.GameId == model.GameId && e.PlayerWonGame == model.PlayerWonGame) //&& model.Time < (DateTimeOffset.Now - e.DateTimeOfBet).Days)
-                                                                                                                                        //I want this to check if model contains prop and if not, ignore that paramater**meaning if model was empty then it would return ALL
-                        .Select(
-                            e =>
-                                new BetListItem
-                                {
-                                    BetId = e.BetId,
-                                    PlayerId = e.PlayerId,
-                                    TimeOfBet = e.DateTimeOfBet.ToString(),
-                                    GameId = e.GameId,
-                                    BetAmount = e.BetAmount,
-                                    PlayerWonGame = e.PlayerWonGame,
-                                    PayoutAmount = e.PayoutAmount
-                                }
-                        );
+                //F F F 
+                if (model is null) //this will return ALL bets EVER
+                {
 
-                return query.ToArray();
+                    var query =
+                        ctx
+                            .Bets
+                            .Where(e => e.GameId > 0)
+                            .Select(
+                                e =>
+                                    new BetListItem
+                                    {
+                                        BetId = e.BetId,
+                                        PlayerId = e.PlayerId,
+                                        TimeOfBet = e.DateTimeOfBet.ToString(),
+                                        GameId = e.GameId,
+                                        BetAmount = e.BetAmount,
+                                        PlayerWonGame = e.PlayerWonGame,
+                                        PayoutAmount = e.PayoutAmount
+                                    }
+                            );
+                    return query.ToArray();
+                }
+                //All 3 parameters
+                //T T T 
+                if (model.PlayerWonGame.HasValue && model.Time.HasValue && model.BetAmount.HasValue)
+                {
+                    int noOfDays = (int)model.Time;
+                    DateTimeOffset date = DateTimeOffset.Now.Subtract(new TimeSpan(noOfDays, 0, 0, 0));
+                    var query =
+                        ctx
+                            .Bets
+                            .Where(e => e.PlayerWonGame == model.PlayerWonGame && e.DateTimeOfBet > date && e.BetAmount >= model.BetAmount)
+                            .Select(
+                                e =>
+                                    new BetListItem
+                                    {
+                                        BetId = e.BetId,
+                                        PlayerId = e.PlayerId,
+                                        TimeOfBet = e.DateTimeOfBet.ToString(),
+                                        GameId = e.GameId,
+                                        BetAmount = e.BetAmount,
+                                        PlayerWonGame = e.PlayerWonGame,
+                                        PayoutAmount = e.PayoutAmount
+                                    }
+                            );
+
+                    return query.ToArray();
+                }
+                //T T F
+
+                if (model.PlayerWonGame.HasValue && model.Time.HasValue && !model.BetAmount.HasValue)
+                {
+                    int noOfDays = (int)model.Time;
+                    DateTimeOffset date = DateTimeOffset.Now.Subtract(new TimeSpan(noOfDays, 0, 0, 0));
+                    var query =
+                        ctx
+                            .Bets
+                            .Where(e => e.PlayerWonGame == model.PlayerWonGame && e.DateTimeOfBet > date)
+                            .Select(
+                                e =>
+                                    new BetListItem
+                                    {
+                                        BetId = e.BetId,
+                                        PlayerId = e.PlayerId,
+                                        TimeOfBet = e.DateTimeOfBet.ToString(),
+                                        GameId = e.GameId,
+                                        BetAmount = e.BetAmount,
+                                        PlayerWonGame = e.PlayerWonGame,
+                                        PayoutAmount = e.PayoutAmount
+                                    }
+                            );
+
+                    return query.ToArray();
+                }
+                //T F T
+                if (model.PlayerWonGame.HasValue && !model.Time.HasValue && model.BetAmount.HasValue)
+                {
+                    var query =
+                        ctx
+                            .Bets
+                            .Where(e => e.PlayerWonGame == model.PlayerWonGame && e.BetAmount >= model.BetAmount)
+                            .Select(
+                                e =>
+                                    new BetListItem
+                                    {
+                                        BetId = e.BetId,
+                                        PlayerId = e.PlayerId,
+                                        TimeOfBet = e.DateTimeOfBet.ToString(),
+                                        GameId = e.GameId,
+                                        BetAmount = e.BetAmount,
+                                        PlayerWonGame = e.PlayerWonGame,
+                                        PayoutAmount = e.PayoutAmount
+                                    }
+                            );
+
+                    return query.ToArray();
+                }
+                //T F F 
+                if (model.PlayerWonGame.HasValue && !model.Time.HasValue && !model.BetAmount.HasValue)
+                {
+                    var query =
+                        ctx
+                            .Bets
+                            .Where(e => e.PlayerWonGame == model.PlayerWonGame)
+                            .Select(
+                                e =>
+                                    new BetListItem
+                                    {
+                                        BetId = e.BetId,
+                                        PlayerId = e.PlayerId,
+                                        TimeOfBet = e.DateTimeOfBet.ToString(),
+                                        GameId = e.GameId,
+                                        BetAmount = e.BetAmount,
+                                        PlayerWonGame = e.PlayerWonGame,
+                                        PayoutAmount = e.PayoutAmount
+                                    }
+                            );
+
+                    return query.ToArray();
+                }
+                //F T T
+                if (!model.PlayerWonGame.HasValue && model.Time.HasValue && model.BetAmount.HasValue)
+                {
+                    int noOfDays = (int)model.Time;
+                    DateTimeOffset date = DateTimeOffset.Now.Subtract(new TimeSpan(noOfDays, 0, 0, 0));
+                    var query =
+                        ctx
+                            .Bets
+                            .Where(e => e.DateTimeOfBet > date && e.BetAmount >= model.BetAmount)
+                            .Select(
+                                e =>
+                                    new BetListItem
+                                    {
+                                        BetId = e.BetId,
+                                        PlayerId = e.PlayerId,
+                                        TimeOfBet = e.DateTimeOfBet.ToString(),
+                                        GameId = e.GameId,
+                                        BetAmount = e.BetAmount,
+                                        PlayerWonGame = e.PlayerWonGame,
+                                        PayoutAmount = e.PayoutAmount
+                                    }
+                            );
+
+                    return query.ToArray();
+                }
+                //F F T
+                if (!model.PlayerWonGame.HasValue && !model.Time.HasValue && model.BetAmount.HasValue)
+                {
+                    var query =
+                        ctx
+                            .Bets
+                            .Where(e => e.BetAmount >= model.BetAmount)
+                            .Select(
+                                e =>
+                                    new BetListItem
+                                    {
+                                        BetId = e.BetId,
+                                        PlayerId = e.PlayerId,
+                                        TimeOfBet = e.DateTimeOfBet.ToString(),
+                                        GameId = e.GameId,
+                                        BetAmount = e.BetAmount,
+                                        PlayerWonGame = e.PlayerWonGame,
+                                        PayoutAmount = e.PayoutAmount
+                                    }
+                            );
+
+                    return query.ToArray();
+                }
+                // F T F
+                if (!model.PlayerWonGame.HasValue && model.Time.HasValue && !model.BetAmount.HasValue)
+                {
+                    int noOfDays = (int)model.Time;
+                    DateTimeOffset date = DateTimeOffset.Now.Subtract(new TimeSpan(noOfDays, 0, 0, 0));
+                    var query =
+                        ctx
+                            .Bets
+                            .Where(e => e.DateTimeOfBet > date)
+                            .Select(
+                                e =>
+                                    new BetListItem
+                                    {
+                                        BetId = e.BetId,
+                                        PlayerId = e.PlayerId,
+                                        TimeOfBet = e.DateTimeOfBet.ToString(),
+                                        GameId = e.GameId,
+                                        BetAmount = e.BetAmount,
+                                        PlayerWonGame = e.PlayerWonGame,
+                                        PayoutAmount = e.PayoutAmount
+                                    }
+                            );
+
+                    return query.ToArray();
+                }
+
+                return null;
             }
         }
+
+
+
         //admin get bets by playerid
         public IEnumerable<BetListItem> AdminGetBets(Guid playerId)
         {
@@ -227,25 +408,34 @@ namespace Casino.Services
 
         public BetDetail GetBetById(int id)
         {
-            using (var ctx = new ApplicationDbContext())
+            try
             {
-                var entity =
-                    ctx
-                        .Bets
-                        .Single(e => e.PlayerId == _playerGuid && e.BetId == id);
-                return
-                    new BetDetail
+                using (var ctx = new ApplicationDbContext())
+                {
+                    var entity =
+                        ctx
+                            .Bets
+                            .Single(e => e.PlayerId == _playerGuid && e.BetId == id);
+                    return
+                        new BetDetail
 
-                    {
-                        TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
-                        BetId = entity.BetId,
-                        GameId = entity.GameId,
-                        BetAmount = entity.BetAmount,
-                        PlayerWonGame = entity.PlayerWonGame,
-                        PayoutAmount = entity.PayoutAmount,
+                        {
+                            TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
+                            BetId = entity.BetId,
+                            GameId = entity.GameId,
+                            BetAmount = entity.BetAmount,
+                            PlayerWonGame = entity.PlayerWonGame,
+                            PayoutAmount = entity.PayoutAmount,
 
-                    };
+                        };
+                }
             }
+            catch (GetBetException error)
+            {
+
+                throw error;
+            }
+
         }
         public bool DeleteBet(int id, double amount)
         {
@@ -311,6 +501,29 @@ namespace Casino.Services
                 return true;
             return false;
         }
+        public bool CheckPlayerAccess()
+        {
+            var ctx = new ApplicationDbContext();
+            var entity =
+            ctx.Players
+
+
+                .Single(e => e.PlayerId == _playerGuid);
+            return entity.HasAccessToHighLevelGame;
+        }
+
+        public bool CheckIfGameIdExists(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx.Games.Find(id);
+                if (query is null)
+                    return false;
+            }
+            return true;
+        }
+
         // returns BetResult Model afet BetCreate
         public BetResult GetBetResult(int id)
         {
@@ -327,14 +540,25 @@ namespace Casino.Services
                         TimeOfBet = entity.DateTimeOfBet.ToString("M/d/yy/h:m"),
                         BetId = entity.BetId,
                         GameId = entity.GameId,
+                        GameName = entity.Game.GameName,
                         BetAmount = entity.BetAmount,
                         PlayerWonGame = entity.PlayerWonGame,
                         PayoutAmount = entity.PayoutAmount,
                         PlayerBankBalance = entity.Player.CurrentBankBalance
 
+
+
                     };
             }
         }
+        private class GetBetException : Exception
+        {
+            public GetBetException(string message)
+               : base(message)
+            {
+            }
+        }
+
+
     }
 }
-

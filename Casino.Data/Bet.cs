@@ -14,7 +14,6 @@ namespace Casino.Data
         public Guid PlayerId { get; set; }
         public virtual Player Player { get; set; }
 
-        //add range to GameId FK to ensure they choose a valid game
         [ForeignKey(nameof(Game))]
         public int GameId { get; set; }
         public virtual Game Game { get; set; }
@@ -23,9 +22,10 @@ namespace Casino.Data
         public double BetAmount { get; set; }
         public double PayoutAmount { get; set; } //Positive for win, Negative for loss
 
-        public bool PlayerWonGame { get;set;}
+        public bool PlayerWonGame { get; set; }
 
         public DateTimeOffset DateTimeOfBet { get; set; }
+
 
     }
 }

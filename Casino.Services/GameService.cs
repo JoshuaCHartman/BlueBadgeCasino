@@ -37,6 +37,22 @@ namespace Casino.Services
                 return ctx.SaveChanges() == 1;
             }
         }
+        public bool UpdateGame(GameUpdate model)
+        {
+            var entity =
+                new Game()
+                {
+                    GameId = model.GameId,
+                    MinBet = model.MinBet,
+                    MaxBet = model.MaxBet
+                };
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                ctx.Games.Add(entity);
+                return ctx.SaveChanges() == 1;
+            }
+        }
 
         public IEnumerable<GameListItem> GetGames()
         {
@@ -62,7 +78,7 @@ namespace Casino.Services
             }
         }
 
-        public IEnumerable<GameListItem> GetGamesPlayer(Guid id) //Limit for players with access to HS games
+        public IEnumerable<GameListItem> GetGamesPlayer(Guid id)
         {
             bool highStakes = HighStakes(id);
 
@@ -97,15 +113,11 @@ namespace Casino.Services
                 var query =
                     ctx
                         .Players
-                        .Where(e => e.PlayerId == id)
-                        .Select(
-                            e =>
-                                new Player
-                                {
-                                    HasAccessToHighLevelGame = e.HasAccessToHighLevelGame
-                                }
-                        );
-                stakes = Convert.ToBoolean(query.ToString());
+                        .Single(e => e.PlayerId == id);
+
+
+                stakes = query.HasAccessToHighLevelGame;
+
             }
 
             return stakes;
@@ -114,7 +126,7 @@ namespace Casino.Services
 
         private double PlayerBalance(Guid id)
         {
-            double balance= 0;
+            double balance = 0;
 
             using (var ctx = new ApplicationDbContext())
             {
@@ -156,9 +168,33 @@ namespace Casino.Services
             }
         }
 
+        public enum BetType
+        {
+            basket,
+            black,
+            column,
+            corner,
+            double_street,
+            dozen,
+            even,
+            high,
+            low,
+            no_pass,
+            odd,
+            pass,
+            red,
+            snake,
+            split,
+            straight,
+            street,
+            trio
+        }
+
+
 
         //GamePlay
-        public double PlayGame(int id, double betAmt)
+
+        public double PlayGame(int id, double betAmt, bool highRoller, BetType bType = BetType.pass, string playerSelection = "0")
         {
             double amount = 0;
             var game = new GameService();
@@ -166,90 +202,80 @@ namespace Casino.Services
             string gameName = game.GetGameById(id).GameName;
             double payout = 0;
 
-            switch (gameName.ToLower())
+            //game bet limits
+            var min = game.GetGameById(id).MinBet;
+            var max = game.GetGameById(id).MaxBet;
+
+            if (betAmt < min || betAmt > max) { return 0; }
+
+            else
             {
-                case "baccarat":
-                    payout = game.Baccarat();
-                    break;
-                case "blackjack":
-                    payout = game.Blackjack();
-                    break;
-                case "craps":
-                    //bool Pass or Don't Pass bet type
-                    //Not quite there yet
-                    bool pass = true;
-                    payout = game.Craps(pass);
-                    break;
-                case "roulette":
-                    //bet types
-                    //Straight 1 number
-                    //Split 2 numbers adjoining
-                    //Street 1 row
-                    //Corner 4 numbers adjoining
-                    //Double Street 2 rows
-                    //Trio 0,1,2 or 00,2,3 (00 = 37 for sanity)
-                    //Basket 0,00,1,2,3 (00 = 37 for sanity)
+                var stakes = highRoller;
 
-                    //Low < 19
-                    //High > 18
-                    //Red //binary 0
-                    //Black //binary 1
-                    //Even 
-                    //Odd
-                    //Dozen 1-12; 13-24; 25-36
-                    //Column mod 3 = 1, 2, or 3
-                    //Snake 1, 5, 9, 12, 14, 16, 19, 23, 27, 30, 32, 34
-
-                    string betType = "";
-                    // for Red/Black use 0/1
-                    List<int> betValue = new List<int>();
-
-                    payout = game.Roulette(betType, betValue);
-                    break;
-                case "keno":
-                    //List<int> from "player selection" range = 1-80; up to 20 #'s selected - let's use 10 #'s
-
-                    payout = game.baseGame();
-                    break;
-                case "russian roulette":
-                    //need to get userId....
-
-                    double amt = PlayerBalance(_userId);
-                    payout = game.RussianRoulette();
-                    //Get player bank balance
-                    break;
-                default:
-                    //switch on gameType
-
-                    var type = GetGameById(id).TypeOfGame;
-
-                    switch (type.ToString().ToLower())
-                    {
-                        case "dice":
-                            payout = game.baseDice();
-                            break;
-                        case "wheel":
-                            payout = game.baseWheel();
-                            break;
-                        case "random_num":
-                            int numPick = r.Next(1,10); //player selects num
-                            payout = game.baseRandNum(numPick);
-                            break;
-                        default:
-                            payout = baseGame();
-                            break;
-                    }
+                switch (gameName.ToLower())
+                {
+                    case "baccarat":
+                        payout = game.Baccarat();
+                        break;
+                    case "blackjack":
+                        payout = game.Blackjack();
+                        break;
+                    case "craps":
+                        payout = game.Craps(bType);
+                        break;
+                    case "roulette":
+                        List<int> value = betValue(id, bType, playerSelection);
+                        payout = game.Roulette(bType, value);
+                        break;
+                    case "keno":
+                        //List<int> from "player selection" range = 1-80; up to 20 #'s selected - let's use 10 #'s
+                        List<int> playerNums = new List<int>();
 
 
-                    payout = game.baseGame();
-                    break;
+
+
+                        payout = game.Keno(playerNums);
+                        break;
+                    case "russian roulette":
+                        //need to get userId....
+
+                        double amt = PlayerBalance(_userId);
+                        payout = game.RussianRoulette();
+                        //Get player bank balance
+                        break;
+                    default:
+                        //switch on gameType
+
+                        var type = GetGameById(id).TypeOfGame;
+
+                        switch (type.ToString().ToLower())
+                        {
+                            case "dice":
+                                payout = game.baseDice();
+                                break;
+                            case "wheel":
+                                payout = game.baseWheel();
+                                break;
+                            case "random_num":
+                                int numPick = r.Next(1, 10); //player selects num
+                                payout = game.baseRandNum(numPick);
+                                break;
+                            default:
+                                payout = baseGame();
+                                break;
+                        }
+
+
+                        payout = game.baseGame();
+                        break;
+                }
+
+                if (payout > 0) { amount = payout * betAmt; }
+                else if (payout < 0) { }//accountDelete
+                else { amount = -1 * betAmt; }
+
+                return amount;
             }
-
-            if (payout > 0) { amount = payout * betAmt; }
-            else if (payout < 0) { }//accountDelete
-            else { amount = -1 * betAmt; }
-
-            return amount;
         }
 
         Random r = new Random();
@@ -308,14 +334,14 @@ namespace Casino.Services
 
             for (int n = 1; n < 7; n++)
             {
-                for (int i = 1; i < round[n]+1; i++)
+                for (int i = 1; i < round[n] + 1; i++)
                 {
                     wheel.Add(prize[i]);
                 }
                 wheel.Add(0);
             }
 
-            payout = wheel[r.Next(1,52)];
+            payout = wheel[r.Next(1, 52)];
             return payout;
         }
         public double baseDice()
@@ -342,8 +368,7 @@ namespace Casino.Services
         private List<int> Deal(int cardsPerHand)
         {
             List<int> deal = new List<int>();
-            int i = 0;
-            for (i = 1; i < cardsPerHand + 1; i++)
+            for (int i = 0; i < cardsPerHand; i++)
             {
                 r = new Random();
                 int v = r.Next(1, 13);
@@ -487,9 +512,14 @@ namespace Casino.Services
             for (int c = 0; c < hand.Count; c++)
             {
                 int card = hand[c];
-                hand.Remove(card);
-                if (card > 10) { card = 10; }
-                hand.Add(card);
+
+                if (card > 10)
+                {
+                    hand.Remove(card);
+                    card = 10;
+                    hand.Add(card);
+                }
+
             }
 
             sum = hand.Sum();
@@ -526,10 +556,22 @@ namespace Casino.Services
                 houseSum = EvaluateAces(houseHand);
             }
 
+            if (playerHand.Contains(1) && playerSum <= 10)
+            {
+                playerSum = EvaluateAces(playerHand);
+            }
+
+            while (houseSum < 17) { houseHand = Hit(houseHand); houseSum = EvaluateBlackjack(houseHand); }
+
             //player = dealer == push (draw) no winner
             if (playerSum == houseSum) { payout = 0; }
+            else
+            {
+                while (playerSum < 17) { playerHand = Hit(playerHand); playerSum = EvaluateBlackjack(playerHand); }
+            }
+
             //player > 21 = bust
-            else if (playerSum > 21) { payout = 0; }
+            if (playerSum > 21) { payout = 0; }
             //dealer bust = player win
             else if (playerSum < 21 && houseSum > 21) { payout = 1; }
             //player > house = player win
@@ -540,14 +582,15 @@ namespace Casino.Services
             return payout;
         }
 
-        public double Craps(bool Pass) //Pass or Don't Pass bet
+        public double Craps(BetType Pass) //Pass or Don't Pass bet
         {
-            bool pass = Pass;
+            bool pass = true; ;
+            if (Pass != BetType.pass) { pass = false; } else { pass = true; }
             int point = 0;
             sum = Roll(2).Sum();
             int round = 1;
             //!st Roll
-            if (Pass)
+            if (pass)
             {
                 if (round == 1)
                 {
@@ -636,6 +679,9 @@ namespace Casino.Services
 
         public double RussianRoulette() //Secret High Stakes where loss = player account deletion
         {
+
+            double bet = PlayerBalance(_userId);
+
             var russian = r.Next(1, 7);
 
             var load = r.Next(1, 7);
@@ -645,7 +691,105 @@ namespace Casino.Services
             return payout;
         }
 
-        public double Roulette(string betType, List<int> betValue) //betValue = player's choice (ie Red, 7, 3rd Street, etc...)
+        public List<int> betValue(int gameId, BetType type, string Choice)
+        {
+            List<int> betVal = new List<int>();
+            var game = GetGameById(gameId);
+
+            List<int> playerChoice = new List<int>();
+
+            var count = Choice.Count(x => x == ',');
+
+            if (count > 0)
+            {
+                for (int i = 0; i <= count; i++)
+                {
+                    int p = int.Parse(Choice.Split(',')[i]);
+                    playerChoice.Add(p);
+                }
+            }
+            else
+            {
+                playerChoice.Add(int.Parse(Choice));
+            }
+
+
+            int n = 0;
+
+            if (game.GameName.ToLower() == "roulette")
+            {
+                switch (type.ToString())
+                {
+                    case "column": //player selects column 1, 2, or 3
+                        n = playerChoice[0];
+                        betVal.Add(n);
+                        break;
+                    case "corner": //player selection; must be adjoining numbers; must pass in 2 num
+                        int n1 = playerChoice[0]; //lowest num on lowest row
+                        int n2 = playerChoice[1]; //lowest num on highest row
+                        betVal.Add(n1);
+                        betVal.Add(n1 + 1);
+                        betVal.Add(n2);
+                        betVal.Add(n2 + 1);
+                        break;
+                    case "double_street": //player selection; pass in 1 num
+                        n = playerChoice[0]; //lowest num from 2 adjoining rows
+                        betVal.Add(n);
+                        betVal.Add(n + 1);
+                        betVal.Add(n + 2);
+                        betVal.Add(n + 3);
+                        betVal.Add(n + 4);
+                        betVal.Add(n + 5);
+                        break;
+                    case "dozen": //player selection 1st doz, 2nd doz, 3rd doz
+                        betVal.Add(playerChoice[0]);
+                        break;
+                    case "even":
+                        betVal.Add(2);
+                        break;
+                    case "high":
+                        betVal.Add(0);
+                        break;
+                    case "low":
+                        betVal.Add(1);
+                        break;
+                    case "odd":
+                        betVal.Add(1);
+                        break;
+                    case "split": //player selection 2 adjoining nums
+                        n1 = playerChoice[0];
+                        n2 = playerChoice[1];
+                        betVal.Add(n1);
+                        betVal.Add(n2);
+                        break;
+                    case "straight": //player selects 1 num
+                        betVal.Add(playerChoice[0]);
+                        break;
+                    case "street": // player selects row 
+                        n = playerChoice[0];
+                        if (n > 1) { n = 2 * (n - 1); }
+                        betVal.Add(n);
+                        betVal.Add(n + 1);
+                        betVal.Add(n + 2);
+                        break;
+                    case "trio": //player selects 1st or 2nd trio
+                        betVal.Add(playerChoice[0]);
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+
+            return betVal;
+        }
+
+
+
+
+
+
+        public double Roulette(BetType betType, List<int> betValue) //betValue = player's choice (ie Red, 7, 3rd Street, etc...)
         {
             List<int> targetRange = new List<int>();
             Dictionary<int, string> rouletteWheel = RouletteWheel();
@@ -653,22 +797,26 @@ namespace Casino.Services
             int winNum = Spin(rouletteWheel.Count());
             string winColor = rouletteWheel[winNum];
 
-            switch (betType.ToLower())
+            switch (betType.ToString())
             {
                 case "straight":
                     if (betValue[0] == winNum) { payout = 35; } else { payout = 0; }
                     break;
                 case "split":
-                    if (targetRange == betValue) { payout = 17; } else { payout = 0; }
+                    targetRange = betValue;
+                    if (targetRange.Contains(winNum)) { payout = 17; } else { payout = 0; }
                     break;
                 case "street":
-                    if (targetRange == betValue) { payout = 11; } else { payout = 0; }
+                    targetRange = betValue;
+                    if (targetRange.Contains(winNum)) { payout = 11; } else { payout = 0; }
                     break;
                 case "corner":
-                    if (targetRange == betValue) { payout = 8; } else { payout = 0; }
+                    targetRange = betValue;
+                    if (targetRange.Contains(winNum)) { payout = 8; } else { payout = 0; }
                     break;
                 case "double street":
-                    if (targetRange == betValue) { payout = 5; } else { payout = 0; }
+                    targetRange = betValue;
+                    if (targetRange.Contains(winNum)) { payout = 5; } else { payout = 0; }
                     break;
                 case "trio":
                     if (betValue[0] == 0)
@@ -690,23 +838,27 @@ namespace Casino.Services
                     targetRange.Add(1);
                     targetRange.Add(2);
                     targetRange.Add(3);
+                    targetRange.Add(37);
 
-                    if (targetRange == betValue) { payout = 6; } else { payout = 0; }
+                    if (targetRange.Contains(winNum)) { payout = 6; } else { payout = 0; }
                     break;
-                case "high low":
-                    if (betType.ToLower() == "high" && betValue[0] == 0) { payout = 1; }
-                    else if (betType.ToLower() == "low" && betValue[0] == 1) { payout = 1; }
-                    else { payout = 0; }
+                case "high":
+                    if (betValue[0] == 0) { payout = 1; } else { payout = 0; }
                     break;
-                case "color":
-                    if (betType.ToLower() == "red" && winColor.ToLower() == "red") { payout = 1; }
-                    else if (betType.ToLower() == "black" && winColor.ToLower() == "black") { payout = 1; }
-                    else { payout = 0; }
+                case "low":
+                    if (betValue[0] == 1) { payout = 1; } else { payout = 0; }
                     break;
-                case "even odd":
-                    if (betType.ToLower() == "even" && winNum % 2 == 0) { payout = 1; }
-                    else if (betType.ToLower() == "odd" && winNum % 2 != 0) { payout = 1; }
-                    else { payout = 0; }
+                case "red":
+                    if (winColor.ToLower() == "red") { payout = 1; } else { payout = 0; }
+                    break;
+                case "black":
+                    if (winColor.ToLower() == "black") { payout = 1; } else { payout = 0; }
+                    break;
+                case "even":
+                    if (winNum % 2 == 0) { payout = 1; } else { payout = 0; }
+                    break;
+                case "odd":
+                    if (winNum % 2 != 0) { payout = 1; } else { payout = 0; }
                     break;
                 case "dozen":
                     if (betValue[0] == 1)

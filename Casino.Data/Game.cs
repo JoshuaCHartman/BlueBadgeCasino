@@ -9,7 +9,7 @@ namespace Casino.Data
     {
         Cards, Dice, Random_Num, Wheel
     }
-    
+
     public class Game
     {
         [Key]
@@ -19,7 +19,7 @@ namespace Casino.Data
         public bool IsHighStakes { get; set; }
         public double MinBet { get; set; }
         public double MaxBet { get; set; }
-        
+
     }
 
 

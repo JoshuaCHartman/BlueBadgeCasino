@@ -10,6 +10,6 @@ namespace Casino.Models
         public string PlayerEmail { get; set; }
         public bool IsActive { get; set; }
         public double CurrentBankBalance { get; set; }
-  
+
     }
 }

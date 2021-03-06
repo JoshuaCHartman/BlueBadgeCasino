@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Casino.WebApi.Controllers
 {
@@ -10,7 +6,8 @@ namespace Casino.WebApi.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            //ViewBag.Title = "Home Page";
+            ViewBag.Title = "Blue Badge Casino Web API";
 
             return View();
         }

@@ -1,23 +1,23 @@
-﻿using System;
+﻿using Casino.Data;
+using Casino.WebApi.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Casino.WebApi.Models;
-using Casino.Data;
-using System.Linq;
 
 namespace Casino.WebApi.Controllers
 {
-   // Add endpoints belovw (inside accountcontroller)
+    // Add endpoints belovw (inside accountcontroller)
 
     [Authorize]
     [RoutePrefix("api/Account")]
@@ -54,16 +54,32 @@ namespace Casino.WebApi.Controllers
         // ADD ACCOUNT CONTROLLER ENDPOINTS FROM THIS POINT ON:
 
         // POST api/Account/Register
+        /// <summary>
+        ///  Register a new user account with an email and password
+        /// </summary>
+
+        /// <returns></returns>
         [AllowAnonymous]
         [Route("Register_New_Account")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
+            // authetication check - wont allow authenticated user to create another user
+
+            bool isAuthenticated = User.Identity.IsAuthenticated;
+
+            if (isAuthenticated == true)
+            {
+                return BadRequest("User authenticated and cannot create another user");
+            }
+
             var _db = new ApplicationDbContext();
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+
 
             // Create new role instance
             IdentityRole role = new IdentityRole();
@@ -105,40 +121,17 @@ namespace Casino.WebApi.Controllers
 
             }
 
-
-            // Unworking process
-            //IdentityResult result;
-            //using (var context = new ApplicationDbContext())
-            //{
-            //    var roleStore = new RoleStore<IdentityRole>(context);
-            //    var roleManager = new RoleManager<IdentityRole>(roleStore);
-
-            //    await roleManager.CreateAsync(new IdentityRole() { Name = "User" });
-
-            //    var userStore = new UserStore<ApplicationUser>(context);
-            //    var userManager = new UserManager<ApplicationUser>(userStore);
-
-            //    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
-            //    result = await UserManager.CreateAsync(user, model.Password);
-            //    await userManager.AddToRoleAsync(user.Id, "User");
-
-
-            //}
-
-
         }
-       
-
-
-
-
 
         // ADDED FOR SUPERADMIN TO GET ALL USERS
         // GET api/account/user
-        
+        /// <summary>
+        /// Return all users - restricted to SuperAdmin
+        /// </summary>
+
+        /// <returns></returns>
         [Authorize(Roles = "SuperAdmin")] // limits to superadmin
-                                          
+
         [Route("Get_AllUsers(SUPERADMIN)")] // display route
         public List<ApplicationUser> GetAllUsers()
         {
@@ -150,8 +143,12 @@ namespace Casino.WebApi.Controllers
         }
 
         // POST api/Account/Register
+        /// <summary>
+        /// Create a new Admin account - restriced to SuperAdmin, Admin
+        /// </summary>
+
+        /// <returns></returns>
         [Authorize(Roles = "SuperAdmin, Admin")]
-        
         [Route("Create_Admin(SUPERADMIN)")]
         public async Task<IHttpActionResult> CreateAdmin(RegisterBindingModel model)
         {
@@ -200,13 +197,17 @@ namespace Casino.WebApi.Controllers
 
                 return Ok("Admin Created");
 
-
             }
         }
 
 
-        // keep : update as needed ?
+        
         // GET api/Account/UserInfo
+        /// <summary>
+        /// Get user account info
+        /// </summary>
+
+        /// <returns></returns>
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("Get_UserInfo")]
         public UserInfoViewModel GetUserInfo()
@@ -223,6 +224,11 @@ namespace Casino.WebApi.Controllers
         }
 
         // POST api/Account/Logout
+        /// <summary>
+        /// Logout of your user account
+        /// </summary>
+
+        /// <returns></returns>
         [Route("Logout")]
         public IHttpActionResult Logout()
         {
@@ -230,29 +236,13 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
-        // //////////////////////////////////////////////////////////////////////////////
-
-        // POST api/Account/ChangePassword
-        [Route("ChangePassword")]
-        public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-                model.NewPassword);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
 
         // POST api/Account/SetPassword
+        /// <summary>
+        /// Change your user account password 
+        /// </summary>
+
+        /// <returns></returns>
         [Route("SetPassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
         {
@@ -271,40 +261,11 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
-        
+
 
         // Admin functions below : 
 
-        // POST api/Account/RemoveLogin
-        [Authorize(Roles = "SuperAdmin, Admin")]
-        
-        [Route("RemoveLogin")]
-        public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            IdentityResult result;
-
-            if (model.LoginProvider == LocalLoginProvider)
-            {
-                result = await UserManager.RemovePasswordAsync(User.Identity.GetUserId());
-            }
-            else
-            {
-                result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(),
-                    new UserLoginInfo(model.LoginProvider, model.ProviderKey));
-            }
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
-        }
+       
 
 
         #region Helpers

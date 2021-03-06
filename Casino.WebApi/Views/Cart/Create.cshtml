@@ -8,7 +8,8 @@
 @*first attempt is older charge api method (using js wrapper to grab card info, as opposed to current version
     of redirecting customer to stripe capture site)*@
 
-@section stripe{
+@section stripe
+    {
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         // Set your publishable key: remember to change this to your live publishable key in production
@@ -85,9 +86,8 @@
 }
 
 
-<h2>Purchase Chips</h2>
+<h2>Old Stripe Charge Form</h2>
 <h3>A javascript wrapper is used to capture card details, which are submitted and, if valid, a token is returned. This uses a deprecated Stripe charge API, and is no longer supported.</h3>
-
 
 @*<form action="/charge" method="post" id="payment-form">*@
 @* change form action from default to pass info from card entry into controller  *@

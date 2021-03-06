@@ -1,14 +1,13 @@
-﻿using System;
-
-namespace Casino.Models
+﻿namespace Casino.Models
 {
-   public class GetBetByParameters
+    public class GetBetByParameters
     {
-        public Guid? PlayerId { get; set; }
+        // public Guid? PlayerId { get; set; }
 
-        public int? GameId { get; set; }
+        // public int? GameId { get; set; }
 
         public bool? PlayerWonGame { get; set; }
         public int? Time { get; set; }
+        public double? BetAmount { get; set; }
     }
 }

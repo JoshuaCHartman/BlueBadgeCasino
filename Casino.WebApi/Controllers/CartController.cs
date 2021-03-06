@@ -1,9 +1,5 @@
 ﻿using Casino.WebApi.Models;
 using Stripe;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 // front end form submit card - controller
@@ -12,6 +8,15 @@ namespace Casino.WebApi.Controllers
 {
     public class CartController : Controller
     {
+
+        // //GET and POST both required for cart to function - GET the view, then POST the charge...
+
+        // GET: Cart/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
         // POST: Cart/Create
         [HttpPost]
         public ActionResult Create(string stripeToken)

@@ -1,30 +1,73 @@
-﻿<div class="jumbotron">
-   
+﻿@*<div style="background-image: url(/Content//close-up-casino-chips-stack-green-poker-table_23-2147937911.jpg)" class="jumbotron">*@
+    @*<div style="background-image: url(/Content//close-up-casino-chips-stack-green-poker-table_23-2147937911.jpg)">*@
+<div class="jumbotron"; style="background-image: url(/Content/bannerPNG.png); background-size: 100%";>
     @* big title *@
-    
-    <h1>BLUE BADGE CASINO <br/>
-    USING ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+
+    <h1>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
+    </h1>
+    <p class="lead">@*ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.*@</p>
+    <p>@*<a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a>*@<!--</p>-->
+    @*</div>*@
 </div>
 <div class="row">
 
     @* smaller text boxes *@
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+    <div @*class="col-md-4"*@>
+        <h2>Overview</h2>
+        <p style="font-size:21px">
+    An online casino model built as a .NET Framework Web API, and designed around the principles of n-tier architecture and RESTful APIs to access a code-first relational database. By implementing user roles, users can simulate interacting with the casino as a player, manager, or casino owner. By incorporating a third party payment processor API (Stripe), players can use real world money to purchase in-game “chips” to wager on logic-based simulations of real world gaming. Players have access to retrieve and analyze their own gaming history and account activities, as well as request withdrawal of in-game “chips” for fiat currency. Managers can retrieve and analyze gaming and account histories for all players and games, and can manipulate player accounts to perform administrative functions. However, managers cannot participate in games as players. The casino owner can perform all functions, and is responsible for creating new manager accounts.
+</p>
+         <p style="font-size:21px">
+             The casino gives a player the option to play several simulated  games. Initially, a new user may create a player account, make a deposit through Stripe, then choose from a limited number of general admission games to place a bet. If the player wins, the funds are immediately added to their chip balance. Otherwise, their account is decreased by the bet amount. After placing enough bets or wagering above a certain threshold, the player may increase their status to a higher tier, and access the SilverLevel or HighRoller game with altered parameters and greater risk/reward mechanics.
+         </p>
+         <p style="font-size:21px">
+             Utilizing user roles, a player has the ability see their transaction history, bet history, and profile. An admin has the ability to generate reports for the individual games showing the outcomes for each game by type, timespan, etc. The admin can also see reports for each player, all players, all bets ever, all bets in a day, etc. This allows him to analyze the data to make decisions or changes for the casino. The Superadmin role is unlimited in functionality.  Additionally, player 1 (seeded) represents the house and the house vault, filling the role of the casino chip bank secured by cash. Players who experience losses over the course of their gaming will have their wagers removed from their personal accounts, and deposited into the house account.
+         </p>
+         <p style="font-size:21px">
+             <h2>Technologies</h2>
+             <ul style="font-size:21px">
+                 <li>
+                     Visual Studio Community 2019
+                     <ul style="font-size:21px">
+                         <li>Web API .NET Framework - Individual Authentication</li>
+                         <li>Identity Framework - User Roles</li>
+                         <li>Entity Framework - Database Mapping using Code-First Approach</li>
+                         <li>CSharp - Utilized for Logic throughout Application</li>
+                         <li>Linq - Found in Service Layer to Query the SQL Database</li>
+                         <li>SMTP - automated email sender with queried details concerning users</li>
+                         <li>Seeded data encompassing all roles, and of sufficient richness to adequately utilize all business logic and architecture layers</li>
+                         <li>ASP.NET MVC - display a simple credit card capture form to work with a deprecated Stripe charge API</li>
+                     </ul>
+                 </li>
+                 <li>Postman - Utilized to test endpoints</li>
+                 <li>Stripe - third party API integration using Stripe.net official Nu.Get package</li>
+                 <li>Stripe dashboard - confirm transactions externally, manage API keys</li>
+                 <li>Mailtrap.io - provides secure environment to simulate dedicated SMTP server & account credentials</li>
+
+             </ul>
+
+
+         </p>
+        <!--<p>-->@*<a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a>*@<!--</p>-->
     </div>
-    <div class="col-md-4">
+    <!--<div class="col-md-4">
         <h2>Get more libraries</h2>
         <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+        <p>-->
+    @*<a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a>*@
+    <!--</p>
     </div>
     <div class="col-md-4">
         <h2>Web Hosting</h2>
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
-    </div>
+        <p>-->
+    @*<a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a>*@
+    <!--</p>
+    </div>-->
 </div>
