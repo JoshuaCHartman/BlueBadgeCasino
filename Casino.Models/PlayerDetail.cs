@@ -28,7 +28,6 @@ namespace Casino.Models
         public bool IsActive { get; set; }
         public bool HasAccessToHighLevelGame { get; set; }
         public double CurrentBankBalance { get; set; }
-        //public bool EligibleForReward { get; set; }
 
     }
 }

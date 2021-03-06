@@ -45,7 +45,7 @@ namespace Casino.Services
                 AccountCreated = DateTimeOffset.Now
             };
 
-      
+
             using (var ctx = new ApplicationDbContext())
 
             {
@@ -99,22 +99,21 @@ namespace Casino.Services
         //    }
         //}           
 
-        
+
         public bool CheckPlayerIdAlreadyExists()
         {
             var ctx = new ApplicationDbContext();
 
             using (ctx)
+
               {
                 var query = ctx.Players
                             .Find(_userId);
                 if (query != null)
                 {
-                  
                     return true;
                 }
                 return false;
-              
             }
         }
 
@@ -129,7 +128,7 @@ namespace Casino.Services
                             .Find(_userId);
                 if (query != null)
                 {
-                  
+
                     return true;
                 }
                 return false;
@@ -143,11 +142,13 @@ namespace Casino.Services
         }
 
 
+
         //public bool CheckPlayer(PlayerCreate player)
         //{   //Getting the string
         // var stringDob = player.PlayerDob;
 
         //Birthdate is not entered or correctly or legal age is not acceptable
+
         //    // when this was changed to a string, this always fails and we cannot create any players
 
         //    //if (!DateTime.TryParse(player.PlayerDob, out DateTime testDob))
@@ -167,6 +168,12 @@ namespace Casino.Services
         {
             //Getting the string
             var stringDob = player.PlayerDob;
+
+
+
+        //}
+
+           
 
             //Convert the string to a DateTime
             DateTime convertedDob;
@@ -452,6 +459,7 @@ namespace Casino.Services
 
                 if (entity.IsActive == true)
                 {
+
                      entity.PlayerClosedAccount = true;
                     entity.CurrentBankBalance = 0;
                     return ctx.SaveChanges() > 0;
@@ -460,6 +468,7 @@ namespace Casino.Services
                 else
                 {
                   return true;
+
                 }
 
             }
