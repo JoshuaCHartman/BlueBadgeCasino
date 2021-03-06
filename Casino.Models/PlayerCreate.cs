@@ -27,7 +27,7 @@ namespace Casino.Models
         public string PlayerZipCode { get; set; }
 
         [Required]
-        [Display(Name = "Birthday: Enter in format MMDDYYY (example : 10312021")]
+        [Display(Name = "Birthday: Enter in format MMDDYYYY (example : 10312021")]
         //public DateTime PlayerDob { get; set; }
         public string PlayerDob { get; set; }
 

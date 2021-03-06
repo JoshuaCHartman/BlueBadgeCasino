@@ -1,10 +1,12 @@
 ﻿using Casino.Data;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Casino.Models
 {
     public class PlayerEdit
     {
+        public Guid PlayerId { get; set; }
         public string PlayerFirstName { get; set; }
         public string PlayerLastName { get; set; }
         public string PlayerPhone { get; set; }
