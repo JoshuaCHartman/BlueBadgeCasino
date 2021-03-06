@@ -1,10 +1,12 @@
 ﻿using Casino.Data;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Casino.Models
 {
     public class PlayerEdit
     {
+        public Guid PlayerId { get; set; }
         public string PlayerFirstName { get; set; }
         public string PlayerLastName { get; set; }
         public string PlayerPhone { get; set; }
@@ -18,7 +20,7 @@ namespace Casino.Models
         [Required]
         //public DateTime PlayerDob { get; set; }
         public string PlayerDob { get; set; }
-        public TierStatus TierStatus { get; set; } = TierStatus.bronze;
+        public TierStatus TierStatus { get; set; } = TierStatus.silver;
         public bool IsActive { get; set; }
         //public bool HasAccessToHighLevelGame { get; set; }
         //public double CurrentBankBalance { get; set; }

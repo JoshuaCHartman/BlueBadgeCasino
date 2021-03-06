@@ -21,6 +21,7 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
         //Get
+        
         [HttpGet]
         public IHttpActionResult Get()
         {

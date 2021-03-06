@@ -3,6 +3,7 @@ using Casino.Models;
 using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Linq;
 using System.Web.Http;
 
 namespace Casino.WebApi.Controllers
@@ -188,6 +189,21 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "User")]
+        [Route("api/UpdatePlayer/")]
+        public IHttpActionResult Put(PlayerEdit player)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var service = CreatePlayerService();
+
+            if (!service.UpdatePlayer(player))
+                return InternalServerError();
+
+            return Ok();
+        }
+
         //Player Deletes account(just makes it inactive)
         [Authorize(Roles = "User")]
         [Route("api/Player/delete")]
@@ -202,3 +218,4 @@ namespace Casino.WebApi.Controllers
         }
     }
 }
+
