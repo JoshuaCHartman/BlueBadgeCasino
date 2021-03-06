@@ -193,7 +193,7 @@ namespace Casino.Services
 
 
         //GamePlay
-        
+
         public double PlayGame(int id, double betAmt, bool highRoller, BetType bType = BetType.pass, string playerSelection = "0")
         {
             double amount = 0;
@@ -700,10 +700,17 @@ namespace Casino.Services
 
             var count = Choice.Count(x => x == ',');
 
-            for (int i = 0; i < count; i++)
+            if (count > 0)
             {
-                int p = int.Parse(Choice.Split(',')[i]);
-                playerChoice.Add(p);
+                for (int i = 0; i <= count; i++)
+                {
+                    int p = int.Parse(Choice.Split(',')[i]);
+                    playerChoice.Add(p);
+                }
+            }
+            else
+            {
+                playerChoice.Add(int.Parse(Choice));
             }
 
 
@@ -835,20 +842,23 @@ namespace Casino.Services
 
                     if (targetRange.Contains(winNum)) { payout = 6; } else { payout = 0; }
                     break;
-                case "high low":
-                    if (betType.ToString() == "high" && betValue[0] == 0) { payout = 1; }
-                    else if (betType.ToString() == "low" && betValue[0] == 1) { payout = 1; }
-                    else { payout = 0; }
+                case "high": 
+                    if (betValue[0] == 0) { payout = 1; } else { payout = 0; }
                     break;
-                case "color":
-                    if (betType.ToString().ToLower() == "red" && winColor.ToLower() == "red") { payout = 1; }
-                    else if (betType.ToString().ToLower() == "black" && winColor.ToLower() == "black") { payout = 1; }
-                    else { payout = 0; }
+                case "low":
+                    if (betValue[0] == 1) { payout = 1; } else { payout = 0; }
                     break;
-                case "even odd":
-                    if (betType.ToString() == "even" && winNum % 2 == 0) { payout = 1; }
-                    else if (betType.ToString() == "odd" && winNum % 2 != 0) { payout = 1; }
-                    else { payout = 0; }
+                case "red":
+                    if (winColor.ToLower() == "red") { payout = 1; } else { payout = 0; }
+                    break;
+                case "black":
+                    if (winColor.ToLower() == "black") { payout = 1; } else { payout = 0; }
+                    break;
+                case "even":
+                    if (winNum % 2 == 0) { payout = 1; } else { payout = 0; }
+                    break;
+                case "odd":
+                    if (winNum % 2 != 0) { payout = 1; }else { payout = 0; }
                     break;
                 case "dozen":
                     if (betValue[0] == 1)

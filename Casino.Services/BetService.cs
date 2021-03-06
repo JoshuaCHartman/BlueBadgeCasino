@@ -37,7 +37,7 @@ namespace Casino.Services
             if (!model.TypeOfBet.HasValue)
                 payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess);
             else
-                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, (GameService.BetType)model.TypeOfBet);
+                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, (GameService.BetType)model.TypeOfBet, model.ValueOfBet);
             if (payout == 0)
                 return null;
 
