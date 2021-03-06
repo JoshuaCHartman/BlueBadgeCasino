@@ -97,7 +97,6 @@ namespace Casino.WebApi.Controllers
         /// <returns></returns>
         [HttpPut]
         [Authorize(Roles = "SuperAdmin, Admin")]
-        [HttpPost]
         public IHttpActionResult Put(GameUpdate game)
         {
             if (!ModelState.IsValid)

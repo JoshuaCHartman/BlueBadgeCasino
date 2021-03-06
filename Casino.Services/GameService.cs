@@ -206,7 +206,7 @@ namespace Casino.Services
             var min = game.GetGameById(id).MinBet;
             var max = game.GetGameById(id).MaxBet;
 
-            if (betAmt<min||betAmt>max) { return 0; }
+            if (betAmt < min || betAmt > max) { return 0; }
 
             else
             {
@@ -379,8 +379,7 @@ namespace Casino.Services
         private List<int> Deal(int cardsPerHand)
         {
             List<int> deal = new List<int>();
-            int i = 0;
-            for (i = 1; i < cardsPerHand + 1; i++)
+            for (int i = 0; i < cardsPerHand; i++)
             {
                 r = new Random();
                 int v = r.Next(1, 13);
@@ -524,9 +523,14 @@ namespace Casino.Services
             for (int c = 0; c < hand.Count; c++)
             {
                 int card = hand[c];
-                hand.Remove(card);
-                if (card > 10) { card = 10; }
-                hand.Add(card);
+
+                if (card > 10)
+                {
+                    hand.Remove(card);
+                    card = 10;
+                    hand.Add(card);
+                }
+
             }
 
             sum = hand.Sum();
@@ -550,7 +554,7 @@ namespace Casino.Services
             return sum;
         }
 
-        public double Blackjack()
+        public double Blackjack() 
         {
             List<int> houseHand = Deal(2);
             List<int> playerHand = Deal(2);
@@ -563,10 +567,22 @@ namespace Casino.Services
                 houseSum = EvaluateAces(houseHand);
             }
 
+            if (playerHand.Contains(1) && playerSum <= 10)
+            {
+                playerSum = EvaluateAces(playerHand);
+            }
+
+            while (houseSum < 17) { houseHand = Hit(houseHand); houseSum = EvaluateBlackjack(houseHand); }
+
             //player = dealer == push (draw) no winner
             if (playerSum == houseSum) { payout = 0; }
+            else
+            {
+                while (playerSum < 17) { playerHand = Hit(playerHand); playerSum = EvaluateBlackjack(playerHand); }
+            }
+
             //player > 21 = bust
-            else if (playerSum > 21) { payout = 0; }
+            if (playerSum > 21) { payout = 0; }
             //dealer bust = player win
             else if (playerSum < 21 && houseSum > 21) { payout = 1; }
             //player > house = player win
@@ -673,6 +689,9 @@ namespace Casino.Services
 
         public double RussianRoulette() //Secret High Stakes where loss = player account deletion
         {
+
+            double bet = PlayerBalance(_userId);
+
             var russian = r.Next(1, 7);
 
             var load = r.Next(1, 7);

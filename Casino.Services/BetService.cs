@@ -23,19 +23,24 @@ namespace Casino.Services
         }
         public BetResult CreateBet(BetCreate model)
         {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var query =
-                    ctx.Games.Find(model.GameId);
-                if (query is null)
-                    return null;
-            }
+
+            double payout;
+            var hasAccess = CheckPlayerAccess();
             // Brought _gameSim play game mechanics outside, and captured result as variable.
             //      That result will be fed into added helper method (in gamesimulation.cs) to derive win/loss bool.
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
             //double payout = _gameSim.PlayGame(model.BetAmount, model.GameId);
+
              double payout = _gameService.PlayGame(model.GameId, model.BetAmount, true);
+
+            if (!model.TypeOfBet.HasValue)
+                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess);
+            else
+                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, (GameService.BetType)model.TypeOfBet);
+            if (payout == 0)
+                return null;
+
             var entity = new Bet()
             {
 
@@ -118,7 +123,7 @@ namespace Casino.Services
                 //F F F 
                 if (model is null) //this will return ALL bets EVER
                 {
-                    
+
                     var query =
                         ctx
                             .Bets
@@ -147,7 +152,7 @@ namespace Casino.Services
                     var query =
                         ctx
                             .Bets
-                            .Where(e => e.PlayerWonGame == model.PlayerWonGame && e.DateTimeOfBet > date && e.BetAmount >= model.BetAmount) 
+                            .Where(e => e.PlayerWonGame == model.PlayerWonGame && e.DateTimeOfBet > date && e.BetAmount >= model.BetAmount)
                             .Select(
                                 e =>
                                     new BetListItem
@@ -313,8 +318,8 @@ namespace Casino.Services
                 return null;
             }
         }
-       
-        
+
+
 
         //admin get bets by playerid
         public IEnumerable<BetListItem> AdminGetBets(Guid playerId)
@@ -490,6 +495,29 @@ namespace Casino.Services
                 return true;
             return false;
         }
+        public bool CheckPlayerAccess()
+        {
+            var ctx = new ApplicationDbContext();
+            var entity =
+            ctx.Players
+
+
+                .Single(e => e.PlayerId == _playerGuid);
+            return entity.HasAccessToHighLevelGame;
+        }
+
+        public bool CheckIfGameIdExists(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query =
+                    ctx.Games.Find(id);
+                if (query is null)
+                    return false;
+            }
+            return true;
+        }
+
         // returns BetResult Model afet BetCreate
         public BetResult GetBetResult(int id)
         {
@@ -516,4 +544,3 @@ namespace Casino.Services
         }
     }
 }
-
