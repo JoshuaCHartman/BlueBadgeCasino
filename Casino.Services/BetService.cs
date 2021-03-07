@@ -32,7 +32,7 @@ namespace Casino.Services
             //      from _gameSim.
 
             if (!model.TypeOfBet.HasValue)
-                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess);
+                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, GameService.BetType.pass,model.ValueOfBet);
             else
                 payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, (GameService.BetType)model.TypeOfBet, model.ValueOfBet);
             if (payout == 0)
@@ -493,10 +493,9 @@ namespace Casino.Services
         {
             var ctx = new ApplicationDbContext();
             var entity =
-            ctx.Players
-
-
-                .Single(e => e.PlayerId == _playerGuid);
+                ctx
+                    .Players
+                    .Single(e => e.PlayerId == _playerGuid);
             if (entity.CurrentBankBalance > bet)
                 return true;
             return false;
