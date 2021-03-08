@@ -1,4 +1,27 @@
 # BlueBadgeCasino
+
+**Table of Contents**
+
+>- [Overview](#overview)
+>
+>- [User Story](#user-story)
+>
+>- [Technologies Employed](#technologies-employed)
+>
+>- [Installation and Setup](#installation-and-setup)
+>
+>- [Instructions](#instructions)
+>
+>- [Features](#features)
+>
+>- [Resources](#resources)
+>
+>- [Discussion: Game Details](#game-play-detail)
+>
+>- [Team Members / Contact](#team-members)
+>
+
+
 # Overview
 
 An online casino model built as a .NET Framework Web API, and designed around the principles of n-tier architecture and RESTful APIs to access a code-first relational database. By implementing user roles, users can simulate interacting with the casino as a player, manager, or casino owner. By incorporating a third party payment processor API (Stripe), players can use real world money to purchase in-game “chips” to wager on logic-based simulations of real world gaming. Players have access to retrieve and analyze their own gaming history and account activities, as well as request withdrawal of in-game “chips” for fiat currency. Managers can retrieve and analyze gaming and account histories for all players and games, and can manipulate player accounts to perform administrative functions. However, managers cannot participate in games as players. The casino owner can perform all functions, and is responsible for creating new manager accounts.
@@ -261,19 +284,19 @@ Single number chosen at random between 1 & 52:
 
 >**Segments (of 52)_____Payout**
 >___
-
+>
 >1_______________________40:1
-
+>
 >2_______________________20:1
-
+>
 >4_______________________10:1
-
+>
 >8________________________5:1
-
+>
 >12_______________________2:1
-
+>
 >24_______________________1:1
-
+>
 >___
 
 ### Advanced Games
@@ -292,17 +315,17 @@ Two card hands are delt to the player and House. Cards are evaluated based on va
 
 •	If the player takes a 3rd card:
 
-o	 If the House total is 2 or less, then the House draws a card, regardless of what the player's third card is.
+- -	 If the House total is 2 or less, then the House draws a card, regardless of what the player's third card is.
 
-o	If the House total is 3, then the House draws a third card unless the player's third card was an 8.
+- -	If the House total is 3, then the House draws a third card unless the player's third card was an 8.
 
-o	If the House total is 4, then the House draws a third card if the player's third card was 2, 3, 4, 5, 6, 7.
+- -	If the House total is 4, then the House draws a third card if the player's third card was 2, 3, 4, 5, 6, 7.
 
-o	If the House total is 5, then the House draws a third card if the player's third card was 4, 5, 6, or 7.
+- - If the House total is 5, then the House draws a third card if the player's third card was 4, 5, 6, or 7.
 
-o	If the House total is 6, then the House draws a third card if the player's third card was a 6 or 7.
+- -	If the House total is 6, then the House draws a third card if the player's third card was a 6 or 7.
 
-o	If the House total is 7, then the House stands.
+- -	If the House total is 7, then the House stands.
 
 Hand with the highest value in the one’s digit is declared winner (i.e. 2+3 = 5; 6+7 = 3 (sum total is 13; one’s digit is 3).
 
@@ -316,17 +339,17 @@ Players choose Pass or Don’t Pass. Shooter rolls via random selection of 2 “
 > **Shooter Rolls_______Result**
 >_____
 >2______________________Pass loss
-
+>
 >3______________________Pass loss
-
+>
 >7______________________Pass win
-
+>
 >11_____________________Pass win
-
+>
 >12_____________________Pass loss
-
+>
 >Any other number becomes Point; Shooter rolls until hitting Pass or 7	Point number rolls before 7: Pass wins
-
+>
 > Result: Seven rolls before Point: Pass loss
 >___
 
@@ -336,26 +359,26 @@ Players choose 10 numbers between 1 and 80. Drawing numbers are chosen at random
 >**Match_____Payout**
 >___
 >1___________1
-
+>
 >2___________2
-
+>
 >3___________3
-
+>
 >4___________5
-
+>
 >5___________10
-
+>
 >6___________15
-
+>
 >7___________20
-
+>
 >8___________30
-
+>
 >9___________50
-
+>
 >10___________100
 >___
-
+>
 **Roulette**
 
 In this casino, we have constructed a model roulette wheel. Players can choose their bet type and chosen numbers from the roulette board as applicable. 
@@ -363,32 +386,32 @@ In this casino, we have constructed a model roulette wheel. Players can choose t
 > **Bet Type___________Players Choice___________________________________Payout**
 >___
 > - Straight_______Single number__________________________________________35:1
-
+>
 > - Split__________Adjoining numbers______________________________________17:1
-
+>
 > - Street_________Lowest number for single row___________________________11:1
-
+>
 > - Corner_________2 adjoining numbers; one from each row________________8:1
-
+>
 > - Double Street__Lowest number for 2 adjoining rows___________________5:1
-
+>
 > - Trio____________0 or 1 for 1st trio or 2nd trio_____________________________8:1
-
+>
 > - Basket_________N/A______________________________________________________6:1
-
+>
 > - High/Low______N/A______________________________________________________1:1
-
+>
 > - Even/Odd______N/A______________________________________________________1:1
-
+>
 > - Color___________N/A_______________________________________________________1:1
-
+>
 > - Dozen_________1, 2, or 3 for 1st, 2nd, or 3rd dozen of numbers__________2:1
-
+>
 > - Column________1, 2, or 3 for 1st, 2nd, or 3rd column of numbers_________2:1
-
+>
 > - Snake_________N/A_________________________________________________________2:1
 >___
-
+>
 
 **Russian Roulette**
 
@@ -405,7 +428,7 @@ The game play is modeled after the original version played with a 7-chamber Russ
 
 
 
-## Team Members / Contact
+## Team Members
 [Joshua Hartman](https://github.com/JoshuaCHartman)
 
 
