@@ -35,7 +35,7 @@ The client, Samson, is an entrepreneur behind several tech-oriented startup proj
 
 
 
-## Installation and Setup (Windows)
+## Installation and Setup 
 
 Requirements: Visual Studio, Postman or equivalent testing application, web browser
 
