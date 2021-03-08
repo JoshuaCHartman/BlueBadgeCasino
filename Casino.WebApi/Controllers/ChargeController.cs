@@ -20,6 +20,26 @@ namespace Casino.WebApi.Controllers
             return makeChargeService;
         }
 
+        /// <summary>
+        /// Buy chips by entering credit card info - use test card number 4242424242424242, a future month and year, 3 digits for the CVC, and 5 digits for the zipcode
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = "User")]
+        [Route("api/charges/charge_deposit_as_chips")]
+        public IHttpActionResult Charge(RevisedChargeModel charge)
+        {
+            var newCharge = MakeChargeService.Charge(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
+            if (newCharge)
+            {
+                MakeChargeService chargeService = CreateMakeChargeServiceForGuid();
+                // adds entry to ChargeForChips table AND BankTransaction Table AND Player table's PlayerBalance
+                chargeService.CreateChargeforChips(charge);
+                return Ok($"charge made: $ {charge.Value / 100} charged to your card, and ${charge.Value / 100} added to your player account"); // put in message
+            }
+            else
+                return InternalServerError(); // put in message
+        }
+
         //Get
         //Get all by logged in Player
         /// <summary>
@@ -77,24 +97,7 @@ namespace Casino.WebApi.Controllers
         //    return await MakeChargeService.ChargeAsync(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
         //}
 
-        /// <summary>
-        /// Buy chips by entering credit card info - use test card number 4242424242424242, and future month and year, 3 digits for the CVC, and 5 digits for the zipcode
-        /// </summary>
-        /// <returns></returns>
-        [Authorize(Roles = "User")]
-        [Route("charge_deposit_as_chips")]
-        public IHttpActionResult Charge(RevisedChargeModel charge)
-        {
-            var newCharge = MakeChargeService.Charge(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
-            if (newCharge)
-            {
-                MakeChargeService chargeService = CreateMakeChargeServiceForGuid();
-                // adds entry to ChargeForChips table AND BankTransaction Table AND Player table's PlayerBalance
-                chargeService.CreateChargeforChips(charge);
-                return Ok($"charge made: $ {charge.Value / 100} charged to your card, and ${charge.Value / 100} added to your player account"); // put in message
-            }
-            else
-                return InternalServerError(); // put in message
-        }
+       
+       
     }
 }

@@ -531,13 +531,7 @@
         </member>
         <member name="M:Casino.WebApi.Controllers.GameController.PlayerGet">
             <summary>
-            Get all games played by a Player, using PlayerID/GUID
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.GameController.BetLimits(System.Double)">
-            <summary>
-            Enter a bet amount, and discover what games area available to play
+            Get all games available to be played by a Player, using PlayerID/GUID
             </summary>
             <returns></returns>
         </member>
@@ -703,6 +697,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Casino.WebApi.Controllers.ChargeController.Charge(Casino.WebApi.Models.RevisedChargeModel)">
+            <summary>
+            Buy chips by entering credit card info - use test card number 4242424242424242, a future month and year, 3 digits for the CVC, and 5 digits for the zipcode
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:Casino.WebApi.Controllers.ChargeController.Get">
             <summary>
             Get Charges by logged in Player - restricted to Player
@@ -718,12 +718,6 @@
         <member name="M:Casino.WebApi.Controllers.ChargeController.GetAll">
             <summary>
             Get all Charges - restricted to SuperAdmin, Admin
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:Casino.WebApi.Controllers.ChargeController.Charge(Casino.WebApi.Models.RevisedChargeModel)">
-            <summary>
-            Buy chips by entering credit card info - use test card number 4242424242424242, and future month and year, 3 digits for the CVC, and 5 digits for the zipcode
             </summary>
             <returns></returns>
         </member>
