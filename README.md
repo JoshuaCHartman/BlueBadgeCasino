@@ -62,7 +62,7 @@ The client, Samson, is an entrepreneur behind several tech-oriented startup proj
 
 ## Installation and Setup 
 
-Requirements: Visual Studio, Postman or equivalent testing application, web browser
+**Requirements:** Visual Studio, Postman or equivalent testing application, web browser
 
 Create a new folder where you would like to contain the casino project and associated files. Open the empty folder and in the top search bar, type cmd to open a terminal window. From the command prompt, clone the git repository by entering the following: 
 
