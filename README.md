@@ -18,6 +18,8 @@
 >
 >- [Discussion: Game Details](#game-play-detail)
 >
+>- [Discussion: Using Stripe to buy chips, and cashing out](#using-stripe-to-buy-chips-and-cashing-out)
+>
 >- [Team Members / Contact](#team-members)
 >
 
@@ -422,9 +424,33 @@ In this casino, we have constructed a model roulette wheel. Players can choose t
 The game play is modeled after the original version played with a 7-chamber Russian revolver. A number is chosen at random between 1 and 7 as the “load”. A second number is chosen at random and the “hammer drop”. Should the two numbers equal, the player loses their entire bank.
 
 
+ - ## Using Stripe to buy chips, and cashing out                 
+### Stripe Process to Load an Account
+
+The process of making a charge through Stripe is divided into the following general steps:
+
+1) Required card details are entered. These are then sent to Stripe.
+2) Stripe returns a token, if the card is validated.
+3) The token becomes the merchant's stand-in for an actual card. The token's ID is attached to charges, along with the required parameters of the charge such as the amount value.
+4) Stripe returns a 200OK, and a Charge object.
+
+The application, receiving an OK message, then converts the charge amount to a format used within the application tables. The requesting Player's ID is used to add these values to the necessary tables under the correct player, ultimately affecting the Player's bank balance, a property of the Player class. If all of these processes aer successful, a message is returned, showing the converted value amount and confirming that the equivalent dollar amount of chips has been deposited in the Player's account. 
+
+Through Stripe's user dashboard, available after creating a Stripe account, one can generate test API keys and place them within the Charge and ChargeAsync methods within the MakeChargeService file. Confirmations of successful charges can be viewed in the dashboard.
+
+All of these tasks, while separate functions, are coupled together under one endpoint (charge_deposit_for_chips). Multiple try-catch blocks were implemented within the component methods in an attempt to prevent errors from breaking the application.
+
+In current (2021) practice, Stripe provides a Stripe-hosted payment portal where the user enters their card details. This is intended to be styled so as to be seamless from the merchant's site. The merchant has no direct contact with the user's card, and only receives the token. Under the navbar link for OldStripeAPI, there is an example of a standalone card capture form in a Javascript wrapper, a method no longer directly supported by Stripe. This is functional, sending charge details to the Stripe dashboard, and uses a deprecated charge-only Stripe API. However, its token return is not implemented within the program.
+
+### Cashing out
+
+The Player initiates a withdrawal through the BankTransaction controller's withdrawal endpoint. If the withdrawal is successful, a message returns to the Player stating the withdrawal will be initiated. An email with the details of the withdrawal, including Player ID and amount, is sent to an imagined back-of-the-house accounting/receivables account. At this point, a bank transfer could be initiated or a check drafted. Mailtrap.io is used in place of a dedicated SMTP server, and the Mailtrap.io dashboard displays the generated emails using Mailtrap's provided credentials. These credentials can be modified inside of the SendEmail method within the BankTransaction controller.
+
+
+
 - GUIDs
 - Bet class / table as the engine of the project
-- Buying in-game currency and cashing out
+
 
 
 
