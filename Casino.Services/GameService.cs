@@ -146,7 +146,7 @@ namespace Casino.Services
 
         }
 
-        private double PlayerBalance(Guid id)
+        public double PlayerBalance(Guid id)
         {
             double balance = 0;
 
@@ -155,15 +155,9 @@ namespace Casino.Services
                 var query =
                     ctx
                         .Players
-                        .Where(e => e.PlayerId == id)
-                        .Select(
-                            e =>
-                                new Player
-                                {
-                                    CurrentBankBalance = e.CurrentBankBalance
-                                }
-                        ); ;
-                balance = double.Parse(query.ToString());
+                        .Single(e => e.PlayerId == id);
+
+                balance = query.CurrentBankBalance;
             }
 
             return balance;
@@ -341,7 +335,7 @@ namespace Casino.Services
         public double PlayGame(int id, double betAmt, bool highRoller, BetType bType = BetType.pass, string playerSelection = "0")
         {
             double amount = 0;
-            var game = new GameService();
+            var game = new GameService(_userId);
 
             string gameName = game.GetGameById(id).GameName;
             double payout = 0;
@@ -350,13 +344,13 @@ namespace Casino.Services
             var min = game.GetGameById(id).MinBet;
             var max = game.GetGameById(id).MaxBet;
 
-            if (game.GetGameById(id).GameName.ToLower() == "russian roulette")
-            { 
+            if (gameName.ToLower() == "russian roulette")
+            {
                 min = PlayerBalance(_userId);
                 max = min;
             }
 
-                if (betAmt < min || betAmt > max) { return 0; }
+            if (betAmt < min || betAmt > max) { return 0; }
             else if (!highRoller == game.GetGameById(id).IsHighStakes) { return 0; }
             else if (playerSelection.Count(x => x == ',') > 10) { return 0; }
             else
@@ -680,7 +674,7 @@ namespace Casino.Services
             return payout;
         }
 
-        public double Craps(BetType Pass) //Pass or Don't Pass bet
+        public double Craps(BetType Pass) 
         {
             bool pass = true; ;
             if (Pass != BetType.pass) { pass = false; } else { pass = true; }
@@ -716,13 +710,41 @@ namespace Casino.Services
                     round += 1;
                 }
             }
+            else if (!pass)
+            {
+                if (round == 1)
+                {
+                    switch (sum)
+                    {
+                        case 2:
+                            payout = 1;
+                            break;
+                        case 3:
+                            payout = 1;
+                            break;
+                        case 7:
+                            payout = 0;
+                            break;
+                        case 11:
+                            payout = 0;
+                            break;
+                        case 12:
+                            payout = 1;
+                            break;
+                        default:
+                            point = sum;
+                            break;
+                    }
+                    round += 1;
+                }
+            }
 
             while (sum != point || sum != 7)
             {
                 sum = Roll(2).Sum();
 
-                if (sum == point) { payout = 1; break; }
-                else if (sum == 7) { payout = 0; break; }
+                if (sum == point) { if (pass) { payout = 1; break; } else { payout = 0; break; } }
+                else if (sum == 7) { if (pass) { payout = 0; break; } else { payout = 1; break; } }
             }
 
             return payout;
@@ -1020,7 +1042,7 @@ namespace Casino.Services
             }
             return payout;
         }
-        
+
         public double RussianRoulette() //needs testing; minBet && maxBet = players balance
         {
             var russian = r.Next(1, 7);

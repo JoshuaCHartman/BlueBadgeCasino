@@ -49,6 +49,14 @@ namespace Casino.WebApi.Controllers
             var userId = Guid.Parse(User.Identity.GetUserId());
             GameService gameService = CreateGameService();
             var games = gameService.GetGamesPlayer(userId);
+            foreach(var game in games)
+            {
+                if (game.GameName.ToLower() == "russian roulette")
+                {
+                    game.MinBet = new PlayerService(userId).GetPlayerById(userId).CurrentBankBalance;
+                    game.MaxBet = game.MinBet;
+                }
+            }
             return Ok(games);
         }
 
@@ -65,6 +73,7 @@ namespace Casino.WebApi.Controllers
             var userId = Guid.Parse(User.Identity.GetUserId());
             GameService gameService = CreateGameService();
             var games = gameService.GetGamesPlayer(userId);
+            var game = games.ToArray()[0];
 
             var min = Convert.ToDouble(games.ToArray()[3]);
             var max = Convert.ToDouble(games.ToArray()[4]);
@@ -75,7 +84,7 @@ namespace Casino.WebApi.Controllers
             {
                 return Ok();
             }
-            else { return BadRequest("Bet must be within game limits."); }
+            else { string badReq = ($"Bet must be within game limits of {min} and {max}.");  return BadRequest(badReq); }
         }
 
         //Get by ID
@@ -114,6 +123,5 @@ namespace Casino.WebApi.Controllers
             var gameService = new GameService(userId);
             return gameService;
         }
-
     }
 }

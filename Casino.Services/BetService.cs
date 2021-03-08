@@ -31,6 +31,9 @@ namespace Casino.Services
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
 
+            if (model.GameId == 11) { _gameService = new GameService(_playerGuid); }
+
+
             if (!model.TypeOfBet.HasValue)
                 payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, GameService.BetType.pass,model.ValueOfBet);
             else
@@ -496,7 +499,7 @@ namespace Casino.Services
                 ctx
                     .Players
                     .Single(e => e.PlayerId == _playerGuid);
-            if (entity.CurrentBankBalance > bet)
+            if (entity.CurrentBankBalance >= bet)
                 return true;
             return false;
         }
