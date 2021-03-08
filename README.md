@@ -28,9 +28,9 @@
 
 An online casino model built as a .NET Framework Web API, and designed around the principles of n-tier architecture and RESTful APIs to access a code-first relational database. By implementing user roles, users can simulate interacting with the casino as a player, manager, or casino owner. By incorporating a third party payment processor API (Stripe), players can use real world money to purchase in-game “chips” to wager on logic-based simulations of real world gaming. Players have access to retrieve and analyze their own gaming history and account activities, as well as request withdrawal of in-game “chips” for fiat currency. Managers can retrieve and analyze gaming and account histories for all players and games, and can manipulate player accounts to perform administrative functions. However, managers cannot participate in games as players. The casino owner can perform all functions, and is responsible for creating new manager accounts.
 
-The casino gives a player the option to play several simulated  games. Initially, a new user may create a player account, make a deposit through Stripe, then choose from a limited number of general admission games to place a bet. If the player wins, the funds are immediately added to their chip balance. Otherwise, their account is decreased by the bet amount. After placing enough bets or wagering above a certain threshold, the player may increase their status to a higher tier, and access the SilverLevel or HighRoller game with altered parameters and greater risk/reward mechanics.
+The casino gives a player the option to play several simulated  games. Initially, a new user may create a player account, make a deposit through Stripe, then choose from a limited number of general admission games to place a bet. If the player wins, the funds are immediately added to their chip balance. Otherwise, their account is decreased by the bet amount. After placing enough bets or wagering above a certain threshold, the player may increase their status to a higher tier, and gain higher levels and access HighRoller games with altered parameters and greater risk/reward mechanics.
 
-Utilizing user roles, a player has the ability see their transaction history, bet history, and profile. An admin has the ability to generate reports for the individual games showing the outcomes for each game by type, timespan, etc. The admin can also see reports for each player, all players, all bets ever, all bets in a day, etc. This allows him to analyze the data to make decisions or changes for the casino. The Superadmin role is unlimited in functionality.  Additionally, player 1 (seeded) represents the house and the house vault, filling the role of the casino chip bank secured by cash. Players who experience losses over the course of their gaming will have their wagers removed from their personal accounts, and deposited into the house account. 
+Utilizing user roles, a player has the ability see their transaction history, bet history, and profile. An admin has the ability to generate reports for the individual games showing the outcomes for each game by type, timespan, etc. The admin can also see reports for each player, all players, all bets ever, bets within a timespan, etc. This allows him to analyze the data to make decisions or changes for the casino. The Superadmin role is unlimited in functionality.  Additionally, player 1 (seeded) represents the house and the house vault, filling the role of the casino chip bank secured by cash. Players who experience losses over the course of their gaming will have their wagers removed from their personal accounts, and deposited into the house account. 
 
 ## User Story
 
@@ -56,7 +56,6 @@ The client, Samson, is an entrepreneur behind several tech-oriented startup proj
 - Stripe - third party API integration using Stripe.net official Nu.Get package
 - Stripe dashboard - confirm transactions externally, manage API keys
 - Mailtrap.io - provides secure environment to simulate dedicated SMTP server & account credentials
-- 
 
 
 
@@ -64,7 +63,7 @@ The client, Samson, is an entrepreneur behind several tech-oriented startup proj
 
 **Requirements:** Visual Studio, Postman or equivalent testing application, web browser
 
-Create a new folder where you would like to contain the casino project and associated files. Open the empty folder and in the top search bar, type cmd to open a terminal window. From the command prompt, clone the git repository by entering the following: 
+Create a new folder where you would like to contain the casino project and associated files. Open the empty folder and in the top search bar, type **cmd** to open a terminal window. From the command prompt, clone the git repository by entering the following: 
 
 ```bash
 git clone https://https://github.com/JoshuaCHartman/BlueBadgeCasino
@@ -78,9 +77,9 @@ Update-database
 
 This will seed the database with user accounts for testing, and an extensive history of players, bets, transactions, and games to test endpoints.
 
-[Section to be added after assignment graded to include instructions for setting up Stripe and Mailtrap.io accounts, and filing in keys & credentials in the appropriate parts of the program. These are included for Eleven Fifty evaluation purposes]
+[*Section to be added after assignment graded to include instructions for setting up Stripe and Mailtrap.io accounts, and filing in keys & credentials in the appropriate parts of the program. These are included for Eleven Fifty evaluation*]
 
-Click on the green play button at the top of Visual Studio to run the application. The application homepage will appear inside a new browser window. Navigate to CasinoAPI for a list of endpoints. 
+Click on the **green play button** at the top of Visual Studio to run the application. The application homepage will appear inside a new browser window. Navigate to CasinoAPI for a list of endpoints. 
 
 
 ## Instructions
@@ -130,7 +129,7 @@ POST api/Account/Register_New_Account
 https://localhost:44367/api/Account/Register_New_Account
 ```
 
-5. In Postman, change the dropdown to the left of the url bar to POST.
+5. In Postman, change the dropdown to the left of the URL bar to **POST**.
 Click on the Body tab, and then the radio button for
 ```bash
 x-www-form-urlencoded
@@ -142,7 +141,7 @@ x-www-form-urlencoded
 - Password /  for testing, we recommend Test
 - Confirm-Password /  the same entry as above
 
-7. Hit send. You should receive a *200OK* and an acknowledgment message if all went well.
+7. Hit **send**. You should receive a **200OK** and an acknowledgment message if all went well.
 
 **Get a token (start with this section if using a seeded account):**
 
@@ -155,7 +154,7 @@ https://localhost:44367/token
 - Username / the email you used above, or a seeded account’s username
 - Password / the password you used above, or a seeded account’s pwd
 
-3. Use the drop down box on the left to select **POST**. Hit send. A **token** should be returned in the body of the response. Highlight and copy the contents of the token (everything between quotation marks).
+3. Use the drop down box on the left to select **POST**. Hit **send**. A **token** should be returned in the body of the response. Highlight and copy the contents of the token (everything between quotation marks).
 
 **Using the token:**
 1. Under the Headers tab, add the following parameters under **KEY / VALUE** :
@@ -165,7 +164,7 @@ https://localhost:44367/token
 
 
 **Creating a Player**
-1. Navigate to the Player  section, and click on the link for 
+1. Navigate to the Player section, and click on the link for :
 ```bash
 POST api/makePlayer
 ``` 
@@ -189,12 +188,12 @@ https://localhost:44367/api/makePlayer
 **Adding Money to Your Player Account**
 1. Navigate to the Player  section, and click on the link for 
 ```bash
-POST charge_deposit_as_chips
+POST api/charge_deposit_as_chips
 ``` 
 
 2. Copy the following from the title of the page, and paste it into your existing URL in Postman. It should look similar to :
 ```bash
-https://localhost:44367/charge_deposit_as_chips
+https://localhost:44367/api/charge_deposit_as_chips
 ``` 
 3. In Postman, change the dropdown to the left of the URL bar to **POST**.
 4. In the body, include the following **KEY / VALUE** pairs, as described on the page (do not include quotation marks) :
@@ -424,7 +423,8 @@ In this casino, we have constructed a model roulette wheel. Players can choose t
 The game play is modeled after the original version played with a 7-chamber Russian revolver. A number is chosen at random between 1 and 7 as the “load”. A second number is chosen at random and the “hammer drop”. Should the two numbers equal, the player loses their entire bank.
 
 
- - ## Using Stripe to buy chips, and cashing out                 
+ - ## Using Stripe to buy chips, and cashing out
+ 
 ### Stripe Process to Load an Account
 
 The process of making a charge through Stripe is divided into the following general steps:
@@ -438,9 +438,9 @@ The application, receiving an OK message, then converts the charge amount to a f
 
 Through Stripe's user dashboard, available after creating a Stripe account, one can generate test API keys and place them within the Charge and ChargeAsync methods within the MakeChargeService file. Confirmations of successful charges can be viewed in the dashboard.
 
-All of these tasks, while separate functions, are coupled together under one endpoint (charge_deposit_for_chips). Multiple try-catch blocks were implemented within the component methods in an attempt to prevent errors from breaking the application.
+All of these tasks, while separate functions, are coupled together under one endpoint (api/charge_deposit_for_chips). Multiple try-catch blocks were implemented within the component methods in an attempt to prevent errors from breaking the application.
 
-In current (2021) practice, Stripe provides a Stripe-hosted payment portal where the user enters their card details. This is intended to be styled so as to be seamless from the merchant's site. The merchant has no direct contact with the user's card, and only receives the token. Under the navbar link for OldStripeAPI, there is an example of a standalone card capture form in a Javascript wrapper, a method no longer directly supported by Stripe. This is functional, sending charge details to the Stripe dashboard, and uses a deprecated charge-only Stripe API. However, its token return is not implemented within the program.
+In current (2021) practice, Stripe provides a Stripe-hosted payment portal where the user enters their card details. This is intended to be styled so as to be seamless from the merchant's site. The merchant has no direct contact with the user's card, and only receives the token. Under the navbar link for **OldStripeAPI**, there is an example of a standalone card capture form in a Javascript wrapper, a method no longer directly supported by Stripe. This is functional, sending charge details to the Stripe dashboard, and uses a deprecated charge-only Stripe API. However, its token return is not implemented within this program.
 
 ### Cashing out
 
