@@ -535,12 +535,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Casino.WebApi.Controllers.GameController.BetLimits(System.Double)">
-            <summary>
-            Enter a bet amount, and discover what games area available to play
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:Casino.WebApi.Controllers.GameController.GetById(System.Int32)">
             <summary>
             Get details of games by GameID

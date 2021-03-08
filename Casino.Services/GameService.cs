@@ -408,7 +408,8 @@ namespace Casino.Services
                 }
 
                 if (payout > 0) { amount = payout * betAmt; }
-                else if (payout < 0) { }//accountDelete
+                else if (payout < 0 && gameName.ToLower() =="russian roulette") { amount = -0.5; } //accountDelete
+                else if (payout <= 0) { amount = 0.5; } 
                 else { amount = -1 * betAmt; }
 
                 return amount;
@@ -1056,6 +1057,8 @@ namespace Casino.Services
             var russian = r.Next(1, 7);
 
             var load = r.Next(1, 7);
+
+            //russian = load; //testing
 
             if (russian == load) { payout = -1; } else { payout = 0; }
 

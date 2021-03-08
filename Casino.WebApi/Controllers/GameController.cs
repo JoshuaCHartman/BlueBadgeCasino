@@ -42,6 +42,7 @@ namespace Casino.WebApi.Controllers
         /// Get all games played by a Player, using PlayerID/GUID
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "User")]
         [Route("api/PlayerGames")]
         [HttpGet]
         public IHttpActionResult PlayerGet()
@@ -58,33 +59,6 @@ namespace Casino.WebApi.Controllers
                 }
             }
             return Ok(games);
-        }
-
-
-        //Player Bet Limits
-        /// <summary>
-        /// Enter a bet amount, and discover what games area available to play
-        /// </summary>
-        /// <returns></returns>
-        [Route("api/Show_if_bet_within_limits")]
-        [HttpGet]
-        public IHttpActionResult BetLimits(double playerBet)
-        {
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            GameService gameService = CreateGameService();
-            var games = gameService.GetGamesPlayer(userId);
-            var game = games.ToArray()[0];
-
-            var min = Convert.ToDouble(games.ToArray()[3]);
-            var max = Convert.ToDouble(games.ToArray()[4]);
-
-            var bet = playerBet;
-
-            if (bet >= min && bet <= max)
-            {
-                return Ok();
-            }
-            else { string badReq = ($"Bet must be within game limits of {min} and {max}.");  return BadRequest(badReq); }
         }
 
         //Get by ID
