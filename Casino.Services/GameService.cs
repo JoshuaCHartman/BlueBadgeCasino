@@ -677,6 +677,7 @@ namespace Casino.Services
         public double Craps(BetType Pass) 
         {
             bool pass = true; ;
+            bool gameOver = false;
             if (Pass != BetType.pass) { pass = false; } else { pass = true; }
             int point = 0;
             sum = Roll(2).Sum();
@@ -690,9 +691,11 @@ namespace Casino.Services
                     {
                         case 2:
                             payout = 0;
+                            gameOver = true;
                             break;
                         case 3:
                             payout = 0;
+                            gameOver = true;
                             break;
                         case 7:
                             payout = 1;
@@ -702,6 +705,7 @@ namespace Casino.Services
                             break;
                         case 12:
                             payout = 0;
+                            gameOver = true;
                             break;
                         default:
                             point = sum;
@@ -724,9 +728,11 @@ namespace Casino.Services
                             break;
                         case 7:
                             payout = 0;
+                            gameOver = true;
                             break;
                         case 11:
                             payout = 0;
+                            gameOver = true;
                             break;
                         case 12:
                             payout = 1;
@@ -739,14 +745,16 @@ namespace Casino.Services
                 }
             }
 
-            while (sum != point || sum != 7)
+            if (!gameOver)
             {
-                sum = Roll(2).Sum();
+                while (sum != point || sum != 7)
+                {
+                    sum = Roll(2).Sum();
 
-                if (sum == point) { if (pass) { payout = 1; break; } else { payout = 0; break; } }
-                else if (sum == 7) { if (pass) { payout = 0; break; } else { payout = 1; break; } }
+                    if (sum == point) { if (pass) { payout = 1; break; } else { payout = 0; break; } }
+                    else if (sum == 7) { if (pass) { payout = 0; break; } else { payout = 1; break; } }
+                }
             }
-
             return payout;
         }
 
@@ -1043,7 +1051,7 @@ namespace Casino.Services
             return payout;
         }
 
-        public double RussianRoulette() //needs testing; minBet && maxBet = players balance
+        public double RussianRoulette()
         {
             var russian = r.Next(1, 7);
 
