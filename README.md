@@ -53,7 +53,7 @@ Update-database
 
 This will seed the database with user accounts for testing, and an extensive history of players, bets, transactions, and games to test endpoints.
 
-[Section to be added after assignment graded to include instructions for setting up Stripe and Mailtrap.io accounts, and filing in keys & credentials in the appropriate parts of the program.]
+[Section to be added after assignment graded to include instructions for setting up Stripe and Mailtrap.io accounts, and filing in keys & credentials in the appropriate parts of the program. These are included for Eleven Fifty evaluation purposes]
 
 Click on the green play button at the top of Visual Studio to run the application. The application homepage will appear inside a new browser window. Navigate to CasinoAPI for a list of endpoints. 
 
@@ -62,7 +62,30 @@ Click on the green play button at the top of Visual Studio to run the applicatio
 
 **Creating a User / Obtaining a Token**
 
-**Add details for seeded accounts**
+**If you would like to use a seeded account, login details are included here. Please skip to the section detailing the process to get a token to use with these accounts.**
+
+> **SuperAdmin**
+> >Username = HouseAccount
+> >
+> >Email = house@casino.com
+> >
+> >Pwd = Test1!
+
+> **Admin**
+> >Username = FirstAdmin
+> >
+> >Email = firstAdmin@casino.com
+> >
+> >Pwd = Test1!
+
+> **User with associated Player Account**
+> >Username = user2
+> >
+> >Email = user2@abc.com
+> >
+> >Pwd = Test1!
+
+**Creating a New User**
 
 Create a **new user** with the following steps (skip if using a seeded account):
 1. Navigate to the CasinoAPI endpoint lists through the navigation bar at the top of the page.
@@ -96,7 +119,7 @@ x-www-form-urlencoded
 
 7. Hit send. You should receive a *200OK* and an acknowledgment message if all went well.
 
-**Get a token (proceeded to this section if using a seeded account):**
+**Get a token (start with this section if using a seeded account):**
 
 1. Copy the following from the title of the page, and paste it into your existing URL in Postman. It should look similar to the following, but your localhost number may be different :
 ```bash
@@ -107,7 +130,7 @@ https://localhost:44367/token
 - Username / the email you used above, or a seeded account’s username
 - Password / the password you used above, or a seeded account’s pwd
 
-3. Hit send. A **token** should be returned in the body of the response. Highlight and copy the contents of the token (everything between quotation marks).
+3. Use the drop down box on the left to select **POST**. Hit send. A **token** should be returned in the body of the response. Highlight and copy the contents of the token (everything between quotation marks).
 
 **Using the token:**
 1. Under the Headers tab, add the following parameters under **KEY / VALUE** :
