@@ -15,5 +15,6 @@
         public double PayoutAmount { get; set; } //Positive for win, Negative for loss
 
         public string TimeOfBet { get; set; }
+        public string Message { get; set; }
     }
 }
