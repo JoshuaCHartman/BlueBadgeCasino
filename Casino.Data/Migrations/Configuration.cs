@@ -169,7 +169,9 @@
                 PlayerLastName = "Account",
                 PlayerEmail = "house@casino.com",
                 PlayerDob = "01011999",
-                AccountCreated = DateTimeOffset.Now
+                AccountCreated = DateTimeOffset.Now,
+                CurrentBankBalance = 10000000
+                
             }
 
             );
@@ -567,7 +569,7 @@
                           GameId = 1,
                           BetAmount = 7,
                           PayoutAmount = 7,
-                          DateTimeOfBet = DateTimeOffset.Now,
+                          DateTimeOfBet = new DateTime(2019, 12, 25),
                           PlayerWonGame = true
                       },
                new Bet()
@@ -577,7 +579,7 @@
                    GameId = 2,
                    BetAmount = 10,
                    PayoutAmount = -10,
-                   DateTimeOfBet = DateTimeOffset.Now,
+                   DateTimeOfBet = new DateTime(2019, 12, 25),
                },
                new Bet()
                {
@@ -586,7 +588,7 @@
                    GameId = 3,
                    BetAmount = 15,
                    PayoutAmount = -15,
-                   DateTimeOfBet = DateTimeOffset.Now,
+                   DateTimeOfBet = new DateTime(2019, 12, 25),
                },
                new Bet()
                {
@@ -595,7 +597,7 @@
                    GameId = 4,
                    BetAmount = 100,
                    PayoutAmount = 300,
-                   DateTimeOfBet = DateTimeOffset.Now,
+                   DateTimeOfBet = new DateTime(2019, 12, 25),
                    PlayerWonGame = true
                },
                new Bet()
@@ -605,7 +607,7 @@
                    GameId = 5,
                    BetAmount = 111,
                    PayoutAmount = 333,
-                   DateTimeOfBet = DateTimeOffset.Now,
+                   DateTimeOfBet = new DateTime(2019, 12, 26),
                    PlayerWonGame = true
                },
                 new Bet()
@@ -615,7 +617,7 @@
                     GameId = 6,
                     BetAmount = 10,
                     PayoutAmount = 20,
-                    DateTimeOfBet = DateTimeOffset.Now,
+                    DateTimeOfBet = new DateTime(2019, 12, 26),
                     PlayerWonGame = true
                 },
                  new Bet()
@@ -738,7 +740,7 @@
                        GameId = 1,
                        BetAmount = 25,
                        PayoutAmount = 35,
-                       DateTimeOfBet = DateTimeOffset.Now,
+                       DateTimeOfBet = new DateTime(2021, 1, 25),
                        PlayerWonGame = true
                    },
                     new Bet()
@@ -748,7 +750,7 @@
                         GameId = 2,
                         BetAmount = 166,
                         PayoutAmount = 195,
-                        DateTimeOfBet = DateTimeOffset.Now,
+                        DateTimeOfBet = new DateTime(2021, 1, 25),
                         PlayerWonGame = true
                     }
 
