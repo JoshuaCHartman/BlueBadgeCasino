@@ -462,7 +462,7 @@ The Player initiates a withdrawal through the BankTransaction controller's withd
 >___
 > [Eric Bella](https://github.com/ericlbella)
 >
-> [Biran Campassi](https://github.com/Brian-1150)
+> [Brian Campassi](https://github.com/Brian-1150)
 >
 > [Jon Dikteruk](https://github.com/JDikteruk)
 >
