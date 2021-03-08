@@ -334,6 +334,7 @@ Hand with the highest value in the one’s digit is declared winner (i.e. 2+3 = 
 Two card hands are dealt to the player and House. Cards are evaluated based on value; face cards = 10, Aces = 1 or 11. If the total is < 17 for either player or House, the respective hand hits adding a card to their hand. Hands are then re-evaluated until a winner is decided. Winner is the hand closest to 21 without going over. Ties result in a draw and no monies are exchanged.
 
 **Craps**
+
 Players choose Pass or Don’t Pass. Shooter rolls via random selection of 2 “dice” numbers between 1 and 6. Payouts are 1:1. When Pass wins, Don’t Pass loses.
 
 > **Shooter Rolls_______Result**
@@ -352,8 +353,10 @@ Players choose Pass or Don’t Pass. Shooter rolls via random selection of 2 “
 >
 > Result: Seven rolls before Point: Pass loss
 >___
+>
 
 **Keno**
+
 Players choose 10 numbers between 1 and 80. Drawing numbers are chosen at random. Payouts vary by casino. In this model we based payouts on a loosely rounded Fibonacci sequence. 
 
 >**Match_____Payout**
@@ -379,11 +382,12 @@ Players choose 10 numbers between 1 and 80. Drawing numbers are chosen at random
 >10___________100
 >___
 >
+
 **Roulette**
 
 In this casino, we have constructed a model roulette wheel. Players can choose their bet type and chosen numbers from the roulette board as applicable. 
 
-> **Bet Type___________Players Choice___________________________________Payout**
+> **Bet Type___________Players Choice______________________________________Payout**
 >___
 > - Straight_______Single number__________________________________________35:1
 >
