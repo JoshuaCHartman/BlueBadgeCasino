@@ -244,11 +244,11 @@ At this point, you can explore various endpoints as a **Player** to play games a
 
 - [Stripe official documentation](https://stripe.com/docs/api)
 
-- [Creating a token](https://stripe.com/docs/api/tokens)
+- [Stripe: Creating a token](https://stripe.com/docs/api/tokens)
 
-- [The Charge object and making a charge](https://stripe.com/docs/api/charges/object)
+- [Stripe: The Charge object and making a charge](https://stripe.com/docs/api/charges/object)
 
-- [YouTube series on creating a charge and capture form using deprecated charge API (no long supported by Stripe)](https://www.youtube.com/watch?v=zV3_KQXwewo&ab_channel=OOPCoders)
+- [YouTube series on creating a charge and card capture form using deprecated charge API (no long supported by Stripe)](https://www.youtube.com/watch?v=zV3_KQXwewo&ab_channel=OOPCoders)
 
 **Miscellaneous**
 
