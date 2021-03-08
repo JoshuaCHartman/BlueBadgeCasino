@@ -194,13 +194,6 @@ At this point, you can explore various endpoints as a **Player** to play games a
 - SuperAdmin has the ability to alter Player balances to account for potential issues like fraud or card misuse (subject to verification).
 - Games are composed of unique nested logic simulating the probabilities and payout amounts of real world gaming. SuperAdmin, and Admin can adjust the payout amounts to a high degree, allowing maximum profits while still staying within the scope of standard payout amounts.
 
-## Discussion
-
-- Games
-- GUIDs
-- Bet class / table as the engine of the project
-- Buying in-game currency and cashing out
-
 ## Resources
 
 **User Roles / Authorization**
@@ -238,6 +231,169 @@ At this point, you can explore various endpoints as a **Player** to play games a
 - [Discussion of processing properties in setter](https://softwareengineering.stackexchange.com/questions/359832/is-it-appropriate-to-process-a-property-in-the-setter)
 
 - [Sending emails from within a C# application](https://blog.elmah.io/how-to-send-emails-from-csharp-net-the-definitive-tutorial/)
+
+
+
+## Discussion
+ - ## Game Play Detail
+### Basic Games
+
+To any games added, the game play will operate as follows based on game type:
+
+**Base Cards**
+
+Random number generator between 0 and 99. Over 50 payout at 1:1. Under or equal to  50 are loss.
+
+**Base Dice**
+
+2 “dice” are rolled. Values >8 payout 2:1. All others are loss.
+
+**Base Random Number (Lotto)**
+Player selects number between 1 and 10; drawing number chosen at random. Matching numbers payout 1:1. Non-matching numbers are loss.
+
+**Base Wheel**
+
+Single number chosen at random between 1 & 52:
+
+>**Segments (of 52)_____Payout**
+>___
+
+>1_______________________40:1
+
+>2_______________________20:1
+
+>4_______________________10:1
+
+>8________________________5:1
+
+>12_______________________2:1
+
+>24_______________________1:1
+
+>___
+
+### Advanced Games
+
+Advanced game play functions equally, regardless of player status.
+
+**Baccarat**
+
+Two card hands are delt to the player and House. Cards are evaluated based on value; face cards & 10 = 0, Aces = 1. Cards are added based on the following: 
+
+•	Player or House hand score greater than 7
+
+•	If player’s hand less than 6; hit
+
+•	If player’s hand is two cards; house hits < 6 or stays > 5
+
+•	If the player takes a 3rd card:
+
+o	 If the House total is 2 or less, then the House draws a card, regardless of what the player's third card is.
+
+o	If the House total is 3, then the House draws a third card unless the player's third card was an 8.
+
+o	If the House total is 4, then the House draws a third card if the player's third card was 2, 3, 4, 5, 6, 7.
+
+o	If the House total is 5, then the House draws a third card if the player's third card was 4, 5, 6, or 7.
+
+o	If the House total is 6, then the House draws a third card if the player's third card was a 6 or 7.
+
+o	If the House total is 7, then the House stands.
+
+Hand with the highest value in the one’s digit is declared winner (i.e. 2+3 = 5; 6+7 = 3 (sum total is 13; one’s digit is 3).
+
+**Blackjack**
+
+Two card hands are dealt to the player and House. Cards are evaluated based on value; face cards = 10, Aces = 1 or 11. If the total is < 17 for either player or House, the respective hand hits adding a card to their hand. Hands are then re-evaluated until a winner is decided. Winner is the hand closest to 21 without going over. Ties result in a draw and no monies are exchanged.
+
+**Craps**
+Players choose Pass or Don’t Pass. Shooter rolls via random selection of 2 “dice” numbers between 1 and 6. Payouts are 1:1. When Pass wins, Don’t Pass loses.
+
+> **Shooter Rolls_______Result**
+>_____
+>2______________________Pass loss
+
+>3______________________Pass loss
+
+>7______________________Pass win
+
+>11_____________________Pass win
+
+>12_____________________Pass loss
+
+>Any other number becomes Point; Shooter rolls until hitting Pass or 7	Point number rolls before 7: Pass wins
+
+> Result: Seven rolls before Point: Pass loss
+>___
+
+**Keno**
+Players choose 10 numbers between 1 and 80. Drawing numbers are chosen at random. Payouts vary by casino. In this model we based payouts on a loosely rounded Fibonacci sequence. 
+
+>**Match_____Payout**
+>___
+>1___________1
+
+>2___________2
+
+>3___________3
+
+>4___________5
+
+>5___________10
+
+>6___________15
+
+>7___________20
+
+>8___________30
+
+>9___________50
+
+>10___________100
+>___
+
+**Roulette**
+
+In this casino, we have constructed a model roulette wheel. Players can choose their bet type and chosen numbers from the roulette board as applicable. 
+
+> **Bet Type___________Players Choice___________________________________Payout**
+>___
+> - Straight_______Single number__________________________________________35:1
+
+> - Split__________Adjoining numbers______________________________________17:1
+
+> - Street_________Lowest number for single row___________________________11:1
+
+> - Corner_________2 adjoining numbers; one from each row________________8:1
+
+> - Double Street__Lowest number for 2 adjoining rows___________________5:1
+
+> - Trio____________0 or 1 for 1st trio or 2nd trio_____________________________8:1
+
+> - Basket_________N/A______________________________________________________6:1
+
+> - High/Low______N/A______________________________________________________1:1
+
+> - Even/Odd______N/A______________________________________________________1:1
+
+> - Color___________N/A_______________________________________________________1:1
+
+> - Dozen_________1, 2, or 3 for 1st, 2nd, or 3rd dozen of numbers__________2:1
+
+> - Column________1, 2, or 3 for 1st, 2nd, or 3rd column of numbers_________2:1
+
+> - Snake_________N/A_________________________________________________________2:1
+>___
+
+
+**Russian Roulette**
+
+The game play is modeled after the original version played with a 7-chamber Russian revolver. A number is chosen at random between 1 and 7 as the “load”. A second number is chosen at random and the “hammer drop”. Should the two numbers equal, the player loses their entire bank.
+
+
+- GUIDs
+- Bet class / table as the engine of the project
+- Buying in-game currency and cashing out
 
 
 
