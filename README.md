@@ -174,7 +174,7 @@ https://localhost:44367/charge_deposit_as_chips
 3. In Postman, change the dropdown to the left of the URL bar to **POST**.
 4. In the body, include the following **KEY / VALUE** pairs, as described on the page (do not include quotation marks) :
    
-  - "CardNumber": "use a test card number provided by stripe such as: **4242424242424242**"
+  - "CardNumber": use a test card number provided by stripe such as: **4242424242424242**
   - "Month": any month in a 2 digit format, example : 02
   - "Year": any future year in a 4 digit format, example: 2023
   - "Cvc": "3 digits"
@@ -231,6 +231,10 @@ At this point, you can explore various endpoints as a **Player** to play games a
 - [Discussion of processing properties in setter](https://softwareengineering.stackexchange.com/questions/359832/is-it-appropriate-to-process-a-property-in-the-setter)
 
 - [Sending emails from within a C# application](https://blog.elmah.io/how-to-send-emails-from-csharp-net-the-definitive-tutorial/)
+
+- [Using ENUMs in C#]( https://www.youtube.com/watch?v=2f5R8NdIdzc&t=529s)
+
+
 
 
 
