@@ -68,7 +68,7 @@ The client, Samson, is an entrepreneur behind several tech-oriented startup proj
 Create a new folder where you would like to contain the casino project and associated files. Open the empty folder and in the top search bar, type **cmd** to open a terminal window. From the command prompt, clone the git repository by entering the following: 
 
 ```bash
-git clone https://https://github.com/JoshuaCHartman/BlueBadgeCasino
+git clone https://https://github.com/JoshuaCHartman/BlueBadgeCasino.git
 ```
 
 Open the project by clicking on Casino.sln inside the Casino folder. Navigate to the Package Manager Console, and enter the following :
