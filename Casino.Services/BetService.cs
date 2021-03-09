@@ -53,7 +53,7 @@ namespace Casino.Services
                     GameName = "Russian Roulette",
                     BetAmount = model.BetAmount,
                     PlayerWonGame = false,
-                    PayoutAmount = - model.BetAmount,
+                    PayoutAmount = -model.BetAmount,
                     PlayerBankBalance = 0,
                     Message = "Sorry!  Game Over! You lost at Russian Roulette!"
 

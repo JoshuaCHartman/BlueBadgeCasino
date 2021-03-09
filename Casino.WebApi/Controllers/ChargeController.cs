@@ -55,7 +55,7 @@ namespace Casino.WebApi.Controllers
             return Ok(chargeTransactions);
         }
 
-  
+
 
         //Get all by Admin for Specific player
         /// <summary>
@@ -89,7 +89,7 @@ namespace Casino.WebApi.Controllers
         }
 
         // Original Async charge method, used to confirm functionality. Changed to synchronous method below for ease of integration into other methods within application
-       
+
         //[Authorize(Roles = "User")]
         //[Route("charge_Async")]
         //public async Task<dynamic> Pay(RevisedChargeModel charge)
@@ -97,7 +97,7 @@ namespace Casino.WebApi.Controllers
         //    return await MakeChargeService.ChargeAsync(charge.CardNumber, charge.Month, charge.Year, charge.Cvc, charge.Zip, charge.Value);
         //}
 
-       
-       
+
+
     }
 }

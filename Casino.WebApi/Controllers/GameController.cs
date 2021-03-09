@@ -2,7 +2,6 @@
 using Casino.Services;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Linq;
 using System.Web.Http;
 namespace Casino.WebApi.Controllers
 {
@@ -52,7 +51,7 @@ namespace Casino.WebApi.Controllers
             GameService gameService = CreateGameService();
             var games = gameService.GetGamesPlayer(userId);
 
-            foreach(var game in games)
+            foreach (var game in games)
             {
                 if (game.GameName.ToLower() == "russian roulette")
                 {
@@ -63,7 +62,7 @@ namespace Casino.WebApi.Controllers
             return Ok(games);
         }
 
-         
+
         //Get by ID
         /// <summary>
         /// Get details of games by GameID

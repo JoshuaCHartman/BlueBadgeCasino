@@ -164,30 +164,6 @@ namespace Casino.Services
 
         }
 
-
-        public GameListItem GetGameById(int id)
-        {
-            using (var ctx = new ApplicationDbContext())
-            {
-                var entity =
-                    ctx
-                        .Games
-                        .Single(e => e.GameId == id);
-                return
-                    new GameListItem
-                    {
-                        GameId = entity.GameId,
-                        GameName = entity.GameName,
-                        TypeOfGame = entity.TypeOfGame,
-                        IsHighStakes = entity.IsHighStakes,
-                        MinBet = entity.MinBet,
-                        MaxBet = entity.MaxBet
-
-                    };
-            }
-        }
-
-
         public enum BetType
         {
             basket,
@@ -433,8 +409,8 @@ namespace Casino.Services
                 }
 
                 if (payout > 0) { amount = payout * betAmt; }
-                else if (payout < 0 && gameName.ToLower() =="russian roulette") { amount = 12345; } //accountDelete
-                else if (payout == 0 && gameName.ToLower() =="russian roulette" ) { amount = 45678; } 
+                else if (payout < 0 && gameName.ToLower() == "russian roulette") { amount = 12345; } //accountDelete
+                else if (payout == 0 && gameName.ToLower() == "russian roulette") { amount = 45678; }
                 else { amount = -1 * betAmt; }
 
                 return amount;
@@ -700,7 +676,7 @@ namespace Casino.Services
             return payout;
         }
 
-        public double Craps(BetType Pass) 
+        public double Craps(BetType Pass)
         {
             bool pass = true; ;
             bool gameOver = false;

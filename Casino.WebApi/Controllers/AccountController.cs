@@ -201,7 +201,7 @@ namespace Casino.WebApi.Controllers
         }
 
 
-        
+
         // GET api/Account/UserInfo
         /// <summary>
         /// Get user account info
@@ -265,7 +265,7 @@ namespace Casino.WebApi.Controllers
 
         // Admin functions below : 
 
-       
+
 
 
         #region Helpers

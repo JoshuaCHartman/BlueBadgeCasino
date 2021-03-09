@@ -144,11 +144,11 @@ namespace Casino.WebApi.Controllers
                 return BadRequest("Bet Amount Exceeds Player Balance");
             var betResult = service.CreateBet(bet);
             if (betResult is null)
-                if (bet.GameId !=11)
+                if (bet.GameId != 11)
                 {
                     return BadRequest("Sorry, your bet did not post.  You either tried to play a game outside of your access level, or outside the range of the MinMax bet");
                 }
-            else
+                else
                 {
                     return BadRequest("Game Over! You lost at Russian Roulette!"); //set playerBalance = 0 or delete account
                 }

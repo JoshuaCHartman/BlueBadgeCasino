@@ -171,7 +171,7 @@
                 PlayerDob = "01011999",
                 AccountCreated = DateTimeOffset.Now,
                 CurrentBankBalance = 10000000
-                
+
             }
 
             );
