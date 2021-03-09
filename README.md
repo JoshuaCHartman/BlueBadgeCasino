@@ -16,9 +16,11 @@
 >
 >- [Resources](#resources)
 >
+>- [Discussion: Bet Class as the Engine of the Application](#bet-class-as-the-engine-of-the-project)
+>
 >- [Discussion: Game Details](#game-play-detail)
 >
->- [Discussion: Using Stripe to buy chips, and cashing out](#using-stripe-to-buy-chips-and-cashing-out)
+>- [Discussion: Using Stripe to Buy Chips, and Cashing Out](#using-stripe-to-buy-chips-and-cashing-out)
 >
 >- [Team Members / Contact](#team-members)
 >
@@ -182,8 +184,8 @@ https://localhost:44367/api/makePlayer
   - "PlayerAddress": "any value"
   - "PlayerState": Standard two letter abbreviation	
   - “PlayerZipCode”: any value
-  - "PlayerDob": "Format of MMDDYYYY"
-5. Hit send, and you should receive a **200OK** with a confirmation message. The final step is to add money to your Player’s in-house “bank” by charging a card through Stripe’s external API.
+  - "PlayerDob": Format of MM/DD/YYYY - **YOU MUST INCLUDE SLASHES**
+5. Hit send, and you should receive a **200OK** with a confirmation message. This newly created player carries the same Guid and token used by the currently logged in user. The final step is to add money to your Player’s in-house “bank” by charging a card through Stripe’s external API.
 
 **Adding Money to Your Player Account**
 1. Navigate to the Player  section, and click on the link for 
@@ -263,6 +265,15 @@ At this point, you can explore various endpoints as a **Player** to play games a
 
 
 ## Discussion
+
+- ## Bet class as the engine of the project
+
+The games are played by creating a bet with the CreateBet endpoint.  To use this endpoint, one must have a valid player token, and enter the required fields including BetAmount and GameId.  Additional fields can be entered for different games like craps or roulette, wherein the player can choose specific numbers or actions depending on that game.  A bet result model will be returned to the player which shows the details including amount won/lost and their new current bank balance.  Funds are instantly transferred between player and house bank accounts after a bet posts. 
+
+All games have a minimum and maximum bet, as well as an access level.  Any bet out of range for that gameID,or attempted access to a high roller game without a gold level tier status, will be caught and prevented from processing.  Various other methods of restriction can be found throughout the program including requiring authorization for most endpoints. Some are restricted to players only, like placing bets, and some restricted to Admin only, like getting a list of players or all bets for the entire casino.  Other exceptions will be caught by try/catch blocks or returning badRequests and modelStates.   
+
+Included in this application is full CRUD functionality, however most PUTs and DELETEs are fairly limited.  A player only has the ability to edit basic info like address and phone number.  When a player deletes their account, it is set to "inactive.".  In the unlikely event of an error, Admin can delete a bet, but not players or games.  When the bet is deleted, the accounts of the house and player are automatically adjusted accordingly.   
+
  - ## Game Play Detail
 ### Basic Games
 
@@ -448,8 +459,6 @@ The Player initiates a withdrawal through the BankTransaction controller's withd
 
 
 
-- GUIDs
-- Bet class / table as the engine of the project
 
 
 
