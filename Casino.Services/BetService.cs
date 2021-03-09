@@ -8,6 +8,7 @@ namespace Casino.Services
 {
     public class BetService
     {
+        private PlayerService _playerService = new PlayerService();
         private GameSimulation _gameSim = new GameSimulation();
         private readonly Guid _playerGuid;  //Parse from currently logged in player
         private Guid _houseGuid = GetHouseAccountGuid();
@@ -31,13 +32,49 @@ namespace Casino.Services
             //      Now both PayoutAmount and PlayerWonGame derived
             //      from _gameSim.
 
+            if (model.GameId == 11) { _gameService = new GameService(_playerGuid); }
+
+
             if (!model.TypeOfBet.HasValue)
-                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess);
+                payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, GameService.BetType.pass, model.ValueOfBet);
             else
                 payout = _gameService.PlayGame(model.GameId, model.BetAmount, hasAccess, (GameService.BetType)model.TypeOfBet, model.ValueOfBet);
             if (payout == 0)
                 return null;  //if playing keno or roulette postman needs a list of int.  Keno up to 10 int(1-80). roulette
+            if (payout == 12345)
+            {
+                DeletePlayer(_playerGuid);
+                return new BetResult
 
+                {
+                    TimeOfBet = DateTime.Now.ToString(),
+                    BetId = 000,
+                    GameId = 11,
+                    GameName = "Russian Roulette",
+                    BetAmount = model.BetAmount,
+                    PlayerWonGame = false,
+                    PayoutAmount = - model.BetAmount,
+                    PlayerBankBalance = 0,
+                    Message = "Sorry!  Game Over! You lost at Russian Roulette!"
+
+                };
+            }
+            if (payout == 45678)
+            {
+                return new BetResult
+
+                {
+                    TimeOfBet = DateTime.Now.ToString(),
+                    BetId = 000,
+                    GameId = 11,
+                    GameName = "Russian Roulette",
+                    BetAmount = model.BetAmount,
+                    PlayerWonGame = true,
+                    PayoutAmount = 0,
+                    PlayerBankBalance = model.BetAmount,
+                    Message = "You survived.  Do you wish to play again!"
+                };
+            }
             var entity = new Bet()
             {
 
@@ -493,11 +530,10 @@ namespace Casino.Services
         {
             var ctx = new ApplicationDbContext();
             var entity =
-            ctx.Players
-
-
-                .Single(e => e.PlayerId == _playerGuid);
-            if (entity.CurrentBankBalance > bet)
+                ctx
+                    .Players
+                    .Single(e => e.PlayerId == _playerGuid);
+            if (entity.CurrentBankBalance >= bet)
                 return true;
             return false;
         }
@@ -549,6 +585,32 @@ namespace Casino.Services
 
 
                     };
+            }
+        }
+
+        public void DeletePlayer(Guid guid) //Does not actually delete
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Players
+                        .Single(e => e.PlayerId == guid);
+
+                if (entity.IsActive == true)
+                {
+
+                    entity.PlayerClosedAccount = true;
+                    entity.CurrentBankBalance = 0;
+                    ctx.SaveChanges();
+
+                }
+                else
+                {
+                    entity.CurrentBankBalance = 0;
+
+                }
+
             }
         }
         private class GetBetException : Exception

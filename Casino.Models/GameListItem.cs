@@ -7,6 +7,7 @@ namespace Casino.Models
         public int GameId { get; set; }
         public string GameName { get; set; }
         public GameType TypeOfGame { get; set; }
+        public bool IsHighStakes { get; set; }
         public double MinBet { get; set; }
         public double MaxBet { get; set; }
 

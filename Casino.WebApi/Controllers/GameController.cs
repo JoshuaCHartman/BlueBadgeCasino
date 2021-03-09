@@ -24,6 +24,7 @@ namespace Casino.WebApi.Controllers
                 return InternalServerError();
             return Ok();
         }
+
         //Get
         /// <summary>
         /// Get a list of all games available to play
@@ -39,9 +40,10 @@ namespace Casino.WebApi.Controllers
 
         //Player Get
         /// <summary>
-        /// Get all games played by a Player, using PlayerID/GUID
+        /// Get all games available to be played by a Player, using PlayerID/GUID
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "User")]
         [Route("api/PlayerGames")]
         [HttpGet]
         public IHttpActionResult PlayerGet()
@@ -49,35 +51,19 @@ namespace Casino.WebApi.Controllers
             var userId = Guid.Parse(User.Identity.GetUserId());
             GameService gameService = CreateGameService();
             var games = gameService.GetGamesPlayer(userId);
+
+            foreach(var game in games)
+            {
+                if (game.GameName.ToLower() == "russian roulette")
+                {
+                    game.MinBet = new PlayerService(userId).GetPlayerById(userId).CurrentBankBalance;
+                    game.MaxBet = game.MinBet;
+                }
+            }
             return Ok(games);
         }
 
-
-        //Player Bet Limits
-        /// <summary>
-        /// Enter a bet amount, and discover what games area available to play
-        /// </summary>
-        /// <returns></returns>
-        [Route("api/Show_if_bet_within_limits")]
-        [HttpGet]
-        public IHttpActionResult BetLimits(double playerBet)
-        {
-            var userId = Guid.Parse(User.Identity.GetUserId());
-            GameService gameService = CreateGameService();
-            var games = gameService.GetGamesPlayer(userId);
-
-            var min = Convert.ToDouble(games.ToArray()[3]);
-            var max = Convert.ToDouble(games.ToArray()[4]);
-
-            var bet = playerBet;
-
-            if (bet >= min && bet <= max)
-            {
-                return Ok();
-            }
-            else { return BadRequest("Bet must be within game limits."); }
-        }
-
+         
         //Get by ID
         /// <summary>
         /// Get details of games by GameID
@@ -114,6 +100,5 @@ namespace Casino.WebApi.Controllers
             var gameService = new GameService(userId);
             return gameService;
         }
-
     }
 }
