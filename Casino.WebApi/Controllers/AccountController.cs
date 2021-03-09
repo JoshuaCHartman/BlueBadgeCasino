@@ -201,7 +201,7 @@ namespace Casino.WebApi.Controllers
         }
 
 
-        // keep : update as needed ?
+        
         // GET api/Account/UserInfo
         /// <summary>
         /// Get user account info
@@ -236,26 +236,6 @@ namespace Casino.WebApi.Controllers
             return Ok();
         }
 
-        // POST api/Account/ChangePassword
-
-        //[Route("ChangePassword")]
-        //public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-        //        model.NewPassword);
-
-        //    if (!result.Succeeded)
-        //    {
-        //        return GetErrorResult(result);
-        //    }
-
-        //    return Ok();
-        //}
 
         // POST api/Account/SetPassword
         /// <summary>
@@ -285,37 +265,7 @@ namespace Casino.WebApi.Controllers
 
         // Admin functions below : 
 
-        // POST api/Account/RemoveLogin
-
-        //[Authorize(Roles = "SuperAdmin, Admin")]
-
-        //[Route("RemoveLogin")]
-        //public async Task<IHttpActionResult> RemoveLogin(RemoveLoginBindingModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    IdentityResult result;
-
-        //    if (model.LoginProvider == LocalLoginProvider)
-        //    {
-        //        result = await UserManager.RemovePasswordAsync(User.Identity.GetUserId());
-        //    }
-        //    else
-        //    {
-        //        result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(),
-        //            new UserLoginInfo(model.LoginProvider, model.ProviderKey));
-        //    }
-
-        //    if (!result.Succeeded)
-        //    {
-        //        return GetErrorResult(result);
-        //    }
-
-        //    return Ok();
-        //}
+       
 
 
         #region Helpers

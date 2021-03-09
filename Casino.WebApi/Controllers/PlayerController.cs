@@ -16,6 +16,7 @@ namespace Casino.WebApi.Controllers
             return playerService;
         }
         private PlayerService _service = new PlayerService();
+
         //Player gets own player info
         /// <summary>
         /// Return Player info for logged in Player - restricted to User/Player
@@ -132,7 +133,10 @@ namespace Casino.WebApi.Controllers
                 return Ok("Your Player Account has been created. Please buy chips to play games!");
         }
 
-
+        /// <summary>
+        /// Player can update contact info (phone number, address)
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "User")]
         [Route("api/UpdatePlayer/")]
         public IHttpActionResult Put(PlayerEdit player)

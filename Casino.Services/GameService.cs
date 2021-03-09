@@ -164,6 +164,30 @@ namespace Casino.Services
 
         }
 
+
+        public GameListItem GetGameById(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                    ctx
+                        .Games
+                        .Single(e => e.GameId == id);
+                return
+                    new GameListItem
+                    {
+                        GameId = entity.GameId,
+                        GameName = entity.GameName,
+                        TypeOfGame = entity.TypeOfGame,
+                        IsHighStakes = entity.IsHighStakes,
+                        MinBet = entity.MinBet,
+                        MaxBet = entity.MaxBet
+
+                    };
+            }
+        }
+
+
         public enum BetType
         {
             basket,
@@ -343,6 +367,7 @@ namespace Casino.Services
             //game bet limits
             var min = game.GetGameById(id).MinBet;
             var max = game.GetGameById(id).MaxBet;
+
 
             if (gameName.ToLower() == "russian roulette")
             {
