@@ -1,5 +1,6 @@
 ﻿using Casino.Data;
 using Casino.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Casino.Services
         {
             _userId = userId;
         }
-
+        
         public bool CreatePlayer(PlayerCreate model)
         {
 
