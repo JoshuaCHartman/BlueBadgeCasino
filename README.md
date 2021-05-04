@@ -266,7 +266,7 @@ At this point, you can explore various endpoints as a **Player** to play games a
 
 ## Discussion
 
-- ## Bet class as the engine of the project
+- ## Bet class is the engine of the project
 
 The games are played by creating a bet with the **CreateBet** endpoint.  To use this endpoint, one must have a valid player token, and enter the required fields including **BetAmount** and **GameId**.  Additional fields can be entered for different games like craps or roulette, wherein the player can choose specific numbers or actions depending on that game.  A bet result model will be returned to the player which shows the details including amount won/lost and their new current bank balance.  Funds are instantly transferred between player and house bank accounts after a bet posts. 
 
