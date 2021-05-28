@@ -245,7 +245,7 @@ namespace Casino.Services
                 return query.ToArray();
             }
         }
-        //admin get active players
+        //Admin get active players
         public IEnumerable<PlayerListItem> GetActivePlayers()
         {
             using (var ctx = new ApplicationDbContext())
